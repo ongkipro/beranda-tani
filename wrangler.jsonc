@@ -46,13 +46,26 @@
   // Hourly evaluation catches a stalled conversion outbox even when no operator
   // opens the dashboard. Alert transitions are deduplicated in the install's KV.
   //
-  // Empty at first install (2026-09-05): the account is on Workers Free, whose
-  // 5-cron cap is already spent across the existing installs. Scheduled
-  // maintenance (AutoLaris payment expiry, provider callback purge, outbox
-  // drains, health check) stays dormant until a slot frees or the account
-  // upgrades. This store has no traffic yet, so nothing is queued to drain.
+  // Empty at first install (2026-09-05), and verified empty rather than
+  // assumed. The account is on Workers Free, whose 5-cron cap is fully spent:
+  // carukesi, cmsads-permatamall, cmsads-zanobyshop, zvarashop and
+  // petanisejahtera each hold a slot (checked against the Cloudflare
+  // schedules API across all 45 workers on the account).
+  //
+  // A deploy carrying "7 * * * *" here is ACCEPTED and reports success —
+  // "Deployed beranda-tani triggers" — while registering no schedule at all.
+  // The API then returns an empty schedules array. Never trust the deploy
+  // output for this; query the schedules endpoint.
+  //
+  // So scheduled maintenance (AutoLaris payment expiry, provider callback
+  // purge, rate-limit purge, Meta CAPI and Google Ads outbox drains, health
+  // evaluation) is dormant here. This store has no traffic yet, so nothing is
+  // queued to drain — but it must be resolved before it takes real orders, by
+  // freeing a slot or upgrading to Workers Paid.
+  //
   // An explicit empty array is required for `wrangler deploy` to clear a
-  // schedule, so keep the block rather than deleting it.
+  // schedule already registered on Cloudflare, so keep the block rather than
+  // deleting it.
   "triggers": {
     "crons": []
   },
