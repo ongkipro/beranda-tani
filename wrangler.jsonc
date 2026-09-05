@@ -18,7 +18,7 @@
 
   // Globally unique within the Cloudflare account. Placeholder values below are
   // syntactically valid so tooling runs on a fresh clone — they are NOT a target.
-  "name": "adsbookcms-your-store",
+  "name": "beranda-tani",
   "main": "./src/worker.ts",
 
 
@@ -45,8 +45,16 @@
   "workers_dev": false,
   // Hourly evaluation catches a stalled conversion outbox even when no operator
   // opens the dashboard. Alert transitions are deduplicated in the install's KV.
+  //
+  // Empty at first install (2026-09-05): the account is on Workers Free, whose
+  // 5-cron cap is already spent across the existing installs. Scheduled
+  // maintenance (AutoLaris payment expiry, provider callback purge, outbox
+  // drains, health check) stays dormant until a slot frees or the account
+  // upgrades. This store has no traffic yet, so nothing is queued to drain.
+  // An explicit empty array is required for `wrangler deploy` to clear a
+  // schedule, so keep the block rather than deleting it.
   "triggers": {
-    "crons": ["7 * * * *"]
+    "crons": []
   },
 
 
@@ -56,21 +64,21 @@
   "kv_namespaces": [
     {
       "binding": "SESSION",
-      "id": "00000000000000000000000000000000"
+      "id": "9c3d9a227a224f7d9eefe8cc24207d47"
     }
   ],
   "d1_databases": [
     {
       "binding": "OMS_DB",
-      "database_name": "adsbookcms-your-store-d1",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_name": "beranda-tani-d1",
+      "database_id": "8112baf2-3ddd-4122-9644-69a88734c8a4",
       "migrations_dir": "src/db/migrations"
     }
   ],
   "r2_buckets": [
     {
       "binding": "ASSET_BUCKET",
-      "bucket_name": "adsbookcms-your-store-assets"
+      "bucket_name": "beranda-tani-assets"
     }
   ],
   "ai": {
@@ -87,11 +95,11 @@
 
   "routes": [
     {
-      "pattern": "example.com",
+      "pattern": "beranda.click",
       "custom_domain": true
     },
     {
-      "pattern": "www.example.com",
+      "pattern": "www.beranda.click",
       "custom_domain": true
     }
   ],
@@ -100,8 +108,8 @@
   // change here only takes effect after `npm run build`. Redeploying an already
   // built bundle with new vars changes nothing. See ARCHITECTURE.md §5.
   "vars": {
-    "PUBLIC_SITE_NAME": "Your Store",
-    "PUBLIC_SITE_URL": "https://example.com",
+    "PUBLIC_SITE_NAME": "Beranda Tani",
+    "PUBLIC_SITE_URL": "https://beranda.click",
     // Deliberately empty, like the tagline below. A placeholder here becomes
     // the meta description Google prints under the store, and the second half
     // of the home page <title>.
@@ -110,8 +118,8 @@
     // every unconfigured store's <title>, which is how a fresh install came to
     // announce itself as "Toko Anda — Belum Dikonfigurasi".
     "PUBLIC_SITE_TAGLINE": "",
-    "PUBLIC_ADMIN_NAME": "AdsBookCMS Admin",
-    "PUBLIC_EMBED_ALLOWED_ORIGINS": "https://example.com",
+    "PUBLIC_ADMIN_NAME": "Beranda Tani Admin",
+    "PUBLIC_EMBED_ALLOWED_ORIGINS": "https://beranda.click",
 
     // Root-relative or absolute. Replace the placeholder wordmark in
     // public/images/ with the store's own brand assets.
