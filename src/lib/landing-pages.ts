@@ -2,6 +2,10 @@ import { getRuntimeEnv } from "./env.ts";
 import { formatIdr } from "./format-idr.ts";
 import { solutionEntries } from "../data/content.ts";
 import {
+  installRouteSlugs,
+  nativeLandingPages,
+} from "../data/native-landing-pages.ts";
+import {
   activeNativeLandingPages,
   isNativeLandingId,
   nativeLandingIdFor,
@@ -623,7 +627,8 @@ export async function updateLandingPage(
       .prepare(
         `UPDATE landing_pages
          SET slug = ?, title = ?, product_id = ?, is_active = ?,
-             meta_title = ?, meta_description = ?, updated_at = ?
+             meta_title = ?, meta_description = ?, updated_at = ?,
+             is_product_page = CASE WHEN ? THEN 0 ELSE is_product_page END
          WHERE id = ?`,
       )
       .bind(
@@ -634,6 +639,10 @@ export async function updateLandingPage(
         metaTitle,
         metaDescription,
         now,
+        // A claim is a decision about one product's page. Moving the page to
+        // another product must not carry it along: that silently took over the
+        // new product's URL, or hit the one-claim-per-product index as a 500.
+        String(productId) !== String(existing.product_id) ? 1 : 0,
         id,
       ),
   ];
@@ -721,6 +730,32 @@ export type ShortcodeProduct = {
   }>;
 };
 
+/**
+ * Defers the images of a merchant-authored HTML section the browser does not
+ * need for first paint. A CMS landing page is written by hand, and its images
+ * arrive eager and unsized: on a live ad landing every before/after photo and a
+ * 172 KB stock photo far below the fold were fetched up front, competing with
+ * the hero for the mobile connection that LCP is measured on.
+ *
+ * Adds `loading="lazy" decoding="async"` to each `<img>` except:
+ * - the first image of the page (`keepFirstEager`), the likely LCP element;
+ * - a tag that already declares `loading` — the operator chose;
+ * - a tag carrying `onerror`/`onload`: content uses a hidden
+ *   `<img src="x" onerror=…>` to run script, and a lazy hidden image is never
+ *   fetched, so its handler would never fire.
+ */
+export function deferOffscreenImages(html: string, keepFirstEager: boolean): string {
+  let first = keepFirstEager;
+  return html.replace(/<img\b[^>]*>/gi, (tag) => {
+    if (/\sloading\s*=/i.test(tag) || /\son(error|load)\s*=/i.test(tag)) return tag;
+    if (first) {
+      first = false;
+      return tag;
+    }
+    return tag.replace(/^<img\b/i, '<img loading="lazy" decoding="async"');
+  });
+}
+
 export function parseShortcodes(
   html: string,
   product: ShortcodeProduct,
@@ -756,6 +791,40 @@ export function parseShortcodes(
   );
 }
 
+/**
+ * First path segments a static route already answers. Astro serves a static
+ * route before `[slug]`, so a landing page saved under one of these was listed,
+ * advertised in the sitemap and linked from home while its URL served
+ * something else. `landing-pages.test.ts` fails when `src/pages/` gains a
+ * top-level route this list does not name.
+ */
+export const RESERVED_LANDING_SLUGS: ReadonlySet<string> = new Set([
+  "404", "admin", "api", "assets", "contoh-landing", "disclaimer", "embed",
+  "feed", "form-full", "form-hybrid", "form-middle", "full-form", "geoipform",
+  "hello", "hybrid-form", "install", "kebijakan-cookie", "kebijakan-privasi",
+  "kontak", "landing", "landing-page", "media", "middle-form", "payment",
+  "pengiriman", "produk", "robots", "sitemap", "solusi-terbaru",
+  "syarat-ketentuan", "tentang", "testimoni", "thanks",
+]);
+
+/**
+ * A slug a CMS landing page may not take because a route file already answers
+ * on it: the product's own pages, every registered native landing page (active
+ * or not — the file exists either way), and the install's other route files.
+ * Without the last two a CMS page saved on `/<native-slug>` stays unreachable.
+ */
+export function isReservedLandingSlug(
+  slug: string,
+  natives: readonly NativeLandingPage[] = nativeLandingPages,
+  installRoutes: readonly string[] = installRouteSlugs,
+): boolean {
+  return (
+    RESERVED_LANDING_SLUGS.has(slug) ||
+    natives.some((entry) => entry.slug === slug) ||
+    installRoutes.includes(slug)
+  );
+}
+
 export function validateLandingPageSlug(
   slug: string,
 ): { valid: boolean; error?: string } {
@@ -767,7 +836,30 @@ export function validateLandingPageSlug(
         "Slug must contain only lowercase letters, numbers, and single hyphens",
     };
   }
+  if (isReservedLandingSlug(slug)) {
+    return { valid: false, error: `Slug /${slug} sudah dipakai halaman bawaan toko.` };
+  }
   return { valid: true };
+}
+
+/**
+ * Raw HTML sections render unescaped on the store's own origin, which is also
+ * the admin's origin — a `<script>` there runs with the session of whoever
+ * opens the page. So only owner/admin may introduce or change one; an
+ * advertiser may still edit the typed sections around HTML someone trusted
+ * already wrote. Compared by content, not position, so reordering is free.
+ */
+export function changesHtmlSections(
+  next: readonly LandingSectionInput[] | undefined,
+  existing: readonly { type: string; content_html?: string | null }[] = [],
+): boolean {
+  if (next === undefined) return false;
+  const trusted = new Set(
+    existing.filter((section) => section.type === "html").map((section) => section.content_html ?? ""),
+  );
+  return next.some(
+    (section) => section.type === "html" && !trusted.has(section.content_html ?? ""),
+  );
 }
 
 /**
@@ -921,7 +1013,15 @@ export async function reconcileNativeLandingPages(
              product_id = excluded.product_id,
              meta_title = excluded.meta_title,
              meta_description = excluded.meta_description,
-             updated_at = excluded.updated_at`,
+             updated_at = excluded.updated_at
+           -- Only a real change writes. updated_at is the sitemap's lastmod,
+           -- and a re-sync that bumped it every time told crawlers every
+           -- native page had changed whenever the list was opened.
+           WHERE landing_pages.slug IS NOT excluded.slug
+              OR landing_pages.title IS NOT excluded.title
+              OR landing_pages.product_id IS NOT excluded.product_id
+              OR landing_pages.meta_title IS NOT excluded.meta_title
+              OR landing_pages.meta_description IS NOT excluded.meta_description`,
         )
         .bind(
           nativeLandingIdFor(entry.slug),
@@ -1002,6 +1102,8 @@ export type PublicLandingPage = {
   excerpt: string;
   /** Where the page actually answers, honouring a product-page takeover. */
   href: string;
+  /** True when `href` is the product URL, not the page's own slug. */
+  isProductPage: boolean;
 };
 
 /**
@@ -1023,8 +1125,9 @@ export async function listPublicLandingPages(
       `SELECT lp.slug, lp.title, lp.meta_description, lp.is_product_page,
               p.slug AS product_slug
          FROM landing_pages lp
-         LEFT JOIN products p ON CAST(p.id AS TEXT) = lp.product_id
-        WHERE lp.is_active = 1
+         JOIN products p ON CAST(p.id AS TEXT) = lp.product_id
+        -- A page whose product is off answers 404, so it is not advertised.
+        WHERE lp.is_active = 1 AND p.is_active = 1
         ORDER BY lp.updated_at DESC, lp.created_at DESC`,
     )
     .all<{
@@ -1043,5 +1146,6 @@ export async function listPublicLandingPages(
       row.is_product_page && row.product_slug
         ? `/produk/${row.product_slug}`
         : `/${row.slug}`,
+    isProductPage: Boolean(row.is_product_page && row.product_slug),
   }));
 }

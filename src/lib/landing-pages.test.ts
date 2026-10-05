@@ -14,10 +14,14 @@ import {
   parseShortcodes,
   NativeLandingReadOnlyError,
   reconcileNativeLandingPages,
+  changesHtmlSections,
+  isReservedLandingSlug,
+  deferOffscreenImages,
   setLandingPageAsProductPage,
   updateLandingPage,
   validateLandingPageSlug,
 } from "./landing-pages.ts";
+import { readdirSync } from "node:fs";
 
 type QueryValue = null | number | string | Uint8Array;
 
@@ -89,10 +93,12 @@ class SqliteD1Database {
       CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY,
         slug TEXT NOT NULL,
-        title TEXT NOT NULL
+        title TEXT NOT NULL,
+        is_active INTEGER DEFAULT 1
       );
       INSERT INTO products (id, slug, title) VALUES (20001, 'pupuk-organik', 'Pupuk Organik');
       INSERT INTO products (id, slug, title) VALUES (20002, 'benih-jagung', 'Benih Jagung');
+      INSERT INTO products (id, slug, title, is_active) VALUES (20003, 'produk-mati', 'Produk Mati', 0);
     `);
     for (const file of [
       "0027_landing_page_builder.sql",
@@ -352,7 +358,7 @@ test("a claimed page is excluded from the addresses a sitemap may advertise", as
   });
   await setLandingPageAsProductPage(locals, claimed.id, true);
 
-  // This is the filter both sitemaps apply. A claimed page answers 308 on its
+  // This is the filter both sitemaps apply. A claimed page answers 301 on its
   // own slug and the product URL is listed separately, so advertising it here
   // would hand out exactly the duplicate pair the takeover prevents.
   const advertised = (await listLandingPages(locals))
@@ -400,6 +406,23 @@ test("the register is mirrored into the table, and a claim survives a re-sync", 
   const stillClaimed = await getProductPageLanding(locals, "20001");
   assert.equal(stillClaimed?.slug, "promo-native");
   assert.equal(stillClaimed?.title, "Judul Baru");
+});
+
+test("a re-sync with nothing changed leaves updated_at, the sitemap lastmod, alone", async () => {
+  const { database, locals } = createLocals();
+  const d1 = database as unknown as D1Database;
+  await reconcileNativeLandingPages(d1, [nativeEntry]);
+  const first = (await getLandingPageById(locals, "native:promo-native"))?.updated_at;
+  assert.ok(first);
+
+  await new Promise((resolve) => setTimeout(resolve, 5));
+  await reconcileNativeLandingPages(d1, [nativeEntry]);
+  assert.equal((await getLandingPageById(locals, "native:promo-native"))?.updated_at, first);
+
+  await new Promise((resolve) => setTimeout(resolve, 5));
+  await reconcileNativeLandingPages(d1, [{ ...nativeEntry, description: "Deskripsi baru." }]);
+  const changed = (await getLandingPageById(locals, "native:promo-native"))?.updated_at;
+  assert.ok(changed && changed > first, "a real change still moves updated_at");
 });
 
 test("removing the register entry removes the row, and with it any claim", async () => {
@@ -469,7 +492,16 @@ test("the public listing links a claimed page to the product URL it answers on",
   // A claimed page's own slug only redirects; the public list must send the
   // visitor where the page actually answers.
   assert.equal(bySlug.get(claimed.slug)?.href, "/produk/benih-jagung");
+  assert.equal(bySlug.get(claimed.slug)?.isProductPage, true);
   assert.equal(bySlug.has(draft.slug), false);
+
+  // A page whose product is off answers 404; home and sitemap must not link it.
+  const orphan = await createLandingPage(locals, {
+    slug: "promo-produk-mati",
+    title: "Promo Mati",
+    product_id: "20003",
+  });
+  assert.equal((await listPublicLandingPages(locals)).some((page) => page.slug === orphan.slug), false);
 });
 
 /**
@@ -590,4 +622,66 @@ test("a landing page cannot point at a product this store does not carry", async
     /Produk yang dipilih tidak ditemukan/,
   );
   assert.equal((await getLandingPageById(locals, page.id))?.product_id, "20001");
+});
+
+test("a landing slug cannot shadow a route the store already serves", () => {
+  // Every top-level static route in src/pages/, so a new page cannot be added
+  // without reserving its slug: Astro would serve the static page instead.
+  const pages = new URL("../pages/", import.meta.url);
+  const segments = readdirSync(pages, { withFileTypes: true })
+    .map((entry) => entry.name.replace(/\.(astro|ts)$/, "").replace(/\.(txt|xml)$/, ""))
+    .filter((name) => !name.startsWith("[") && name !== "index");
+  for (const segment of segments) {
+    // An install's own route file is reserved through its native register or
+    // `installRouteSlugs` (src/data/native-landing-pages.ts), not this list.
+    assert.ok(isReservedLandingSlug(segment), `src/pages/${segment} is not reserved`);
+    assert.equal(validateLandingPageSlug(segment).valid, false, segment);
+  }
+});
+
+test("a native landing slug and an install route are refused as CMS slugs", () => {
+  const native = [{ slug: "promo-native", title: "T", productSlug: "p", description: "d", isActive: false }];
+  assert.equal(isReservedLandingSlug("promo-native", native, []), true, "inactive native still owns its file");
+  assert.equal(isReservedLandingSlug("legacy-redirect", [], ["legacy-redirect"]), true);
+  assert.equal(isReservedLandingSlug("promo-bebas", native, ["legacy-redirect"]), false);
+  assert.equal(isReservedLandingSlug("thanks", [], []), true);
+});
+
+test("only a change to raw HTML needs an owner, not a page that merely carries it", () => {
+  const trusted = [{ type: "html", content_html: "<p>ok</p>" }];
+  assert.equal(changesHtmlSections(undefined, trusted), false);
+  assert.equal(changesHtmlSections([{ type: "headline", content_config: null }], trusted), false);
+  assert.equal(changesHtmlSections([{ type: "html", content_html: "<p>ok</p>" }], trusted), false);
+  assert.equal(changesHtmlSections([{ type: "html", content_html: "<script>x</script>" }], trusted), true);
+  assert.equal(changesHtmlSections([{ type: "html", content_html: "<p>ok</p>" }]), true, "new page");
+});
+
+test("moving a claimed page to another product releases the claim instead of stealing a URL", async () => {
+  const { locals } = createLocals();
+  const page = await createLandingPage(locals, { slug: "promo-pindah", title: "Promo", product_id: "20001" });
+  await setLandingPageAsProductPage(locals, page.id, true);
+  const moved = await updateLandingPage(locals, page.id, { product_id: "20002" });
+  assert.equal(moved?.is_product_page, 0);
+  assert.equal(await getProductPageLanding(locals, "20001"), null);
+  assert.equal(await getProductPageLanding(locals, "20002"), null);
+});
+
+test("CMS images below the first are deferred, and script-bearing images are left alone", () => {
+  const html = [
+    '<img src="/hero.webp" alt="hero">',
+    '<img src="/before.jpg" alt="before" style="height:140px">',
+    '<img src="/chosen.jpg" loading="eager">',
+    `<img src="x" style="display:none" onerror="bindCta()">`,
+    '<IMG SRC="/upper.jpg">',
+  ].join("");
+  const out = deferOffscreenImages(html, true);
+  assert.match(out, /^<img src="\/hero\.webp" alt="hero">/, "the first image stays eager for LCP");
+  assert.match(out, /<img loading="lazy" decoding="async" src="\/before\.jpg"/);
+  assert.match(out, /<img src="\/chosen\.jpg" loading="eager">/, "an operator's own choice stands");
+  // A lazy hidden image is never fetched, so its onerror — the only way CMS
+  // content runs script — would never fire.
+  assert.match(out, /<img src="x" style="display:none" onerror="bindCta\(\)">/);
+  assert.match(out, /<img loading="lazy" decoding="async" SRC="\/upper\.jpg">/);
+  // A later section has no LCP candidate: its first image is deferred too.
+  assert.match(deferOffscreenImages('<img src="/a.jpg">', false), /^<img loading="lazy" decoding="async"/);
 });

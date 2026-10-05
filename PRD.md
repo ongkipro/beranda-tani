@@ -1,10 +1,48 @@
 # PRD — AdsBookCMS (single)
 
-> Verified against disk: 2026-08-28 @ `f18ca76`
+> Verified against disk: 2026-09-30 @ `dd83acd` + working tree
+
+## A28 — Hand a COD buyer to WhatsApp support from the thank-you page
+
+### Goals
+
+- A COD buyer reaches the store's support chat with the order already named,
+  without having to press anything, while the store's conversion signal is not
+  cut short.
+
+### Non-goals
+
+- Redirecting a buyer who still has to pay (QRIS, VA, transfer): their next step
+  is on the page.
+- A message template the operator edits. The fields are fixed; the wording can
+  change in code.
+
+### Requirements
+
+- **REQ-180** — An operator shall be able to switch the hand-off on and off in
+  Settings → Store; it shall be off on every store until switched on.
+- **REQ-181** — When on, `/thanks` shall open the support WhatsApp for a COD
+  order only, and never for a lead-only record or a store without a usable
+  support number.
+- **REQ-182** — The page shall leave only after the Purchase has been handed to
+  the Pixel and the CAPI leg and the Pixel library is loaded, not sooner than
+  1.5 s and not much later than 5 s after load, and the buyer shall be able to
+  stay on the page instead.
+- **REQ-183** — The message, used by the automatic hand-off and the existing
+  button alike, shall name the invoice number, the buyer's name, and the product
+  with its variant and quantity, omitting any field that is unknown.
+
+### Technical decisions
+
+- **A signal, not a timer.** `MetaThanksTracker` dispatches `ps:purchase-done`
+  on every exit of its Purchase routine; the page waits for it and for
+  `fbq.instance`. The server already holds the COD Purchase from checkout, so the
+  upper bound only protects the browser leg.
+- **`keepalive` on the CAPI leg**, so the navigation cannot cancel it.
 
 ## A27 — Bounded landing-page content and images
 
-**Status:** Accepted — implementation has not started.
+**Status:** Accepted — shipped (migration `0055`, typed sections in the editor and renderer; A-174 … A-185).
 
 ### Goals
 
@@ -137,8 +175,6 @@ remediation evidence is in `docs/AUDIT-2026-08-23.md`; open execution is owned b
   domain, and credential set per store.
 - Make every proposed installation update reviewable, reproducible, and
   attributable to an immutable product revision.
-- Roll out progressively so one incompatible installation cannot turn a product
-  release into a fleet-wide incident.
 
 ### Non-goals
 
@@ -147,63 +183,40 @@ remediation evidence is in `docs/AUDIT-2026-08-23.md`; open execution is owned b
 - Copying customer, order, payment, catalog, or analytics data between installs.
 - Deploying every production store automatically when product `main` changes.
 - Replacing each installation repository with generated or unreviewable state.
-- Adding a package registry, GitHub App, queue, or hosted fleet service before a
-  terminal-first updater proves those components are necessary.
+- A package registry, GitHub App, queue, fleet updater, or hosted fleet service
+  (ADR-020).
 
 ### Requirements
 
 - **REQ-164** — Before a product release is eligible for installation, every
   inline raw-text JSON payload shall escape HTML script terminators, and a
   regression test containing a literal `</script>` payload shall prove it.
-- **REQ-165** — The product shall identify an update by an immutable Git release
-  reference whose package version, commit, and bundled migration suffix are
-  mutually consistent.
-- **REQ-166** — Given a registered installation and a product release, the
-  updater shall apply the product-owned diff without requiring an operator to
-  copy individual files.
 - **REQ-167** — The updater shall leave install-owned configuration, Cloudflare
   resource identifiers, secrets, merchant assets, and local operational records
   unchanged; an unclassified changed path shall fail the update before writing.
-- **REQ-168** — Each installation update shall be isolated on its own branch and
-  shall pass that installation's test, check, build, and fresh local D1 migration
-  gates before it is eligible for review.
-- **REQ-169** — A fleet rollout shall update one explicitly selected canary
-  first and shall require explicit production authorization before subsequent
-  installation deploys; a failed target shall not mutate another target.
 - **REQ-170** — Each installation shall retain its own database and apply only
   the product's ordered forward migration suffix; no fleet command shall read or
   copy customer rows between D1 databases.
-- **REQ-171** — Every update attempt shall report the source release, target
-  repository, before/after product version, schema version, validation results,
-  and final state without recording secrets or customer data.
 - **REQ-172** — Local product development shall use one canonical `main`
   worktree plus task-named temporary worktrees; a generic persistent detached
   worktree shall not be treated as a current development environment.
 
-> **Revision 2026-08-23 (ADR-020).** REQ-164 (security escaping) is met. REQ-167
-> and REQ-170 stand but are satisfied by a documented **path-ownership manifest**
-> plus the existing per-install migration contract — a copy-paste checklist, not
-> an automated updater. REQ-172 remains as worktree hygiene. **Withdrawn as
-> YAGNI:** REQ-165 (immutable release-identity engine), REQ-166 (automated
-> product-diff updater), REQ-168 (per-branch CI automation), REQ-169 (canary
-> fleet rollout), REQ-171 (automated fleet reporting). They return only if the
-> install count outgrows manual copy.
+> **Revision 2026-08-23 (ADR-020).** REQ-164 is met. REQ-167 and REQ-170 are
+> satisfied by the path-ownership manifest plus the per-install migration
+> contract — a checklist, not an automated updater. REQ-172 is worktree hygiene.
+> The fleet-updater requirements (REQ-165/166/168/169/171) were withdrawn as
+> YAGNI and removed from this document on 2026-09-25.
 
 ### Technical decisions
 
 - **Git release, not a package.** Installations already contain the complete
-  Worker and migration chain. An immutable Git ref is the smallest artifact
-  that preserves deletions, migration history, and source provenance.
-- **Classified synchronization, not blind merge or copy.** The release diff is
-  applied only after every changed path is classified as product-owned or
-  install-owned. Unknown paths stop the run, preventing both silent omissions
-  and overwritten installation configuration.
-- **Private target registry, public generic tooling.** Target repository names
-  and local paths belong in `~/.config/ai-local/adsbookcms-fleet.json`; no token
-  or operational fleet inventory is committed to the product repository.
-- **Review before production.** The first implementation creates update
-  branches and evidence. Merge and deploy remain installation-owned actions
-  behind the existing production approval gate.
+  Worker and migration chain; a Git revision is the smallest artifact that
+  preserves deletions, migration history, and source provenance.
+- **Classified copy, not blind overwrite.** Every changed path is product-owned
+  or install-owned (`docs/UPDATE-PATH-OWNERSHIP.md`); an unknown path stops the
+  update before anything is written.
+- **Review before production.** Merge and deploy remain installation-owned
+  actions behind the existing production approval gate.
 
 ## A21 — A landing page may become the product page
 
@@ -214,13 +227,15 @@ remediation evidence is in `docs/AUDIT-2026-08-23.md`; open execution is owned b
 
 ### Non-goals
 
-- Listing native Astro landing routes in the CMS. That needs the typed manifest in `REQ-143`/`A-133` and is unbuilt; `docs/LANDING-PAGES.md` states the contract so a page written before then already fits it.
-- Letting a native Astro route claim a product page. The claim is a database fact on `landing_pages`; a file has no row.
+- *(Superseded.)* Native Astro landing routes were first out of scope here. The
+  native register (`src/data/native-landing-pages.ts`) now records them in
+  `landing_pages`, so the CMS lists them and a registered native page can serve
+  its product's page like a CMS page; see `docs/LANDING-PAGES.md`.
 
 ### Requirements
 
 - **REQ-159** — An operator shall be able to make one active CMS landing page serve its product's page, and to release it again.
-- **REQ-160** — Where a landing page serves the product page, `/produk/<product-slug>` shall render it and be its canonical address, and the landing page's own slug shall permanently redirect there, so exactly one URL is live.
+- **REQ-160** — Where a landing page serves the product page, `/produk/<product-slug>` shall render it and be its canonical address, and the landing page's own slug shall permanently redirect there (`301`, cacheable for five minutes, query string kept), so exactly one URL is live.
 - **REQ-161** — At most one landing page may serve a given product's page, enforced by the database rather than by the interface.
 - **REQ-162** — If the claiming landing page becomes inactive or releases the claim, then `/produk/<product-slug>` shall return to the standard product template; a product shall never 404 because a landing page changed.
 - **REQ-163** — Every landing page, CMS or native, shall answer at `domain/<slug>` with no path prefix, except where `REQ-160` moves it to the product URL.
@@ -420,7 +435,7 @@ The storefront sells on demand: a variant shall be purchasable whenever it is ac
 
 | ID | Requirement | Status |
 | --- | --- | --- |
-| REQ-40 | The system shall quote live courier rates for the resolved destination, filtered by courier availability and COD rules. A fresh install shall start with the neutral courier catalogue, while upgrades shall backfill it only for stores whose courier policy is completely empty. | Implemented 2026-08-18 — fresh install and empty-policy repair contracts passed |
+| REQ-40 | The system shall quote live courier rates for the resolved destination, filtered by courier availability and COD rules. A fresh install shall enable JNE and J&T and list every other supported courier switched off, while upgrades shall backfill the catalogue only for stores whose courier policy is completely empty and never change an existing store's policy. | Implemented 2026-08-18 — fresh install and empty-policy repair contracts passed |
 | REQ-41 | Destination resolution shall use a local district index with provider address search as a fallback. | Implemented |
 | REQ-42 | Dispatch shall run sequentially under a single-flight lease and shall return independent per-order results. | Implemented |
 | REQ-43 | Only an accepted provider response shall advance an order to processing; failures shall remain pending and retryable. | Implemented |

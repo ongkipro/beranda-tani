@@ -1,6 +1,6 @@
 # Release and Deployment — AdsBookCMS
 
-> Verified against disk: 2026-08-29 @ `9766ad6`
+> Verified against disk: 2026-09-30 @ `0ef2813` + retire-ninja-default-jne-jt working tree
 
 This document is the single owner of how a change reaches production. It replaces the previous `VERSION.md` runbook and the deleted `AUTO_UPDATE_DEPLOY.md`, which between them described three mutually exclusive release models, none of which matched the one workflow that exists.
 
@@ -32,10 +32,18 @@ lines are the whole trigger block in `ci.yml`.
 ### Manual deploy
 
 `npx wrangler deploy` (or `npm run deploy`) deploys the working tree to whatever
-Worker `wrangler.jsonc` names. In **this** repository that file is placeholders
-(`example.com`, placeholder binding ids), so there is no production Worker to
-reach; the command belongs in an install, run against that install's own
-resources.
+Worker `wrangler.jsonc` names. In **this** repository that file is the one-click
+template (all-zero ids, which the deploy preflight refuses), so there is no
+production Worker to reach; the command belongs in an install, run against that
+install's own resources.
+
+`npx wrangler triggers deploy` changes only the cron schedule, but it reads the
+**built** config (`dist/server/wrangler.json`), not `wrangler.jsonc`. Run
+`npm run build` after editing `triggers.crons`, or the command reports
+"Deployed triggers" while re-applying the schedule of the previous build.
+Workers Free allows five cron triggers per account, shared by every install on
+it; the hourly cron carries AutoLaris expiry, outbox drains and the alert
+evaluation, so an install without one has none of those.
 
 ---
 
@@ -49,11 +57,11 @@ npm run check     # astro check && tsc --noEmit
 npm run build     # astro build
 ```
 
-Current verified working-tree baseline: **419 tests passing**, `tsc` clean, `astro check` 353 files, 0 errors / 0 warnings / 0 hints, and the Cloudflare server build complete. The pushed branch does not yet contain the A17 working tree and has no hosted CI result because this workflow runs only for `main`, pull requests, or manual dispatch.
+Current verified working-tree baseline: **754 tests passing**, `tsc` clean, `astro check` 0 errors / 0 warnings / 0 hints, and the Cloudflare server build complete (2026-09-25, uncommitted audit working tree on `6e30950`). AGENTS.md §4 carries the same number and is the one to keep current.
 
 ### Current production-readiness assessment
 
-Commit `09812c7` plus the verified A17 working tree is a **release candidate**,
+The 2026-09-25 working tree on `6e30950` is a **release candidate**,
 not an unconditional full-production release. The local automated and browser gates are green, but the following
 release evidence is still missing:
 
@@ -68,7 +76,8 @@ COD and manual seller-bank transfer can be considered for a controlled canary
 after install-specific configuration, backup/rollback preparation, and provider
 smoke checks. AutoLaris QRIS/VA no longer depends on the retired webhook path:
 since 1.4.x the hourly cron calls the provider's Advice endpoint for every
-pending transaction and marks one paid **only** when the response carries
+pending transaction — and each that expired in the last 24 hours, newest first,
+up to 25 a run (`PENDING_AUTOLARIS_INQUIRY_SQL`) — and marks one paid **only** when the response carries
 `rc: "00"`; `02` stays pending and every other code is unproven and moves
 nothing. The owner/admin manual reconciliation from `/admin/payments` remains
 as the audited fallback, and both paths write `paid_at`. Automatic marking is
@@ -110,6 +119,29 @@ Migration-specific notes:
   the first deploy that carries it. Nothing else changes for the buyer.
 - **`0050` (1.3.3, ADR-022)** adds `autolaris_callbacks`. Additive; no data
   moves. The provider's `callback_url` starts answering 200 instead of 410.
+- **`0051`–`0055`** (ADR-024 renumbering): product catalogue fields
+  (`brand`/`description`), the Meta order-context snapshot, checkout
+  fingerprint deduplication, the per-operator notification floor, and typed
+  landing sections (a table rebuild inside one migration). All additive for
+  data; `0055` replaces `landing_sections` in place.
+- **`0056`** disables the `Ninja` courier rule (Mengantar retired it from its
+  public API on 2026-09-01). The row is disabled, not deleted, so an operator's
+  COD flag and exclusions survive.
+- **`0057`** re-keys `capi_event_outbox` uniqueness from `event_id` to
+  `(event_name, event_id)`, matching how Meta itself deduplicates. It closes a
+  path where a funnel event posted with an order number's `event_id` made the
+  real Purchase dedupe away. Drops one index and creates one; no data moves.
+- **`0058`** adds `install_secrets`, where a Worker with no `AUTH_SECRET`
+  secret keeps the session key it generates for itself (ADR-026). Additive;
+  an install that sets `AUTH_SECRET` never writes a row.
+- **`0059`** adds an `SPX` courier rule to every store that already has a
+  courier policy (Mengantar quotes it as `spx`). Additive.
+- **`0060`** adds `stores.thanks_whatsapp_redirect`, the switch for handing a
+  COD buyer from `/thanks` to WhatsApp support. Default `0`: no behaviour
+  changes until an operator turns it on.
+- **`0061`** deletes the `Ninja` courier rule `0056` disabled. Only
+  `courier_rules` rows; no install had an order with Ninja, and one that did
+  would keep its `courier_code`.
 
 ---
 
@@ -121,13 +153,15 @@ Two registries, currently in step:
 | --- | --- | --- |
 | `src/lib/version.ts` | `version` | `1.4.0` |
 | `src/lib/version.ts` | `releaseTag` | `2026.08-stock-unlimited` |
-| `src/lib/version.ts` | `schemaVersion` | `51` |
+| `src/lib/version.ts` | `schemaVersion` | `62` |
 | `package.json` | `version` | `1.4.0` |
 
 `src/lib/version.ts` is what the admin sidebar renders and is the value users
 see. Keep it and `package.json` in step when bumping.
 
-`schemaVersion` counts migration files, and the tree holds 51 (`0000`–`0050`).
+`schemaVersion` counts migration files, and the tree holds 59 (`0000`–`0058`).
+`releaseTag` still names the 1.4.0 release; the next release bump must move it,
+because the tree now carries `0056`–`0058` that 1.4.0 did not.
 `schema-version.test.ts` fails CI on drift; middleware enforces the same chain at
 runtime; `operational-health.ts` and the dashboard expose applied version.
 
@@ -231,7 +265,7 @@ store that has none, so a build carrying the product's placeholders no longer
 produces a bundle stuck calling itself "Your Store" — but keep them accurate
 anyway, because they are what an install shows before the wizard runs.
 
-**Confirm the target before deploying.** `npx wrangler deploy --dry-run` prints the resolved Worker name, bindings and routes. If it prints `adsbookcms-your-store`, or a database id of all zeros, the merge overwrote the install's configuration — stop and restore it.
+**Confirm the target before deploying.** `npx wrangler deploy --dry-run` prints the resolved Worker name, bindings and routes. If it prints a database or KV id of all zeros, the merge overwrote the install's configuration — stop and restore it. (Since ADR-026 the template's *names* — `adsbookcms`, `adsbookcms-d1` — are real defaults a one-click install may keep, so only the ids are a signal.)
 
 **Both checks are mechanical.** `npm run deploy` and `npm run cf:deploy`
 run `preflight:deploy` first (npm's `pre*` hook), and it refuses twice over:
