@@ -6353,3 +6353,22 @@ so `/api/meta-event` refuses the browser's PageView/ViewContent as a foreign
 `event_source_url` (400). In production the origins agree. The product has no
 `routes` and does not reproduce it; the fix, if wanted, belongs in the
 product's `scripts/dev-local.ts`.
+
+**Deployed** 2026-10-05 as Worker version `4356c1af-75f5-4f33-9f5f-750533903f86`
+(previous `d0df31ce-c27c-4cb9-b74d-955c2715dfb0`, the rollback target). The live
+D1 reached `0061` on first request; couriers are now JNE, SiCepat, J&T, SAP,
+Anteraja, Lion, IDexpress, Paxel, Pos and SPX. The preflight's `git fetch`
+stalled on SSH once and was released by ending that connection; it then passed.
+Browser check on `beranda.click` at 390 px and 1440 px: no console errors, no
+failed requests, no broken images, no horizontal overflow — which also confirms
+the `/api/meta-event` 400 above is local-only.
+
+**Catalogue: Kojien added** (product `31530`, `KOJIEN500ML` Rp130.000 / 500 g,
+`KOJIEN1LITER` Rp215.000 / 1000 g), the one product the sibling taniniaga store
+carries that this store did not. Only catalogue facts and the manufacturer's
+packshot were taken — no copy, landing pages, brand or contact details, since
+the two stores belong to different owners (AGENTS.md §3, Content). The live row
+mirrors what `POST /api/admin/products` writes, image at the key
+`/api/admin/upload-r2` would have produced; price matches the shared price list,
+and the 500 ml weight follows this store's convention rather than the 1000 g
+recorded on the sibling. It is in the catalogue, both feeds and the sitemap.
