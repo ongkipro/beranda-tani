@@ -6511,3 +6511,10 @@ afterwards, and nothing it covers changed. `astro check` 0/0/0. Local store:
 15 pages at 390 and 1440 px with no console errors, failed requests, broken
 images or overflow; the drawer opens, closes on Escape and returns focus; the
 500 ml variant is preselected on product and landing forms.
+
+Follow-up the same day: `RatingStars.astro` joins the install-owned theme
+files (stars in the source's yellow, `#FFCE3D`), and the four products'
+`created_at` were rewritten so the catalogue's `created_at DESC` order matches
+the source — Aussie, Bensu, Saratoga, Kojien. The column is used for ordering
+only; Kojien's real creation date (2026-10-05) is recorded here because the
+row no longer carries it.
