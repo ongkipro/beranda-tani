@@ -1,6 +1,10 @@
 ---
-import { cn } from '../../../lib/cn';
-import { badgeVariants, introSectionClass, textVariants } from '../../../lib/ui-variants';
+/**
+ * Page intro (install theme: Petani Sejahtera) — green badge, display-face
+ * title, soft description, as on petanisejahtera.com. Classes are written
+ * here rather than changed in ui-variants, whose product tests pin its
+ * palette.
+ */
 import Breadcrumb from './Breadcrumb.astro';
 
 interface BreadcrumbItem {
@@ -16,18 +20,13 @@ interface Props {
 }
 
 const { badge, title, description, breadcrumbs = [] } = Astro.props;
-const rail = 'max-w-[480px]';
 ---
 
 {breadcrumbs.length > 0 && <Breadcrumb items={breadcrumbs} />}
-<section class={introSectionClass}>
-  <div class={cn('mx-auto', rail)}>
-    <span class={badgeVariants()}>{badge}</span>
-    <h1
-      class={cn('mt-3 text-[28px] font-bold leading-[1.18] tracking-[-0.02em]', textVariants({ tone: 'heading' }))}
-    >
-      {title}
-    </h1>
-    <p class={cn('mt-3 max-w-[32rem] text-sm leading-6', textVariants({ tone: 'soft' }))}>{description}</p>
+<section class="border-b border-[#E5E7EB] bg-white px-5 py-7">
+  <div class="mx-auto max-w-[480px]">
+    <span class="inline-flex items-center rounded-md bg-[#EDF6EA] px-3 py-1 text-[11px] font-semibold leading-none text-[#1B5E20]">{badge}</span>
+    <h1 class="ps-display mt-3 text-[28px] font-extrabold leading-[1.18] tracking-[-0.02em] text-[#263238]">{title}</h1>
+    <p class="mt-3 max-w-[32rem] text-[14px] leading-6 text-[#616161]">{description}</p>
   </div>
 </section>

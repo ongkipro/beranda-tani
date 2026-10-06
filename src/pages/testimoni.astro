@@ -1,38 +1,465 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageIntro from '../components/storefront/shared/PageIntro.astro';
+import Icon from '../components/storefront/shared/Icon.astro';
+import { getStorefrontProducts } from '../lib/catalog';
+
+// Ported from the petanisejahtera source (install theme). The stories and chat
+// screenshots are the owner's genuine customer evidence (BUILD-LOG 2026-10-06);
+// the product cards read the live catalogue.
+const products = await getStorefrontProducts(Astro.locals);
+
+const featuredProducts = products.filter((product) => ['aussie', 'bensu', 'saratoga'].includes(product.slug));
+const productMap = Object.fromEntries(featuredProducts.map((product) => [product.slug, product]));
+
+const testimonialsByProduct = [
+  {
+    slug: 'bensu',
+    label: 'Bensu Jagung',
+    color: 'blue',
+    title: 'Testimoni Petani Jagung yang Fokus Pemulihan Tanaman',
+    description:
+      'Diambil dari landing page Bensu Jagung: fokus pada jagung kuning, kerdil, daun menggulung, dan pertumbuhan yang tertahan di fase kritis.',
+    items: [
+      {
+        name: 'Pak Suparman',
+        location: 'Sragen, Jawa Tengah',
+        context: 'Lahan Kerdil',
+        image: '/images/landing/bensu-jagung/panen.webp',
+        story:
+          'Sempat pasrah lihat jagung <strong class="font-bold text-slate-950">kerdil dan kuning</strong> padahal pupuk dasar sudah masuk. Setelah disemprot Bensu, <span class="font-semibold text-[#0F2A5F] underline decoration-[#DBEAFE] decoration-2 underline-offset-4">daun kembali terlihat lebih segar</span> dan batang mulai lebih kokoh.',
+      },
+      {
+        name: 'Wahyu M',
+        location: 'Kediri, Jawa Timur',
+        context: 'Daun Menggulung',
+        image: '/images/landing/bensu-jagung/pemulihan-realistis.webp',
+        story:
+          'Area yang kuning <strong class="font-bold text-slate-950">pelan-pelan pulih</strong> dan warna daunnya mulai lebih rata. Pengiriman cepat dan <span class="font-semibold text-[#0F2A5F] underline decoration-[#DBEAFE] decoration-2 underline-offset-4">proses COD juga bikin lebih tenang</span>.',
+      },
+      {
+        name: 'H. Anwar',
+        location: 'Lampung Tengah',
+        context: 'Stres Cuaca Panas',
+        image: '/images/landing/bensu-jagung/demo-penggunaan.webp',
+        story:
+          'Cocok untuk mendampingi pupuk dasar. Tanaman yang tadinya <strong class="font-bold text-slate-950">stres kena panas</strong> sekarang <span class="font-semibold text-[#0F2A5F] underline decoration-[#DBEAFE] decoration-2 underline-offset-4">tunasnya mulai jalan lagi</span> setelah diarahkan pakainya.',
+      },
+    ],
+    proofs: [1, 2, 3, 4].map((n) => ({
+      image: `/images/landing/bensu-jagung/testimoni-${n}.webp`,
+      alt: `Bukti chat Bensu Jagung ${n}`,
+    })),
+  },
+  {
+    slug: 'aussie',
+    label: 'Aussie Sawit',
+    color: 'red',
+    title: 'Testimoni Petani Sawit yang Menangani Blok Lemah & Rawan Ganoderma',
+    description:
+      'Diambil dari landing page Aussie Sawit Ganoderma: fokus pada sawit kuning, busuk pucuk, busuk akar, dan blok yang mulai menunjukkan tanda rawan jamur.',
+    items: [
+      {
+        name: 'Pak Herman',
+        location: 'Kampar, Riau',
+        context: 'Sawit Kuning',
+        image: '/images/landing/aussie/testi1.webp',
+        story:
+          'Saya pakai di blok yang mulai <strong class="font-bold text-slate-950">kuning dan pelepahnya turun</strong>. Arahan admin jelas, jadi <span class="font-semibold text-[#8B1E1E] underline decoration-[#FDE2D2] decoration-2 underline-offset-4">perawatan tidak asal coba</span> dan lebih terarah.',
+      },
+      {
+        name: 'Rahmat S',
+        location: 'Pelalawan, Riau',
+        context: 'Area Rawan Jamur',
+        image: '/images/landing/aussie/sawitkuning.webp',
+        story:
+          'Beberapa pohon dekat parit <strong class="font-bold text-slate-950">mulai lemah</strong>. Aussie saya jadikan perawatan pendamping supaya lebih tenang karena <span class="font-semibold text-[#8B1E1E] underline decoration-[#FDE2D2] decoration-2 underline-offset-4">ada panduan pemakaian</span>.',
+      },
+      {
+        name: 'M. Arif',
+        location: 'Labuhanbatu, Sumatera Utara',
+        context: 'Recovery Pohon Lemah',
+        image: '/images/landing/aussie/diagramakar.webp',
+        story:
+          'Saya fokuskan ke pohon yang lemah. Setelah perawatan rutin, <span class="font-semibold text-[#8B1E1E] underline decoration-[#FDE2D2] decoration-2 underline-offset-4">daun baru tampak lebih baik</span> dan blok lebih mudah dipantau.',
+      },
+    ],
+    proofs: [1, 2, 3, 4].map((n) => ({
+      image: `/images/landing/aussie/wa${n}.webp`,
+      alt: `Bukti chat Aussie ${n}`,
+    })),
+  },
+  {
+    slug: 'saratoga',
+    label: 'Saratoga Padi',
+    color: 'green',
+    title: 'Testimoni Petani Padi yang Fokus di Fase Pengisian Bulir',
+    description:
+      'Diambil dari landing page Saratoga Padi: fokus pada fase bunting, keluar malai, pembungaan, dan pengisian bulir agar hasil panen tidak turun karena bulir tidak terisi optimal.',
+    items: [
+      {
+        name: 'Pak Supardi',
+        location: 'Subang, Jawa Barat',
+        context: 'Bulir Kopong di Pangkal',
+        image: '/images/landing/saratoga-padi/testimoni-subang.webp',
+        story:
+          'Musim ini saya ikuti arahan admin untuk semprot Saratoga waktu padi mulai bunting dan keluar malai. <span class="font-semibold text-[#14532D] underline decoration-emerald-200 decoration-2 underline-offset-4">Pengisian bulir terasa lebih merata</span> sampai ke bawah pelepah.',
+      },
+      {
+        name: 'Haji Budi Santoso',
+        location: 'Sragen, Jawa Tengah',
+        context: 'Hasil Timbang Susut',
+        image: '/images/landing/saratoga-padi/testimoni-sragen.webp',
+        story:
+          'Biasanya padi terlihat bagus, tapi <strong class="font-bold text-slate-950">bobotnya kurang mantap</strong>. Setelah fokus timing aplikasi di fase keluar malai sampai pengisian bulir, <span class="font-semibold text-[#14532D] underline decoration-emerald-200 decoration-2 underline-offset-4">hasil timbang naik terasa</span>.',
+      },
+      {
+        name: 'Ibu Sumarni',
+        location: 'Sidrap, Sulawesi Selatan',
+        context: 'Pengisian Tidak Serempak',
+        image: '/images/landing/saratoga-padi/testimoni-sidrap.webp',
+        story:
+          'Cuaca bikin <strong class="font-bold text-slate-950">pengisian bulir tidak merata</strong>. Setelah dipandu aplikasi Saratoga, <span class="font-semibold text-[#14532D] underline decoration-emerald-200 decoration-2 underline-offset-4">malai keluar lebih serempak</span> dan kuning gabah lebih rata.',
+      },
+    ],
+    proofs: [1, 2, 3, 4, 5, 6].map((n) => ({
+      image: `/images/landing/saratoga/wa${n}.webp`,
+      alt: `Bukti chat Saratoga ${n}`,
+    })),
+  },
+  {
+    slug: 'saratoga',
+    label: 'Saratoga Anggrek',
+    color: 'violet',
+    title: 'Testimoni Hobiis Anggrek yang Menggunakan Saratoga',
+    description:
+      'Diambil dari landing page Saratoga Anggrek: fokus pada merangsang tangkai bunga, mekar serempak, mencegah kuncup rontok (bud blast), dan mencerahkan warna bunga.',
+    items: [
+      {
+        name: 'Ibu Ratna',
+        location: 'Bogor, Jawa Barat',
+        context: 'Anggrek Bulan',
+        image: '/images/landing/saratoga-anggrek/testimoni-bogor.webp',
+        story:
+          'Anggrek bulan saya sehat, daunnya tebal, tapi <strong class="font-bold text-slate-950">dua tahun tidak pernah keluar tangkai bunga</strong>. Setelah semprot Saratoga rutin di pagi hari, <span class="font-semibold text-[#6D28D9] underline decoration-violet-200 decoration-2 underline-offset-4">muncul tonjolan tangkai bunga baru</span> dari ketiak daun dan sekarang berbunga penuh.',
+      },
+      {
+        name: 'Pak Herman',
+        location: 'Malang, Jawa Timur',
+        context: 'Dendrobium',
+        image: '/images/landing/saratoga-anggrek/testimoni-malang.webp',
+        story:
+          'Dendrobium saya sering keluar tangkai, tapi <strong class="font-bold text-slate-950">kuncupnya rontok sebelum sempat mekar</strong>. Setelah rutin spray Saratoga, <span class="font-semibold text-[#6D28D9] underline decoration-violet-200 decoration-2 underline-offset-4">kuncup jadi kuat dan tidak gugur</span>, mekarnya serempak satu tangkai penuh.',
+      },
+      {
+        name: 'Ibu Wayan',
+        location: 'Denpasar, Bali',
+        context: 'Vanda',
+        image: '/images/landing/saratoga-anggrek/testimoni-denpasar.webp',
+        story:
+          'Vanda saya jarang berbunga dan <strong class="font-bold text-slate-950">warnanya pucat kurang menarik</strong>. Setelah dipandu aplikasi Saratoga, anggrek jadi <span class="font-semibold text-[#6D28D9] underline decoration-violet-200 decoration-2 underline-offset-4">lebih rajin berbunga dan warnanya pekat cerah</span> serta kuntumnya lebih tahan lama.',
+      },
+    ],
+    proofs: [1, 2, 3, 4].map((n) => ({
+      image: `/images/landing/saratoga-anggrek/wa${n}.webp`,
+      alt: `Bukti chat Saratoga Anggrek ${n}`,
+    })),
+  },
+];
+
+const sectionTone = {
+  blue: {
+    badge: 'bg-[#DBEAFE] text-[#0F2A5F]',
+    chip: 'bg-[#EFF6FF] text-[#0F2A5F]',
+    divider: 'border-[#0F2A5F]/12',
+    quote: 'border-[#0F2A5F]/22',
+  },
+  red: {
+    badge: 'bg-[#FDE2D2] text-[#8B1E1E]',
+    chip: 'bg-[#FFF6F2] text-[#8B1E1E]',
+    divider: 'border-[#8B1E1E]/12',
+    quote: 'border-[#8B1E1E]/22',
+  },
+  green: {
+    badge: 'bg-emerald-100 text-[#14532D]',
+    chip: 'bg-emerald-50 text-[#14532D]',
+    divider: 'border-[#14532D]/12',
+    quote: 'border-[#14532D]/22',
+  },
+  violet: {
+    badge: 'bg-violet-100 text-[#6D28D9]',
+    chip: 'bg-violet-50 text-[#6D28D9]',
+    divider: 'border-[#6D28D9]/12',
+    quote: 'border-[#6D28D9]/22',
+  },
+} as const;
 ---
 
 <BaseLayout
-  shell="storefront"
-  title={`Ulasan Pembeli - ${Astro.locals.tenant.name}`}
-  description={`Halaman ulasan pembeli saat ini belum tersedia.`}
-  noindex={true}
+  title="Testimoni Petani - Petani Sejahtera"
+  description="Kumpulan testimoni petani dari landing page Bensu, Aussie, dan Saratoga lengkap dengan foto lapangan, bukti chat, dan akses cepat ke produk terkait."
   breadcrumbs={[
     { name: 'Beranda', url: '/' },
-    { name: 'Ulasan Pembeli', url: '/testimoni' },
+    { name: 'Testimoni Petani', url: '/testimoni' },
   ]}
 >
-  <main id="konten-utama" class="min-h-screen bg-white text-[#111111]">
-    <PageIntro
-      badge="Informasi"
-      title="Ulasan Belum Tersedia"
-      description="Sistem ulasan pembeli saat ini sedang dalam pengembangan dan belum dapat ditampilkan."
-      breadcrumbs={[{ label: 'Beranda', href: '/' }, { label: 'Ulasan' }]}
-    />
-
-    <div class="mx-auto max-w-[480px] px-5 py-12 text-center">
-      <div class="rounded-xl border border-[#E5E5E5] bg-[#F5F5F5] p-8">
-        <h2 class="text-[15px] font-semibold text-[#111111]">Belum ada ulasan</h2>
-        <p class="mt-2 text-[13px] text-[#555555]">
-          Kami sedang mempersiapkan sistem baru untuk menampilkan ulasan pembeli yang terverifikasi.
+  <main id="konten-utama" class="min-h-screen bg-white text-slate-800">
+    <section class="border-b border-slate-100 bg-white">
+      <div class="mx-auto max-w-[480px] px-5 py-10 text-center">
+        <span
+          class="inline-flex rounded-md bg-[#EDF6EA] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1B5E20]"
+        >
+          Testimoni Petani
+        </span>
+        <h1 class="mt-4 text-[32px] font-extrabold leading-[1.12] tracking-tight text-slate-950">
+          Bukti Lapangan dari <span class="text-[#1B5E20]">Aussie, Bensu, dan Saratoga</span>
+        </h1>
+        <p class="mt-4 text-[15px] leading-relaxed text-slate-600">
+          Halaman ini merangkum testimoni yang diambil dan dirapikan dari landing page utama Petani Sejahtera, agar
+          pengunjung bisa melihat cerita petani, dokumentasi visual, dan bukti chat dalam satu tempat.
         </p>
-        <div class="mt-6">
-          <a href="/" class="inline-flex w-full items-center justify-center rounded-md bg-[#111111] px-6 py-2.5 text-[12px] font-semibold uppercase tracking-widest text-white transition-colors hover:bg-[#333333] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#111111] focus-visible:ring-offset-2">
-            Kembali ke Beranda
-          </a>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-[480px] px-5 py-8">
+      <div class="grid grid-cols-3 gap-4 border-y border-slate-200 py-5 text-center">
+        <div>
+          <p class="text-[22px] font-extrabold text-slate-950">4</p>
+          <p class="mt-1 text-[12px] leading-5 text-slate-500">Landing page live</p>
+        </div>
+        <div class="border-x border-slate-200 px-2">
+          <p class="text-[22px] font-extrabold text-slate-950">12</p>
+          <p class="mt-1 text-[12px] leading-5 text-slate-500">Cerita petani</p>
+        </div>
+        <div>
+          <p class="text-[22px] font-extrabold text-slate-950">16</p>
+          <p class="mt-1 text-[12px] leading-5 text-slate-500">Bukti chat</p>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section class="mx-auto max-w-[480px] px-5 pb-10">
+      <div class="space-y-12">
+        {
+          testimonialsByProduct.map((group, index) => {
+            const tone = sectionTone[group.color as keyof typeof sectionTone];
+            return (
+              <div class="testimonial-group-wrapper hidden" data-index={index}>
+                <section class={`border-t pt-8 ${tone.divider}`}>
+                  <div class="mb-6">
+                    <span
+                      class={`inline-flex rounded-md px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${tone.badge}`}
+                    >
+                      {group.label}
+                    </span>
+                    <h2 class="mt-4 text-[27px] font-bold leading-[1.16] tracking-tight text-slate-950">
+                      {group.title}
+                    </h2>
+                    <p class="mt-3 text-[15px] leading-relaxed text-slate-600">{group.description}</p>
+                  </div>
+
+                  <div class="space-y-10">
+                    {group.items.map((item) => (
+                      <article class="space-y-4 border-b border-slate-100 pb-8 last:border-b-0 last:pb-0">
+                        <div class="overflow-hidden rounded-[14px] bg-slate-50">
+                          <img
+                            src={item.image}
+                            alt={`Foto testimoni ${item.name}`}
+                            class="aspect-[4/3] w-full object-cover"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </div>
+
+                        <div class="flex items-start justify-between gap-3">
+                          <div>
+                            <div class="flex items-center gap-1.5">
+                              <h3 class="text-[17px] font-bold text-slate-950">{item.name}</h3>
+                              <span class="flex h-4 w-4 items-center justify-center text-blue-600">
+                                <Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" />
+                              </span>
+                            </div>
+                            <p class="mt-1 text-[12px] text-slate-500">{item.location}</p>
+                          </div>
+                          <span
+                            class={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] ${tone.chip}`}
+                          >
+                            {item.context}
+                          </span>
+                        </div>
+
+                        <div class="flex items-center gap-1 text-[#FBBF24]" aria-label="5 dari 5 bintang" role="img">
+                          {Array.from({ length: 5 }).map(() => (
+                            <svg
+                              viewBox="0 0 20 20"
+                              class="h-3.5 w-3.5 text-[#FBBF24]"
+                              aria-hidden="true"
+                              fill="currentColor"
+                            >
+                              <path d="M10 1.45l2.58 5.23 5.77.84-4.18 4.07.99 5.75L10 14.62 4.84 17.34l.99-5.75L1.65 7.52l5.77-.84L10 1.45Z" />
+                            </svg>
+                          ))}
+                        </div>
+
+                        <p
+                          class={`border-l-2 pl-4 text-[15px] leading-relaxed text-slate-700 ${tone.quote}`}
+                          set:html={`<span class="text-slate-400">&ldquo;</span>${item.story}<span class="text-slate-400">&rdquo;</span>`}
+                        />
+
+                        {productMap[group.slug] && (
+                          <section class="mt-6 border-t border-slate-100 pt-5">
+                            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1B5E20]">
+                              Rekomendasi Solusi
+                            </span>
+                            <a
+                              href={`/produk/${productMap[group.slug].slug}`}
+                              class="mt-4 block transition-opacity hover:opacity-95"
+                              title={`Lihat produk ${productMap[group.slug].productName}`}
+                            >
+                              <div class="grid grid-cols-[88px_1fr] items-start gap-4">
+                                <div class="aspect-square w-full overflow-hidden rounded-[12px] border border-slate-100 bg-slate-50">
+                                  <img
+                                    src={productMap[group.slug].image}
+                                    alt={`Kemasan produk ${productMap[group.slug].productName}`}
+                                    class="h-full w-full object-cover"
+                                    loading="lazy"
+                                    decoding="async"
+                                  />
+                                </div>
+                                <div class="space-y-1 min-w-0">
+                                  <h4 class="text-[18px] font-bold leading-tight text-slate-900">
+                                    {productMap[group.slug].productName}
+                                  </h4>
+                                  <p class="text-[12.5px] font-bold uppercase tracking-wider text-[#1B5E20]">
+                                    {productMap[group.slug].category}
+                                  </p>
+                                  <div class="flex items-baseline gap-2 pt-0.5">
+                                    <span class="text-[18px] font-bold leading-none text-[#1B5E20]">
+                                      {new Intl.NumberFormat('id-ID', {
+                                        style: 'currency',
+                                        currency: 'IDR',
+                                        maximumFractionDigits: 0,
+                                      })
+                                        .format(productMap[group.slug].price)
+                                        .replace(',00', '')}
+                                    </span>
+                                    <span class="text-[12.5px] leading-none text-slate-400 line-through">
+                                      {new Intl.NumberFormat('id-ID', {
+                                        style: 'currency',
+                                        currency: 'IDR',
+                                        maximumFractionDigits: 0,
+                                      })
+                                        .format(productMap[group.slug].comparePrice ?? productMap[group.slug].price)
+                                        .replace(',00', '')}
+                                    </span>
+                                  </div>
+                                  <p class="text-[12px] font-medium text-slate-500">
+                                    Varian:{' '}
+                                    <span class="font-semibold text-slate-700">
+                                      {productMap[group.slug].variants
+                                        .map((variant) => variant.label.replace(/^.*? - /, ''))
+                                        .join(' / ')}
+                                    </span>
+                                  </p>
+                                  <p class="pt-1 text-[12px] font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4">
+                                    Lihat detail produk
+                                  </p>
+                                </div>
+                              </div>
+                            </a>
+                          </section>
+                        )}
+                      </article>
+                    ))}
+                  </div>
+
+                  <div class="mt-8">
+                    <div class="mb-4 flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                      <div>
+                        <h3 class="text-[17px] font-bold text-slate-950">Bukti Chat & Konsultasi</h3>
+                        <p class="mt-1 text-[13px] leading-relaxed text-slate-500">
+                          Dokumentasi percakapan dan proof pemesanan dari flow {group.label}.
+                        </p>
+                      </div>
+                      <span
+                        class={`hidden rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] sm:inline-flex ${tone.chip}`}
+                      >
+                        WhatsApp Proof
+                      </span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      {group.proofs.map((proof) => (
+                        <img
+                          src={proof.image}
+                          alt={proof.alt}
+                          class="aspect-[9/16] w-full rounded-[12px] border border-slate-200 object-cover shadow-sm"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              </div>
+            );
+          })
+        }
+      </div>
+
+      <div id="load-more-testimonials-container" class="hidden text-center mt-10">
+        <button
+          id="load-more-testimonials-btn"
+          class="inline-flex justify-center items-center gap-2 px-6 py-3 border border-[#E5E7EB] bg-[#FAFAFA] hover:bg-[#EDF6EA] text-[#1B5E20] hover:text-[#1B5E20] font-semibold rounded-lg text-sm shadow-sm transition-all duration-200 cursor-pointer active:scale-95 w-full"
+        >
+          <span>Tampilkan Lebih Banyak Testimoni</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-4 w-4"><path d="m6 9 6 6 6-6"></path></svg
+          >
+        </button>
+      </div>
+    </section>
+
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const wrappers = document.querySelectorAll('.testimonial-group-wrapper');
+        const loadMoreContainer = document.getElementById('load-more-testimonials-container');
+        const loadMoreBtn = document.getElementById('load-more-testimonials-btn');
+
+        let visibleCount = 2; // Show 2 groups initially (Bensu, Aussie)
+
+        function updateVisibility() {
+          let hasMore = false;
+          wrappers.forEach((el, index) => {
+            if (index < visibleCount) {
+              el.classList.remove('hidden');
+            } else {
+              el.classList.add('hidden');
+              hasMore = true;
+            }
+          });
+
+          if (hasMore) {
+            loadMoreContainer?.classList.remove('hidden');
+          } else {
+            loadMoreContainer?.classList.add('hidden');
+          }
+        }
+
+        loadMoreBtn?.addEventListener('click', () => {
+          visibleCount += 2;
+          updateVisibility();
+        });
+
+        updateVisibility();
+      });
+    </script>
   </main>
 </BaseLayout>

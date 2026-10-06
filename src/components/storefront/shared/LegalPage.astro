@@ -1,6 +1,10 @@
 ---
-import { cn } from '../../../lib/cn';
-import { listItemVariants, textVariants } from '../../../lib/ui-variants';
+/**
+ * Policy and information page (install theme: Petani Sejahtera). Same
+ * structure as the product's; the colours are written here because the
+ * product's ui-variants tests pin its palette. A page may put content of its
+ * own ahead of the sections through the default slot (the contact block).
+ */
 import PageIntro from './PageIntro.astro';
 
 interface LegalSection {
@@ -24,21 +28,18 @@ interface Props {
 const { badge, title, description, sections, breadcrumbs = [] } = Astro.props;
 ---
 
-<main id="konten-utama" class="min-h-screen bg-[#FAFAFA] text-[#111111]">
+<main id="konten-utama" class="min-h-screen bg-white text-[#263238]">
   <PageIntro badge={badge} title={title} description={description} breadcrumbs={breadcrumbs} />
 
   <section class="mx-auto max-w-[480px] px-5 py-8">
+    <slot />
     <div class="space-y-6">
       {
         sections.map((section) => (
-          <article class={listItemVariants({ density: 'featured' })}>
-            <h2 class={cn('text-[18px] font-semibold tracking-[-0.01em]', textVariants({ tone: 'heading' }))}>
-              {section.title}
-            </h2>
-            <div class={cn('mt-3 space-y-4 text-[14px] leading-7', textVariants({ tone: 'body' }))}>
-              {section.paragraphs.map((paragraph) => (
-                <p>{paragraph}</p>
-              ))}
+          <article class="border-b border-[#E5E7EB] pb-6 last:border-b-0 last:pb-0">
+            <h2 class="text-[18px] font-semibold tracking-[-0.01em] text-[#263238]">{section.title}</h2>
+            <div class="mt-3 space-y-4 text-[14px] leading-7 text-[#4B5563]">
+              {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
             </div>
           </article>
         ))

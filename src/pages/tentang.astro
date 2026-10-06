@@ -1,38 +1,90 @@
 ---
 import PageIntro from '../components/storefront/shared/PageIntro.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/storefront/shared/Icon.astro';
+
+// The store's profile from the petanisejahtera source (install theme).
+const aboutProfile = {
+  title: 'Tentang Petani Sejahtera',
+  intro:
+    'Petani Sejahtera adalah platform media pertanian modern yang membantu petani Indonesia menemukan informasi produk, solusi lapangan, dan edukasi dengan bahasa yang praktis.',
+  story: [
+    'Kami membangun Petani Sejahtera sebagai ruang informasi yang bersih, mudah dibaca, dan dekat dengan kebutuhan petani di lapangan. Fokus kami bukan sekadar menampilkan produk, tetapi membantu pembaca memahami masalah tanaman, pilihan perawatan, dan langkah awal yang lebih tepat.',
+    'Konten kami disusun untuk petani sawit, jagung, cabai, padi, palawija, dan komoditas komersial lain yang membutuhkan informasi ringkas, dapat ditindaklanjuti, dan mudah dibagikan ke tim kebun atau keluarga petani.',
+    'Petani Sejahtera menggabungkan pendekatan media, komunitas, dan agritech: informasi yang rapi, alur pemesanan yang jelas, serta komunikasi resmi yang mudah dijangkau melalui kanal digital.',
+  ],
+  highlights: [
+    'Media pertanian modern, bukan toko pupuk tradisional',
+    'Bahasa edukasi yang sederhana, ringkas, dan mudah dipahami',
+    'Fokus pada masalah lapangan, gejala tanaman, dan langkah perawatan',
+    'Struktur informasi mobile-first agar mudah dibaca dari desa hingga kota',
+    'Kontak resmi dan alur pengiriman yang dibuat transparan untuk pengguna Indonesia',
+  ],
+};
 ---
 
 <BaseLayout
-  shell="storefront"
-  title={`Tentang ${Astro.locals.tenant.name}`}
-  description={`Profil dan informasi tentang ${Astro.locals.tenant.name}.`}
+  title="Tentang Petani Sejahtera - Media Pertanian Modern Indonesia"
+  description="Tentang Petani Sejahtera, platform media pertanian modern untuk edukasi produk, solusi lapangan, komunitas petani, dan informasi pertanian Indonesia."
   breadcrumbs={[
     { name: 'Beranda', url: '/' },
     { name: 'Tentang Kami', url: '/tentang' },
   ]}
 >
-  <main id="konten-utama" class="min-h-screen bg-[#FAFAFA] text-[#16191F]">
+  <main id="konten-utama" class="min-h-screen bg-[#FAFAFA] text-[#263238]">
     <PageIntro
       badge="Tentang Kami"
-      title={`Tentang ${Astro.locals.tenant.name}`}
-      description={Astro.locals.tenant.description}
+      title={aboutProfile.title}
+      description={aboutProfile.intro}
       breadcrumbs={[{ label: 'Beranda', href: '/' }, { label: 'Tentang Kami' }]}
     />
 
     <section class="mx-auto max-w-[480px] px-5 py-8">
-      <div class="border-b border-[#EAEDED] pb-6">
-        <p class="text-[11px] font-normal uppercase tracking-[0.12em] text-[#232F3E]">Profil Toko</p>
-        <h2 class="mt-2 text-[22px] font-semibold tracking-[-0.02em] text-[#16191F]">
-          Selamat datang di {Astro.locals.tenant.name}
+      <div class="border-b border-[#E5E7EB] pb-6">
+        <p class="text-[11px] font-medium uppercase tracking-[0.12em] text-[#2E7D32]">Profil platform</p>
+        <h2 class="mt-2 text-[22px] font-semibold tracking-[-0.02em] text-[#263238]">
+          Informasi pertanian yang lebih rapi untuk petani Indonesia
         </h2>
-        <div class="mt-4 space-y-4 text-[14px] leading-7 text-[#545B64]">
-          <p>
-            {Astro.locals.tenant.description}
-          </p>
-          <p>
-            Jelajahi katalog kami untuk menemukan produk yang Anda butuhkan.
-          </p>
+        <div class="mt-4 space-y-4 text-[14px] leading-7 text-[#616161]">
+          {aboutProfile.story.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+      </div>
+
+      <div class="border-b border-[#E5E7EB] py-6">
+        <p class="text-[11px] font-medium uppercase tracking-[0.12em] text-[#2E7D32]">Arah brand</p>
+        <div class="mt-4 grid grid-cols-2 gap-3 text-center">
+          <div class="border-r border-[#E5E7EB] pr-3">
+            <p class="text-[24px] font-semibold leading-none text-[#1B5E20]">40%</p>
+            <p class="mt-1 text-[11px] leading-4 text-[#616161]">Media edukasi</p>
+          </div>
+          <div class="pl-3">
+            <p class="text-[24px] font-semibold leading-none text-[#1B5E20]">30%</p>
+            <p class="mt-1 text-[11px] leading-4 text-[#616161]">Komunitas</p>
+          </div>
+          <div class="border-r border-[#E5E7EB] pr-3 pt-3">
+            <p class="text-[24px] font-semibold leading-none text-[#1B5E20]">20%</p>
+            <p class="mt-1 text-[11px] leading-4 text-[#616161]">Pertanian</p>
+          </div>
+          <div class="pl-3 pt-3">
+            <p class="text-[24px] font-semibold leading-none text-[#1B5E20]">10%</p>
+            <p class="mt-1 text-[11px] leading-4 text-[#616161]">Teknologi</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-6">
+        <h2 class="text-[20px] font-semibold tracking-[-0.02em] text-[#263238]">Yang Kami Utamakan</h2>
+        <div class="mt-4 divide-y divide-[#E5E7EB]">
+          {
+            aboutProfile.highlights.map((item) => (
+              <div class="grid grid-cols-[22px_1fr] gap-3 py-3 first:pt-0 last:pb-0">
+                <span class="mt-0.5 flex h-[22px] w-[22px] items-center justify-center rounded-full bg-[#EDF6EA] text-[#1B5E20]">
+                  <Icon name="lucide:check" class="h-3.5 w-3.5" aria-hidden="true" />
+                </span>
+                <p class="text-[14px] leading-6 text-[#616161]">{item}</p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>

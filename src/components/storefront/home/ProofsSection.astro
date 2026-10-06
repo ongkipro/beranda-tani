@@ -1,0 +1,81 @@
+---
+/**
+ * Petani Sejahtera field stories (install theme), ported from
+ * petanisejahtera.com's ProofsSection. Renders the published home content's
+ * `proofs` — stories the owner confirmed as genuine (BUILD-LOG 2026-10-06) —
+ * and nothing when there are none.
+ */
+import Icon from '../shared/Icon.astro';
+import RatingStars from '../shared/RatingStars.astro';
+
+interface Proof {
+  name: string;
+  location: string;
+  story: string;
+  image: string;
+}
+interface Heading {
+  eyebrow: string;
+  title: string;
+  description: string;
+}
+interface Props {
+  proofs: Proof[];
+  heading: Heading;
+}
+
+const { proofs, heading } = Astro.props;
+---
+
+{
+  proofs.length > 0 && (
+    <section id="bukti" class="bg-white px-5 py-10">
+      <div class="mb-5">
+        <span class="inline-flex rounded-md border border-[#D7E7D8] bg-[#EDF6EA] px-3 py-1 text-[11px] font-semibold text-[#1B5E20]">{heading.eyebrow}</span>
+        <h2 class="ps-display mt-3 text-[24px] font-extrabold tracking-[-0.02em] text-[#263238]">{heading.title}</h2>
+        <p class="mt-1 text-[14px] leading-6 text-[#616161]">{heading.description}</p>
+      </div>
+      <div class="space-y-4">
+        {proofs.map((proof, index) => (
+          <article class="relative overflow-hidden rounded-[22px] border border-[#E3EDE1] bg-gradient-to-br from-white via-white to-[#F7FBF5] p-4 shadow-[0_14px_34px_rgba(29,41,57,0.055)]">
+            <div class="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-[#EDF6EA] opacity-80" aria-hidden="true" />
+            <div class="relative flex items-start gap-3">
+              <div class="relative flex-shrink-0">
+                <img
+                  src={proof.image}
+                  alt={`Foto ${proof.name}, ${proof.location}`}
+                  width="56"
+                  height="56"
+                  class="h-14 w-14 rounded-2xl border border-white bg-[#FAFAFA] object-cover shadow-[0_8px_18px_rgba(15,23,42,0.12)]"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-[#1B5E20] text-white" aria-hidden="true">
+                  <Icon name="lucide:check" class="h-3 w-3" />
+                </span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <h3 class="truncate text-[14px] font-semibold leading-5 text-[#263238]">{proof.name}</h3>
+                    <p class="mt-0.5 text-[11px] leading-4 text-[#6B7280]">{proof.location}</p>
+                  </div>
+                  <span class="rounded-full bg-white/80 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#1B5E20] ring-1 ring-[#DCEBDD]">Review</span>
+                </div>
+                <div class="mt-2 flex items-center gap-2">
+                  <RatingStars starClass="h-3.5 w-3.5" />
+                  <span class="text-[11px] font-semibold text-[#616161]">Terverifikasi</span>
+                </div>
+              </div>
+            </div>
+            <div class="relative mt-4 rounded-[18px] bg-white px-4 py-3 ring-1 ring-[#E5E7EB]">
+              <span class={`absolute top-4 h-3 w-3 rotate-45 border-l border-t border-[#E5E7EB] bg-white ${index % 2 === 0 ? '-left-1.5' : '-right-1.5'}`} aria-hidden="true" />
+              <Icon name="lucide:quote" class="mb-2 h-4 w-4 text-[#9DBA9A]" />
+              <p class="text-[13px] leading-6 text-[#4B5563]">{proof.story}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}

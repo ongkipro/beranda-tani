@@ -2,6 +2,7 @@
 import HeroSection from '../home/HeroSection.astro';
 import ProductsSection from '../home/ProductsSection.astro';
 import LandingPagesSection from '../home/LandingPagesSection.astro';
+import ProofsSection from '../home/ProofsSection.astro';
 import type { TenantHomeContent } from '../../../lib/tenant-content';
 
 interface ProductCard {
@@ -41,7 +42,7 @@ const { content, products, heroSlides, sections } = Astro.props;
 
 <main
   id="konten-utama"
-  class="relative min-h-screen overflow-x-hidden bg-white font-sans text-[#111111] antialiased"
+  class="relative min-h-screen overflow-x-hidden bg-white font-sans text-[#263238] antialiased"
 >
   <div
     id="home"
@@ -50,6 +51,8 @@ const { content, products, heroSlides, sections } = Astro.props;
     {sections.hero && <HeroSection slides={heroSlides} highlights={content.heroHighlights} content={content.hero} />}
     {sections.catalog && <ProductsSection products={products} heading={content.catalog} />}
     {sections.landingPages !== false && <LandingPagesSection pages={content.solutions} heading={content.solutionsHeading} />}
+    {/* Install theme (Petani Sejahtera): the field stories follow the solutions, as on petanisejahtera.com. */}
+    <ProofsSection proofs={content.proofs} heading={content.proofsHeading} />
   </div>
 </main>
 

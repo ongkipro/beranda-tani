@@ -1,190 +1,79 @@
 ---
-// One card for the whole storefront. The home grid grew its own with a
-// rating, a sold count and a CTA while /produk had a cleaner one; two cards
-// meant two answers to the same question. The wrapper below keeps the search
-// hooks the filter script reads - the card has no business knowing them.
-import ProductListItem from '../shared/ProductListItem.astro';
+/**
+ * Petani Sejahtera product grid (install theme), ported from
+ * petanisejahtera.com: photo with its sizes as glass chips, the product's
+ * positioning line in green, name, a short description and a link. Price
+ * lives on the product page, as in the source. The product's search and
+ * load-more are left out: the source has neither and this catalogue is small.
+ */
 import Icon from '../shared/Icon.astro';
 
 interface Product {
   slug: string;
   name: string;
   category: string;
+  tag?: string;
   description: string;
   href: string;
   image: string;
-  price: number;
-  comparePrice?: number;
-  ratingValue?: number;
-  reviewCount?: number;
-  soldCount?: number;
   variants?: Array<{ label: string; price: number }>;
 }
-
 interface Heading {
   eyebrow: string;
   title: string;
   description: string;
 }
-
 interface Props {
   products: Product[];
   heading: Heading;
 }
 
 const { products, heading } = Astro.props;
-
-
-
-const formatPrice = (val: number) => `Rp${val.toLocaleString('id-ID')}`;
 ---
 
-<section id="produk" class="bg-white px-4 py-10">
-  <div class="mb-7 border-l-2 border-[#111111] pl-4">
-    <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#767676]">
-      {heading.eyebrow}
-    </span>
-    <h2 class="mt-2 text-[26px] font-semibold leading-tight tracking-[-0.035em] text-[#111111]">{heading.title}</h2>
-    <p class="mt-2 max-w-[38rem] text-[13px] leading-6 text-[#555555]">{heading.description}</p>
-  </div>
-
-  <div class="mb-7 flex flex-col gap-3" hidden={products.length === 0}>
-    <div class="relative w-full">
-      <input
-        type="text"
-        id="catalog-search"
-        placeholder="Cari produk pilihan Anda..."
-        aria-label="Cari produk"
-        class="min-h-12 w-full rounded-none border border-[#E5E5E5] bg-white py-3 pl-11 pr-4 text-base text-[#111111] transition-colors placeholder:text-[#767676] focus:border-[#111111] focus:outline-none focus:ring-1 focus:ring-[#111111]"
-      />
-      <Icon
-        name="lucide:search"
-        class="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#555555]"
-        aria-hidden="true"
-      />
-    </div>
+<section id="produk" class="border-y border-[#E5E7EB] bg-[#FAFAFA] px-5 py-10">
+  <div class="mb-5">
+    <span class="inline-flex rounded-md border border-[#D7E7D8] bg-[#EDF6EA] px-3 py-1 text-[11px] font-semibold text-[#1B5E20]">{heading.eyebrow}</span>
+    <h2 class="ps-display mt-3 text-[24px] font-extrabold tracking-[-0.02em] text-[#263238]">{heading.title}</h2>
+    <p class="mt-1 text-[14px] leading-6 text-[#616161]">{heading.description}</p>
   </div>
 
   {
-    products.length === 0 && (
-      <div class="border border-[#E5E5E5] bg-white px-5 py-10 text-center">
-        <p class="text-[13px] font-semibold text-[#111111]">Katalog sedang disiapkan</p>
-        <p class="mx-auto mt-2 max-w-[26rem] text-[12px] leading-6 text-[#555555]">
-          Belum ada produk yang diterbitkan. Produk akan muncul di sini setelah
-          ditambahkan dan varian harganya diisi dari dashboard.
+    products.length === 0 ? (
+      <div class="rounded-xl border border-[#E5E7EB] bg-white px-5 py-10 text-center">
+        <p class="text-[13px] font-semibold text-[#263238]">Katalog sedang disiapkan</p>
+        <p class="mx-auto mt-2 max-w-[26rem] text-[12px] leading-6 text-[#616161]">
+          Produk akan muncul di sini setelah ditambahkan dan varian harganya diisi dari dashboard.
         </p>
+      </div>
+    ) : (
+      <div class="grid grid-cols-2 gap-x-4 gap-y-6">
+        {products.map((product) => (
+          <article class="flex flex-col">
+            <a href={product.href} class="block" aria-label={`Lihat produk ${product.name}`}>
+              <div class="relative aspect-square overflow-hidden rounded-[10px] border border-[#E5E7EB] bg-white">
+                <img src={product.image} alt={`Foto produk ${product.name}`} width="300" height="300" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+                <div class="pointer-events-none absolute left-2 top-2 flex flex-wrap gap-1.5">
+                  {(product.variants ?? []).map((variant) => (
+                    <span class="inline-flex rounded-md bg-white/40 px-2 py-1 text-[10px] font-semibold leading-none text-[#263238] shadow-[0_8px_20px_rgba(15,23,42,0.16)] backdrop-blur-md">
+                      {variant.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </a>
+            <div class="pt-3">
+              <p class="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2E7D32]">{product.tag || product.category}</p>
+              <h3 class="mt-1 text-[15px] font-semibold uppercase leading-tight text-[#263238]">{product.name}</h3>
+              <p class="mt-2 text-[11px] leading-5 text-[#616161]">{product.description}</p>
+              <a href={product.href} class="mt-3 inline-flex min-h-6 items-center gap-1.5 text-[11px] font-semibold text-[#1B5E20]">
+                <span>Lihat Produk</span>
+                <Icon name="lucide:chevron-right" class="h-3.5 w-3.5" />
+              </a>
+            </div>
+          </article>
+        ))}
       </div>
     )
   }
-
-  <div id="product-grid" class="grid grid-cols-2 gap-3" hidden={products.length === 0}>
-    {
-      products.map((product, idx) => (
-        <div
-          class:list={['product-card', idx >= 10 && 'hidden']}
-          data-category={product.category}
-          data-search={`${product.name} ${product.category} ${product.description}`.toLowerCase()}
-          data-index={idx}
-        >
-          <ProductListItem
-            product={{
-              slug: product.slug,
-              productName: product.name,
-              heroImage: product.image,
-              category: product.category,
-              price: product.price,
-              comparePrice: product.comparePrice,
-              variants: product.variants ?? [],
-            }}
-            formatPrice={formatPrice}
-          />
-        </div>
-      ))
-    }
-  </div>
-
-  <div
-    id="load-more-container"
-    class="mt-8 flex flex-col items-center gap-3"
-    hidden={products.length === 0}
-  >
-    <p id="catalog-status" class="text-[11px] font-normal text-[#555555]">
-      Menampilkan <span id="product-visible-count">{Math.min(10, products.length)}</span> dari <span id="product-total-count">{products.length}</span> produk
-    </p>
-    {
-      products.length > 10 && (
-        <button
-          type="button"
-          id="load-more-btn"
-          class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-none border border-[#111111] bg-[#111111] px-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#000000] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111]"
-        >
-          <span>Lihat Produk Lainnya</span>
-          <Icon name="lucide:chevron-down" class="h-4 w-4" aria-hidden="true" />
-        </button>
-      )
-    }
-  </div>
 </section>
-
-<script>
-  function initProductCatalog() {
-    const searchInput = document.getElementById('catalog-search') as HTMLInputElement | null;
-    const cards = document.querySelectorAll('.product-card') as NodeListOf<HTMLElement>;
-    const loadMoreBtn = document.getElementById('load-more-btn');
-    const visibleCountEl = document.getElementById('product-visible-count');
-    const totalCountEl = document.getElementById('product-total-count');
-
-    let currentSearch = '';
-    let visibleLimit = 10;
-
-    function filterAndRender() {
-      let matchedCount = 0;
-      let currentlyShown = 0;
-
-      cards.forEach((card) => {
-        const searchData = card.getAttribute('data-search') || '';
-        const matchesSearch = !currentSearch || searchData.includes(currentSearch);
-        if (matchesSearch) matchedCount++;
-
-        // Toggle a class rather than writing `style.display`. Showing a card
-        // with `display: flex` turned the wrapper into a flex container, which
-        // sizes its `<article>` to max-content instead of the grid cell — so a
-        // product with a short title rendered a narrower card, and the square
-        // image box shrank its height to match.
-        const show = matchesSearch && currentlyShown < visibleLimit;
-        if (show) currentlyShown++;
-        card.classList.toggle('hidden', !show);
-      });
-
-      if (visibleCountEl) visibleCountEl.textContent = String(currentlyShown);
-      if (totalCountEl) totalCountEl.textContent = String(matchedCount);
-
-      if (loadMoreBtn) {
-        if (currentlyShown >= matchedCount) {
-          loadMoreBtn.style.display = 'none';
-        } else {
-          loadMoreBtn.style.display = 'inline-flex';
-        }
-      }
-    }
-
-    searchInput?.addEventListener('input', (e) => {
-      currentSearch = (e.target as HTMLInputElement).value.trim().toLowerCase();
-      visibleLimit = 10;
-      filterAndRender();
-    });
-
-    loadMoreBtn?.addEventListener('click', () => {
-      visibleLimit += 10;
-      filterAndRender();
-    });
-
-    filterAndRender();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initProductCatalog);
-  } else {
-    initProductCatalog();
-  }
-</script>

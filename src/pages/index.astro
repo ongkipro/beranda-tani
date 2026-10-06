@@ -20,6 +20,7 @@ const products = catalog.map((product) => ({
   slug: product.slug,
   name: product.productName,
   category: product.category,
+  tag: product.tag,
   description: product.subheadline || product.description,
   href: `/produk/${product.slug}`,
   image: product.image,

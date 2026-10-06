@@ -1,4 +1,12 @@
 ---
+/**
+ * Petani Sejahtera hero (install theme), ported from petanisejahtera.com: a
+ * 3:2 slider, then the store's own headline, description and highlights from
+ * the published home content. The slider keeps the product's contract with
+ * CompactMarketHome — `#hero-track` and one dot button per slide in
+ * `#hero-dots` — so slide control and its one-tap reachability are unchanged.
+ */
+import Icon from '../shared/Icon.astro';
 
 interface Slide {
   image: string;
@@ -6,7 +14,6 @@ interface Slide {
   badge: string;
   text: string;
 }
-
 interface Highlight {
   label: string;
   icon: string;
@@ -16,19 +23,25 @@ interface HeroContent {
   description: string;
   ratingLabel: string;
 }
-
 interface Props {
   slides: Slide[];
   highlights: Highlight[];
   content: HeroContent;
 }
 
-const { slides } = Astro.props;
+const { slides, highlights, content } = Astro.props;
+const highlightIcons: Record<string, string> = {
+  check: 'lucide:circle-check',
+  focus: 'lucide:scan-line',
+  note: 'lucide:notebook-text',
+  time: 'lucide:clock-3',
+  truck: 'lucide:truck',
+  package: 'lucide:package',
+};
 ---
 
-<section class="bg-white">
-  <h1 class="sr-only">{Astro.locals.tenant.name} — {Astro.locals.tenant.tagline}</h1>
-  <div class="relative overflow-hidden bg-white">
+<section class="pb-10">
+  <div class="relative overflow-hidden border-b border-[#E5E7EB] bg-[#FAFAFA] shadow-[0_8px_22px_rgba(15,23,42,0.04)]">
     <div id="hero-track" class="flex transition-transform duration-700 ease-out will-change-transform">
       {
         slides.map((slide, index) => (
@@ -36,39 +49,60 @@ const { slides } = Astro.props;
             <img
               src={slide.image}
               alt={`${slide.alt} - ${Astro.locals.tenant.name}`}
-              title={slide.badge}
               width="600"
-              height="600"
-              class="aspect-square w-full object-cover object-center"
+              height="400"
+              class="aspect-[3/2] w-full object-cover object-center"
               loading={index === 0 ? 'eager' : 'lazy'}
               decoding={index === 0 ? 'sync' : 'async'}
               fetchpriority={index === 0 ? 'high' : undefined}
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-[#111111]/85 via-[#111111]/10 to-transparent" />
-            <div class="absolute inset-x-0 bottom-0 p-5 pb-14 text-white">
-              <span class="inline-flex rounded-sm bg-[#111111] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.15em] text-white">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/72 via-slate-950/18 to-transparent" />
+            <div class="absolute inset-x-0 bottom-0 p-5 pb-9 text-white">
+              <span class="inline-flex rounded-md border border-white/12 bg-white/14 px-3 py-1 text-[11px] font-semibold backdrop-blur-sm">
                 {slide.badge}
               </span>
-              <p class="mt-3 max-w-[24rem] text-[13px] font-normal leading-5 text-white">
-                {slide.text}
-              </p>
+              <p class="mt-2 max-w-[24rem] text-[13px] leading-5 text-white/95">{slide.text}</p>
             </div>
           </article>
         ))
       }
     </div>
-    <div id="hero-dots" class="absolute bottom-2 left-5 z-10 flex items-end gap-2">
+    {
+      slides.length > 1 && (
+        <div id="hero-dots" class="absolute bottom-0 left-1/2 z-10 flex -translate-x-1/2 items-end gap-2">
+          {slides.map((_, index) => (
+            <button
+              type="button"
+              aria-label={`Tampilkan slide ${index + 1}`}
+              class={index === 0
+                ? 'h-11 w-7 border-b-2 border-white bg-transparent transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'
+                : 'h-11 w-4 border-b border-white/55 bg-transparent transition-colors hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'}
+            />
+          ))}
+        </div>
+      )
+    }
+  </div>
+
+  <div class="px-5 pt-6">
+    <span class="inline-flex rounded-full bg-[#EDF6EA] px-3 py-1 text-[11px] font-semibold text-[#1B5E20]">
+      {content.ratingLabel}
+    </span>
+    <h1 class="ps-display mt-3 text-[28px] font-extrabold leading-[1.18] tracking-[-0.02em] text-[#263238]">
+      {content.title}
+    </h1>
+    <p class="mt-3 max-w-[28rem] text-[14px] leading-6 text-[#616161]">{content.description}</p>
+    <ul class="mt-5 grid grid-cols-2 gap-x-3 gap-y-3 text-[12px] leading-[1.35] text-[#616161]" aria-label={`Keunggulan ${Astro.locals.tenant.name}`}>
       {
-        slides.map((_, index) => (
-          <button
-            type="button"
-            aria-label={`Tampilkan slide ${index + 1}`}
-            class={index === 0
-              ? 'h-11 w-7 border-b-2 border-white bg-transparent transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'
-              : 'h-11 w-4 border-b border-white/55 bg-transparent transition-colors hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'}
-          />
+        highlights.map((item) => (
+          <li class="grid grid-cols-[18px_1fr] items-start gap-2">
+            <span class="mt-[2px] flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#EDF6EA] text-[#1B5E20]" aria-hidden="true">
+              <Icon name={highlightIcons[item.icon] || 'lucide:circle-check'} class="h-[12px] w-[12px]" />
+            </span>
+            <span class="min-w-0 pt-[1px]">{item.label}</span>
+          </li>
         ))
       }
-    </div>
+    </ul>
   </div>
 </section>

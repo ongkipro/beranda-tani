@@ -6459,3 +6459,55 @@ Local store on production data: home, four product pages and six landing
 pages at 390 px and 1440 px with no console errors, failed requests, broken
 images, horizontal overflow or leftover "Beranda Tani" text; a COD order from
 the `/bensu-jagung` form reached `/thanks`.
+
+### 2026-10-06 — Storefront theme: Petani Sejahtera
+
+The landing pages matched petanisejahtera.com but the storefront still wore
+the product's monochrome template. The storefront components are ported back
+to the source's design — the product's versions descend from the same files —
+while every value that can come from the store still does (name, logo,
+WhatsApp, catalogue, home content).
+
+**Install-owned theme files** — a product merge that touches any of these
+will conflict here, and the install's side is the one to keep:
+`src/components/storefront/shared/{SiteBrand,SiteHeader,SiteFooter,PageIntro,
+LegalPage,ProductListItem}.astro`, `Breadcrumb.astro` (colours),
+`src/components/storefront/home/{HeroSection,ProductsSection,
+LandingPagesSection}.astro`, the new `home/ProofsSection.astro`,
+`templates/CompactMarketHome.astro` (mounts proofs), the presentation body
+and accent map of `src/pages/produk/[slug].astro`, `src/pages/produk/
+index.astro`, `src/pages/{index,kontak,tentang,testimoni}.astro`, and
+`src/styles/petani-sejahtera.css`.
+
+- Header with the round menu button and side drawer (Escape closes it, focus
+  moves in and back); footer with products from the catalogue, navigation,
+  policies, WhatsApp from the store row, email and office address.
+- Home: 3:2 slider, headline and highlights from home content, the source's
+  product cards, image solution cards, and the field-story section.
+- /produk as rows; product pages as the source's white panels with each
+  product's label colour; kontak, tentang and testimoni ported.
+- Checkout forms take the store's green through the form's own tokens,
+  overridden at higher specificity in the theme stylesheet;
+  `form-hybrid.css` is untouched.
+- Plus Jakarta Sans is self-hosted from `public/fonts/` (OFL-1.1) rather than
+  added as a dependency, so `package-lock.json` stays the product's.
+- `ui-variants.ts` is untouched: its product tests pin the palette, so the
+  themed components write their classes directly.
+
+**Not carried from the source, deliberately.** The product page's fixed
+"Sisa promo 11 botol" stock line and the automatic "Paling laris" badge on
+the first variant (neither comes from data; ADR-023), the form's "stok promo
+makin menipis" countdown, and the articles and authors sections.
+
+**Data.** Aussie's and Bensu's variant rows were swapped so the 500 ml size
+comes first, as on the source, which also makes it the form's default. Safe
+only because no order referenced them (0 orders in production at the time).
+`/solusi-terbaru` still 301s to `/produk` in the product; the theme's
+"Solusi Terbaru" links go straight to `/landing-page`.
+
+**Evidence.** 798 tests (1 skip) — one run failed the PBKDF2 timing test
+while a build ran beside it; it passed 3/3 alone and the suite passed whole
+afterwards, and nothing it covers changed. `astro check` 0/0/0. Local store:
+15 pages at 390 and 1440 px with no console errors, failed requests, broken
+images or overflow; the drawer opens, closes on Escape and returns focus; the
+500 ml variant is preselected on product and landing forms.

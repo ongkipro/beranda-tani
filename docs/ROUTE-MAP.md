@@ -45,7 +45,7 @@ The [Modules](#modules) section is the same book read from the other side.
 | `/sitemap` | GET | public | — | `src/pages/sitemap.astro` | `catalog` `landing-pages` | `landing_pages` `landing_sections` `product_variants` `products` | `catalog.test.ts` `landing-pages.test.ts` |
 | `/syarat-ketentuan` | GET | public | — | `src/pages/syarat-ketentuan.astro` | — | — | — |
 | `/tentang` | GET | public | — | `src/pages/tentang.astro` | — | — | — |
-| `/testimoni` | GET | public | — | `src/pages/testimoni.astro` | — | — | — |
+| `/testimoni` | GET | public | — | `src/pages/testimoni.astro` | `catalog` | `product_variants` `products` | `catalog.test.ts` |
 
 ## Landing page (4)
 
@@ -217,7 +217,7 @@ is either transitive (imported by another lib) or dead, and only reading tells w
 | `capi-outbox` | 18 | `capi_event_outbox` | ✓ | `/api/meta-event` `/api/v1/tracking/events` `/api/admin/ads` |
 | `catalog-data` | 4 | — | ✓ | `/api/admin/products` |
 | `catalog-feed` | 9 | — | ✓ | `/aussie-buah-landak` `/aussie-sawit-ganoderma` `/bensu-jagung` `/produk/[slug]` `/saratoga-anggrek` `/saratoga-anthurium` `/saratoga-padi` `/[slug]` `/contoh-landing` `/full-form` `/geoipform` `/hybrid-form` `/middle-form` `/feed/google-catalog.xml` `/feed/meta-catalog.xml` `/api/form-config` `/api/v1/products` `/api/v1/products/[slug]` |
-| `catalog` | 2 | `product_variants` `products` | ✓ | `/` `/404` `/aussie-buah-landak` `/aussie-sawit-ganoderma` `/bensu-jagung` `/produk` `/produk/[slug]` `/saratoga-anggrek` `/saratoga-anthurium` `/saratoga-padi` `/thanks` `/sitemap` `/[slug]` `/contoh-landing` `/embed/form` `/full-form` `/geoipform` `/hybrid-form` `/middle-form` `/feed/google-catalog.xml` `/feed/meta-catalog.xml` `/sitemap.xml` `/api/form-config` `/api/v1/products` `/api/v1/products/[slug]` |
+| `catalog` | 2 | `product_variants` `products` | ✓ | `/` `/404` `/aussie-buah-landak` `/aussie-sawit-ganoderma` `/bensu-jagung` `/produk` `/produk/[slug]` `/saratoga-anggrek` `/saratoga-anthurium` `/saratoga-padi` `/thanks` `/sitemap` `/testimoni` `/[slug]` `/contoh-landing` `/embed/form` `/full-form` `/geoipform` `/hybrid-form` `/middle-form` `/feed/google-catalog.xml` `/feed/meta-catalog.xml` `/sitemap.xml` `/api/form-config` `/api/v1/products` `/api/v1/products/[slug]` |
 | `checkout-navigation` | 2 | — | ✓ | — |
 | `click-ids` | 17 | — | ✓ | `/api/meta-event` `/api/submit-middle-order` `/api/submit-order` `/api/v1/checkout` `/api/v1/tracking/events` |
 | `client-image` | 8 | — | ✓ | — |

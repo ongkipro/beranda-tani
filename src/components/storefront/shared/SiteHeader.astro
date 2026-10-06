@@ -1,37 +1,122 @@
 ---
+/**
+ * Petani Sejahtera header (install theme), ported from petanisejahtera.com:
+ * wordmark left, a round menu button right that opens a side drawer of the
+ * store's key pages. The source's Artikel entry is left out — this store does
+ * not carry the article section.
+ */
+import Icon from './Icon.astro';
 import SiteBrand from './SiteBrand.astro';
+
+const links = [
+  { label: 'Semua Produk', href: '/produk', description: 'Lihat semua produk utama yang tersedia.', icon: 'lucide:package' },
+  { label: 'Solusi Terbaru', href: '/landing-page', description: 'Buka list solusi dan landing page terbaru.', icon: 'lucide:sprout' },
+  { label: 'Ulasan Petani', href: '/testimoni', description: 'Baca ulasan petani dan lihat foto lapangan.', icon: 'lucide:users' },
+  { label: 'Tentang Kami', href: '/tentang', description: `Kenali profil ${Astro.locals.tenant.name} lebih dekat.`, icon: 'lucide:circle-user-round' },
+  { label: 'Kontak', href: '/kontak', description: 'Hubungi admin untuk pertanyaan dan pesanan.', icon: 'lucide:message-circle' },
+];
 ---
 
-{/* Official-store trust strip: name-then-checkmark, the way a social profile
-    signals authenticity. Blue lives only in the seal; everything else stays
-    monochrome like the rest of the storefront. */}
-<div class="border-fade-b bg-white px-4 py-2 text-center">
-  <p class="mx-auto flex max-w-[480px] items-center justify-center gap-1.5">
-    <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#111111]">Official Store</span>
-    <svg viewBox="0 0 22 22" class="h-[15px] w-[15px] shrink-0" fill="none" aria-label="Terverifikasi" role="img">
-      <path
-        fill="#1d9bf0"
-        d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.018-1.273.215-1.813.567s-.969.849-1.242 1.43c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.688.878.633.132 1.29.084 1.897-.138.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"
-      />
-      <path fill="#fff" d="M9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z" />
-    </svg>
-  </p>
-</div>
-
-{Astro.locals.tenant.tagline && (
-  <div class="bg-[#111111] px-4 py-2.5 text-center text-[10px] font-normal tracking-widest uppercase text-white">
-    <p class="mx-auto flex max-w-[480px] items-center justify-center gap-2 px-1">
-      <span class="relative flex h-1.5 w-1.5 items-center justify-center">
-        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#111111] opacity-75"></span>
-        <span class="relative inline-flex h-1 w-1 rounded-full bg-[#111111]"></span>
+<header class="relative z-40 border-b border-[#E5E7EB]/80 bg-white/90 backdrop-blur-xl">
+  <div class="mx-auto flex h-16 max-w-[480px] items-center justify-between px-5">
+    <SiteBrand href="/" />
+    <button
+      id="menu-toggle"
+      type="button"
+      class="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#D7E7D8] bg-[#F4FAF2] text-[#1B5E20] shadow-[0_8px_18px_rgba(36,94,40,0.08)] transition-all duration-200 hover:border-[#1B5E20]/30 hover:bg-[#EDF6EA] active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Buka menu"
+    >
+      <span class="flex w-5 flex-col items-end gap-1.5" aria-hidden="true">
+        <span class="h-0.5 w-5 rounded-full bg-current transition-transform duration-200 group-hover:translate-x-0.5"></span>
+        <span class="h-0.5 w-4 rounded-full bg-current transition-all duration-200 group-hover:w-5"></span>
+        <span class="h-0.5 w-5 rounded-full bg-current transition-transform duration-200 group-hover:-translate-x-0.5"></span>
       </span>
-      <span>{Astro.locals.tenant.tagline}</span>
-    </p>
-  </div>
-)}
-
-<header class="border-b border-[#E5E5E5] bg-white">
-  <div class="mx-auto flex h-[64px] max-w-[480px] items-center justify-center px-5 text-center">
-    <SiteBrand href="/" showTagline={false} />
+    </button>
   </div>
 </header>
+
+<div id="menu-backdrop" class="pointer-events-none fixed inset-0 z-40 bg-slate-950/30 opacity-0 transition-opacity duration-200"></div>
+<nav
+  id="mobile-menu"
+  class="invisible fixed right-0 top-0 z-50 flex h-[100dvh] w-[84%] max-w-[336px] translate-x-full flex-col border-l border-[#E5E7EB] bg-white transition-transform duration-200 ease-out"
+  aria-label="Menu utama"
+  aria-hidden="true"
+>
+  <div class="border-b border-[#E5E7EB] px-5 pb-4 pt-5">
+    <div class="flex items-start justify-between gap-4">
+      <SiteBrand href="/" />
+      <button
+        id="menu-close"
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#1B5E20] text-white shadow-[0_8px_18px_rgba(36,94,40,0.22)] transition-all duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]"
+        aria-label="Tutup menu"
+      >
+        <Icon name="lucide:x" class="h-[18px] w-[18px]" />
+      </button>
+    </div>
+  </div>
+  <div class="overflow-y-auto px-5 py-5">
+    {
+      links.map((link) => (
+        <a href={link.href} class="block py-3 transition-colors hover:text-[#1B5E20]">
+          <div class="flex items-start justify-between gap-3 border-b border-[#EEF2EA] pb-3">
+            <div class="min-w-0">
+              <div class="flex items-center gap-3">
+                <Icon name={link.icon} class="h-4 w-4 flex-shrink-0 text-[#1B5E20]" />
+                <span class="text-[16px] font-semibold leading-5 text-[#263238]">{link.label}</span>
+              </div>
+              <p class="mt-1 pl-7 text-[12px] leading-5 text-[#616161]">{link.description}</p>
+            </div>
+            <span class="pt-0.5 text-[#1B5E20]" aria-hidden="true">›</span>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+  <div class="mt-auto border-t border-[#E5E7EB] px-5 py-4">
+    <p class="text-[11px] leading-5 text-[#616161]">Gunakan menu ini untuk membuka halaman penting lebih cepat.</p>
+  </div>
+</nav>
+
+<script>
+  const menu = document.getElementById('mobile-menu');
+  const backdrop = document.getElementById('menu-backdrop');
+  const toggle = document.getElementById('menu-toggle');
+  const close = document.getElementById('menu-close');
+
+  const openMenu = () => {
+    if (!menu) return;
+    menu.classList.remove('invisible');
+    requestAnimationFrame(() => {
+      menu.classList.remove('translate-x-full');
+      close?.focus();
+    });
+    backdrop?.classList.remove('pointer-events-none', 'opacity-0');
+    toggle?.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeMenu = () => {
+    if (!menu || menu.classList.contains('translate-x-full')) return;
+    menu.classList.add('translate-x-full');
+    backdrop?.classList.add('pointer-events-none', 'opacity-0');
+    toggle?.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    toggle?.focus();
+    setTimeout(() => {
+      if (menu.classList.contains('translate-x-full')) menu.classList.add('invisible');
+    }, 200);
+  };
+
+  toggle?.addEventListener('click', openMenu);
+  close?.addEventListener('click', closeMenu);
+  backdrop?.addEventListener('click', closeMenu);
+  menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
+  });
+</script>

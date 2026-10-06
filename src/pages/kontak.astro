@@ -1,24 +1,68 @@
 ---
+/**
+ * Contact (install theme: Petani Sejahtera). The WhatsApp number reads the
+ * store row; the email and the two service sections are this store's
+ * published copy from petanisejahtera.com.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LegalPage from '../components/storefront/shared/LegalPage.astro';
-import { getTenantLegalPage } from '../data/legal';
+import Icon from '../components/storefront/shared/Icon.astro';
 import { getStoreSupportWhatsapp } from '../lib/public-store';
 
-const supportWhatsapp = await getStoreSupportWhatsapp(Astro.locals);
-const data = getTenantLegalPage('contact', Astro.locals.tenant.name, {
-  supportWhatsapp: supportWhatsapp ? `+${supportWhatsapp.replace(/^0/, '62')}` : '',
-});
+const storeName = Astro.locals.tenant.name;
+const whatsapp = (await getStoreSupportWhatsapp(Astro.locals)).replace(/^0/, '62');
+const whatsappLabel = whatsapp ? `+62 ${whatsapp.slice(2, 5)}-${whatsapp.slice(5, 9)}-${whatsapp.slice(9)}` : '';
+const email = 'halo@petanisejahtera.id';
+
+const sections = [
+  {
+    title: 'Layanan yang Bisa Dihubungi',
+    paragraphs: [
+      `Admin resmi ${storeName} dapat membantu Anda terkait pertanyaan produk, informasi pemesanan, estimasi pengiriman, pengecekan kebutuhan awal, tindak lanjut pesanan, dan pengajuan retur.`,
+      'Agar proses komunikasi lebih cepat, siapkan informasi singkat seperti jenis tanaman, gejala utama, wilayah, dan kebutuhan produk sebelum menghubungi admin.',
+    ],
+  },
+  {
+    title: 'Jam Respons',
+    paragraphs: [
+      'Kami berupaya merespons pesan secepat mungkin pada jam operasional. Waktu respons dapat berbeda tergantung antrean, volume pertanyaan, dan kebutuhan pengecekan alamat atau ekspedisi.',
+    ],
+  },
+];
 ---
 
-<BaseLayout title={`${data.title} - ${Astro.locals.tenant.name}`} description={data.description}>
+<BaseLayout
+  title={`Kontak Resmi - ${storeName}`}
+  description="Gunakan kontak resmi berikut untuk pertanyaan produk, konsultasi awal, pengiriman, atau konfirmasi pesanan."
+  breadcrumbs={[
+    { name: 'Beranda', url: '/' },
+    { name: 'Kontak', url: '/kontak' },
+  ]}
+>
   <LegalPage
-    badge={data.badge}
-    title={data.title}
-    description={data.description}
-    sections={data.sections}
-    breadcrumbs={[
-      { label: 'Beranda', href: '/' },
-      { label: data.badge, href: '/kontak' },
-    ]}
-  />
+    badge="Kontak"
+    title={`Kontak Resmi ${storeName}`}
+    description="Gunakan kontak resmi berikut untuk pertanyaan produk, konsultasi awal, pengiriman, atau konfirmasi pesanan."
+    sections={sections}
+    breadcrumbs={[{ label: 'Beranda', href: '/' }, { label: 'Kontak' }]}
+  >
+    <div class="mb-6 border-b border-[#E5E7EB] pb-6">
+      <h2 class="text-[18px] font-semibold text-[#263238]">Kontak Resmi</h2>
+      <div class="mt-4 space-y-3 text-[14px] leading-7 text-[#4B5563]">
+        {whatsapp && (
+          <p class="flex items-center gap-2">
+            <Icon name="lucide:message-circle" class="size-4 shrink-0 text-[#1B5E20]" />
+            <span>
+              <span class="font-semibold text-[#263238]">WhatsApp:</span>
+              <a href={`https://wa.me/${whatsapp}`} class="text-[#1B5E20] underline-offset-4 hover:underline" target="_blank" rel="nofollow noopener noreferrer">{whatsappLabel}</a>
+            </span>
+          </p>
+        )}
+        <p class="flex items-center gap-2">
+          <Icon name="lucide:mail" class="size-4 shrink-0 text-[#1B5E20]" />
+          <span><span class="font-semibold text-[#263238]">Email:</span> <a href={`mailto:${email}`} class="text-[#1B5E20] underline-offset-4 hover:underline">{email}</a></span>
+        </p>
+      </div>
+    </div>
+  </LegalPage>
 </BaseLayout>
