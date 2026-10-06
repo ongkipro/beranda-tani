@@ -29,6 +29,7 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
 ---
 
 <BaseLayout
+  preloadImages="/images/landing/saratoga-anggrek/hero-anggrek.webp"
   title={seoTitle}
   description={seoDescription}
   image="/images/landing/saratoga-anggrek/hero-anggrek.webp"
@@ -67,6 +68,7 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       <div class="mt-8">
         <div class="relative overflow-hidden bg-slate-950 aspect-[3/2]">
           <img
+            fetchpriority="high"
             src="/images/landing/saratoga-anggrek/hero-anggrek.webp"
             alt="Banner Saratoga Serum Anggrek: anggrek ungu bermekaran lebat — dukung pembentukan tangkai, kuatkan kuncup, warna bunga lebih cerah"
             class="h-full w-full object-cover"

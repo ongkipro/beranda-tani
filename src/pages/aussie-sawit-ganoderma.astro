@@ -31,6 +31,7 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
 ---
 
 <BaseLayout
+  preloadImages="/images/landing/aussie/ganoderma.webp"
   title={seoTitle}
   description={seoDescription}
   image="/images/landing/aussie/ganoderma.webp"
@@ -79,6 +80,7 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
           class="relative overflow-hidden border-y border-slate-100 bg-white shadow-[0_14px_34px_rgba(139,30,30,0.10)]"
         >
           <img
+            fetchpriority="high"
             src="/images/landing/aussie/ganoderma.webp"
             alt="Gejala Ganoderma dan jamur pada sawit"
             class="aspect-[3/2] w-full rounded-lg object-cover"

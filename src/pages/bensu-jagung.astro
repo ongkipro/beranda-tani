@@ -30,6 +30,7 @@ const dangerIcon = 'mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-cen
 ---
 
 <BaseLayout
+  preloadImages="/images/landing/bensu-jagung/hero-utama.webp"
   title={seoTitle}
   description={seoDescription}
   image="/images/landing/bensu-jagung/hero-utama.webp"
@@ -80,6 +81,7 @@ const dangerIcon = 'mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-cen
         </div>
 
         <img
+            fetchpriority="high"
           src="/images/landing/bensu-jagung/hero-utama.webp"
           alt="Tanaman jagung sehat dan subur, terpulihkan dari stres kerdil dan kuning berkat Bensu"
           class="aspect-[3/2] w-full rounded-lg object-cover"

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/storefront/shared/Icon.astro';
 import { getStorefrontProducts } from '../lib/catalog';
+import { cardImageSrc } from '../lib/image-derivative';
 
 // Ported from the petanisejahtera source (install theme). The stories and chat
 // screenshots are the owner's genuine customer evidence (BUILD-LOG 2026-10-06);
@@ -318,7 +319,7 @@ const sectionTone = {
                               <div class="grid grid-cols-[88px_1fr] items-start gap-4">
                                 <div class="aspect-square w-full overflow-hidden rounded-[12px] border border-slate-100 bg-slate-50">
                                   <img
-                                    src={productMap[group.slug].image}
+                                    src={cardImageSrc(productMap[group.slug].image)}
                                     alt={`Kemasan produk ${productMap[group.slug].productName}`}
                                     class="h-full w-full object-cover"
                                     loading="lazy"

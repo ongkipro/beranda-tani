@@ -29,6 +29,7 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
 ---
 
 <BaseLayout
+  preloadImages="/images/landing/saratoga-padi/hero-padi.webp"
   title={seoTitle}
   description={seoDescription}
   image="/images/landing/saratoga-padi/hero-padi.webp"
@@ -69,6 +70,7 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       <div class="mt-8">
         <div class="relative overflow-hidden bg-white aspect-[5/4]">
           <img
+            fetchpriority="high"
             src="/images/landing/saratoga-padi/hero-padi.webp"
             alt="Hamparan bulir padi emas yang sangat lebat dan padat hasil panen maksimal"
             class="h-full w-full object-cover"

@@ -7,6 +7,7 @@
  * load-more are left out: the source has neither and this catalogue is small.
  */
 import Icon from '../shared/Icon.astro';
+import { cardImageSrc } from '../../../lib/image-derivative';
 
 interface Product {
   slug: string;
@@ -52,7 +53,7 @@ const { products, heading } = Astro.props;
           <article class="flex flex-col">
             <a href={product.href} class="block" aria-label={`Lihat produk ${product.name}`}>
               <div class="relative aspect-square overflow-hidden rounded-[10px] border border-[#E5E7EB] bg-white">
-                <img src={product.image} alt={`Foto produk ${product.name}`} width="300" height="300" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+                <img src={cardImageSrc(product.image)} alt={`Foto produk ${product.name}`} width="300" height="300" class="h-full w-full object-cover" loading="lazy" decoding="async" />
                 <div class="pointer-events-none absolute left-2 top-2 flex flex-wrap gap-1.5">
                   {(product.variants ?? []).map((variant) => (
                     <span class="inline-flex rounded-md bg-white/40 px-2 py-1 text-[10px] font-semibold leading-none text-[#263238] shadow-[0_8px_20px_rgba(15,23,42,0.16)] backdrop-blur-md">

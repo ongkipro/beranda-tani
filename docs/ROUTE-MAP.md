@@ -45,7 +45,7 @@ The [Modules](#modules) section is the same book read from the other side.
 | `/sitemap` | GET | public | — | `src/pages/sitemap.astro` | `catalog` `landing-pages` | `landing_pages` `landing_sections` `product_variants` `products` | `catalog.test.ts` `landing-pages.test.ts` |
 | `/syarat-ketentuan` | GET | public | — | `src/pages/syarat-ketentuan.astro` | — | — | — |
 | `/tentang` | GET | public | — | `src/pages/tentang.astro` | — | — | — |
-| `/testimoni` | GET | public | — | `src/pages/testimoni.astro` | `catalog` | `product_variants` `products` | `catalog.test.ts` |
+| `/testimoni` | GET | public | — | `src/pages/testimoni.astro` | `catalog` `image-derivative` | `product_variants` `products` | `catalog.test.ts` `image-derivative.test.ts` |
 
 ## Landing page (4)
 
@@ -244,7 +244,7 @@ is either transitive (imported by another lib) or dead, and only reading tells w
 | `headless-client` | 14 | — | ✓ | — |
 | `headless-openapi` | 1 | — | ✓ | `/api/v1/openapi.json` |
 | `html-escape` | 1 | — | ✓ | — |
-| `image-derivative` | 1 | — | ✓ | `/404` |
+| `image-derivative` | 1 | — | ✓ | `/404` `/testimoni` |
 | `install` | 6 | `admin_credentials` `courier_rules` `stores` | ✓ | `/api/install` |
 | `json-ld` | 14 | — | ✓ | — |
 | `json-script` | 1 | — | ✓ | — |

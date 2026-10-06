@@ -6518,3 +6518,45 @@ files (stars in the source's yellow, `#FFCE3D`), and the four products'
 the source — Aussie, Bensu, Saratoga, Kojien. The column is used for ordering
 only; Kojien's real creation date (2026-10-05) is recorded here because the
 row no longer carries it.
+
+### 2026-10-06 — Images held to the product's upload policy
+
+Every image the storefront serves now follows `src/lib/client-image.ts`
+(WebP, longest edge 1280, quality 80, a WebP of 100 KB or less within the
+edge left alone, a 480 px `-sm` card derivative beside each product photo).
+R2 originals were downloaded and inspected locally first.
+
+- **Static landing imagery** (`public/images/landing/`): 19 files re-encoded
+  or brought within 1280 px — 16 were wider (1536 px photos, 1672 px chat
+  screenshots) — 7.7 MB → 6.4 MB; a 720 px chat screenshot was checked and
+  stays legible. Two Saratoga Anggrek images rendered at 167 CSS px drop from
+  1000 px to 480 px (51/42 KB → 14/12 KB). Every file is referenced; the one
+  orphaned by the change below was removed.
+- **Card derivatives.** The four product photos had no `-sm` sibling, so every
+  card fell back to the full file. 480 px derivatives (7–10 KB against
+  30–44 KB) are in R2, local and production, under the key `cardImageSrc`
+  asks for; the home grid and the testimoni thumbnails now ask for them.
+- **Field-story avatars** render at 56 px but pointed at 480–640 px photos
+  (64–87 KB each); 168 px thumbnails (~10 KB) in `landing/proofs/`, with the
+  home content repointed by `json_set`, guarded on the three names.
+- **Landing LCP.** Each landing's hero is preloaded through BaseLayout and
+  carries `fetchpriority="high"`; everything below it was already lazy.
+
+**Review findings left for the owner.** Several source images are only
+480 px wide (the Bensu Jagung set, Saratoga Padi testimonials,
+`aussie/produk`) and render at 350–390 CSS px, so they look soft on a dense
+phone screen — as on petanisejahtera.com. Upscaling adds no detail; they need
+higher-resolution originals. The superseded R2 uploads (three 2026-09-05
+photos and the 2026-10-05 Kojien photo) are unreferenced and were left in the
+bucket: deleting them is the owner's call.
+
+**Open: the local dev runtime crashes intermittently.** During this pass
+`npm run dev:local` (wrangler 4.120 / miniflare) died with "Error inside
+ProxyWorker: Network connection lost" a handful of page loads into a browser
+sweep — no error from application code, no reload, and not reproducible with
+direct requests (sequential, 100 in parallel, or aborted mid-stream) or with
+repeated single-tab navigation. The same build crashed on one sweep and
+passed 30/30 on the next, so the bisect toward the card-derivative change is
+not conclusive. Production runs neither ProxyWorker nor miniflare; it is
+verified directly after deploy. Upgrading wrangler (4.147 is current) is the
+first thing to try if it keeps happening.
