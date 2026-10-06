@@ -1,19 +1,7 @@
-<!--
-  The product favicon, used by every admin page and the login screen.
-
-  It previously spelled out the reference store's name in two 62px words, so
-  every install shipped a browser tab wearing someone else's brand — the same
-  defect as the login-screen artwork, on a surface nobody thought to look at.
-  It was also 960x240, which a square favicon slot letterboxes into an
-  illegible sliver.
-
-  Now: the emblem only, square, no wording. A merchant who wants their own mark
-  replaces this file; nothing here claims to be theirs in the meantime.
--->
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
-  <rect width="256" height="256" fill="#111111"/>
-  <rect x="32" y="32" width="192" height="192" fill="none" stroke="#C5A880" stroke-width="8"/>
-  <rect x="80" y="80" width="96" height="24" fill="#C5A880"/>
-  <rect x="80" y="116" width="96" height="24" fill="#F8F7F4"/>
-  <rect x="80" y="152" width="56" height="24" fill="#C5A880"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Beranda Tani Sejahtera">
+  <rect width="64" height="64" rx="14" fill="#1F6B3A"/>
+  <path d="M32 52V30" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M32 33c0-9.5-6.5-16-17-16 0 10.5 6.5 16 17 16z" fill="#FFFFFF"/>
+  <path d="M32 29c0-8.5 5.8-14.3 15.3-14.3 0 9.5-5.8 14.3-15.3 14.3z" fill="#B8E07A"/>
+  <path d="M18 52h28" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
 </svg>

@@ -118,10 +118,10 @@
   "vars": {
     "PUBLIC_SITE_NAME": "Beranda Tani",
     "PUBLIC_SITE_URL": "https://beranda.click",
-    // Deliberately empty, like the tagline below. A placeholder here becomes
-    // the meta description Google prints under the store, and the second half
-    // of the home page <title>.
-    "PUBLIC_SITE_DESCRIPTION": "",
+    // The product leaves this empty so a placeholder never becomes a store's
+    // meta description; this install has a real one. `stores.description`
+    // carries the same text and wins at runtime.
+    "PUBLIC_SITE_DESCRIPTION": "Nutrisi dan stimulan tanaman lini AUSSIE: Saratoga, Bensu, Aussie, dan Kojien. Dikirim ke seluruh Indonesia, COD tersedia di banyak wilayah.",
     // Deliberately empty. A non-empty default here becomes the second half of
     // every unconfigured store's <title>, which is how a fresh install came to
     // announce itself as "Toko Anda — Belum Dikonfigurasi".
@@ -131,10 +131,10 @@
 
     // Root-relative or absolute. Replace the placeholder wordmark in
     // public/images/ with the store's own brand assets.
-    "PUBLIC_SITE_LOGO": "/images/adsbook-mark.webp",
+    "PUBLIC_SITE_LOGO": "/images/beranda-tani-logo.webp",
 
     // Must match #rrggbb or the code falls back to its own default.
-    "PUBLIC_SITE_THEME_COLOR": "#111111",
+    "PUBLIC_SITE_THEME_COLOR": "#1F6B3A",
 
     // Drives <html lang> and the Open Graph locale.
     "PUBLIC_SITE_LOCALE": "id-ID",
