@@ -6678,3 +6678,10 @@ commerce-invariant breach, no XSS):
    source's fixed "16 bukti chat" did not match its 18 screenshots.
 Kept on purpose: the five stars on the home field stories (owner: ratings and
 stories are genuine and stay).
+
+Follow-up, verified on the live page: the drawer's close button never took
+focus on open. It carried `transition-all`, so the visibility it inherits from
+the drawer *transitioned* for 200 ms and stayed `hidden` while `focus()` ran —
+traced to the element, focusable 300 ms later. The header buttons now
+transition only background, border, shadow and transform (the hamburger's
+middle bar, width), and focus moves in as soon as the drawer is visible.

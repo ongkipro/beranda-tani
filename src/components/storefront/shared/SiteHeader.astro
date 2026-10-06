@@ -27,14 +27,14 @@ const links = [
     <button
       id="ps-menu-toggle"
       type="button"
-      class="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#D7E7D8] bg-[#F4FAF2] text-[#1B5E20] shadow-[0_8px_18px_rgba(36,94,40,0.08)] transition-all duration-200 hover:border-[#1B5E20]/30 hover:bg-[#EDF6EA] active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]"
+      class="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#D7E7D8] bg-[#F4FAF2] text-[#1B5E20] shadow-[0_8px_18px_rgba(36,94,40,0.08)] transition-[background-color,border-color,box-shadow,transform] duration-200 hover:border-[#1B5E20]/30 hover:bg-[#EDF6EA] active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]"
       aria-expanded="false"
       aria-controls="ps-mobile-menu"
       aria-label="Buka menu"
     >
       <span class="flex w-5 flex-col items-end gap-1.5" aria-hidden="true">
         <span class="h-0.5 w-5 rounded-full bg-current transition-transform duration-200 group-hover:translate-x-0.5"></span>
-        <span class="h-0.5 w-4 rounded-full bg-current transition-all duration-200 group-hover:w-5"></span>
+        <span class="h-0.5 w-4 rounded-full bg-current transition-[width] duration-200 group-hover:w-5"></span>
         <span class="h-0.5 w-5 rounded-full bg-current transition-transform duration-200 group-hover:-translate-x-0.5"></span>
       </span>
     </button>
@@ -54,7 +54,7 @@ const links = [
       <button
         id="ps-menu-close"
         type="button"
-        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#1B5E20] text-white shadow-[0_8px_18px_rgba(36,94,40,0.22)] transition-all duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#1B5E20] text-white shadow-[0_8px_18px_rgba(36,94,40,0.22)] transition-[background-color,border-color,box-shadow,transform] duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]"
         aria-label="Tutup menu"
       >
         <Icon name="lucide:x" class="h-[18px] w-[18px]" />
@@ -93,6 +93,9 @@ const links = [
   const openMenu = () => {
     if (!menu) return;
     menu.classList.remove('invisible');
+    // Visible now, so focusable: move focus in at once (and again after the
+    // slide starts, in case layout had not caught up).
+    close?.focus({ preventScroll: true });
     requestAnimationFrame(() => {
       menu.classList.remove('translate-x-full');
       close?.focus();
