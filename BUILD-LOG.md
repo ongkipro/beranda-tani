@@ -6560,3 +6560,38 @@ passed 30/30 on the next, so the bisect toward the card-derivative change is
 not conclusive. Production runs neither ProxyWorker nor miniflare; it is
 verified directly after deploy. Upgrading wrangler (4.147 is current) is the
 first thing to try if it keeps happening.
+
+### 2026-10-06 — Audit: one order system, AdsBookCMS end to end
+
+petanisejahtera.com takes orders through Scalev; this store must not. Checked:
+
+- **No Scalev path.** The word survives only in migrations `0008` (columns
+  added) and `0013` (dropped) — applied history that is never edited — and in
+  a test literal. No Scalev URL, script or content row exists; the source's
+  forms were never ported.
+- **Every form is the product's.** All 13 routes that render checkout use
+  `GeoIpResolvedForm` (or the product's own form pages), posting only to
+  `/api/submit-order` and `/api/submit-middle-order`, with destinations from
+  `/api/locations` and `/api/shipping-options` (Mengantar) and channels from
+  `/api/payment-methods` (AutoLaris).
+- **The product's sample landing (`/contoh-landing`) is removed**, as
+  `docs/LANDING-PAGES.md` directs before a store goes live.
+
+**Finding — the live store's provider credentials are empty.** The Worker has
+`MENGANTAR_API_KEY`, `MENGANTAR_ORIGIN_AREA_ID`, `MENGANTAR_PICKUP_ADDRESS_ID`
+and `AUTOLARIS_API_KEY` as secrets, and the D1 fields are null, but both keys
+resolve to an empty value at runtime: `/api/locations?level=resolve` falls back
+to the local district catalogue (no Mengantar destination id), and
+`/api/payment-methods` reports every AutoLaris channel "AutoLaris belum
+dikonfigurasi". `AUTOLARIS_ORDER_ORIGIN_ID`/`AUTOLARIS_ORDER_DESTINATION_ID`
+are not set and the `warehouses` table is empty, so AutoLaris `/submit` would
+also lack its origin and shipper. Effect: COD orders with shipping confirmed
+by CS (the middle form) still land; live shipping quotes, QRIS/VA, dispatch
+to a courier, and checkout from a COD-excluded province do not work. The
+values are the owner's account credentials and were not filled from any other
+source.
+
+**Correction.** Earlier entries and messages said Meta was not configured and
+109 CAPI events were held. That was read from the local copy, whose ad
+credentials were cleared on import. Production has a Pixel ID and a CAPI
+token, and its outbox holds 302 events, all `sent`.
