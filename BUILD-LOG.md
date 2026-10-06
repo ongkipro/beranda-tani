@@ -6595,3 +6595,22 @@ source.
 109 CAPI events were held. That was read from the local copy, whose ad
 credentials were cleared on import. Production has a Pixel ID and a CAPI
 token, and its outbox holds 302 events, all `sent`.
+
+**Resolved the same day (owner decision: use the credentials in secrets-env).**
+Their Mengantar base URL is production (`api-public.mengantar.com`, the
+app's default), so they are not sandbox keys. `MENGANTAR_API_KEY`,
+`MENGANTAR_ORIGIN_AREA_ID`, `MENGANTAR_PICKUP_ADDRESS_ID` and
+`AUTOLARIS_API_KEY` were written to the production Worker through
+`wrangler secret put` on stdin — never echoed. `AUTOLARIS_WEBHOOK_SECRET` is
+not read by this code and was not set. Verified live: a resolve for Depok,
+Sleman returns a Mengantar destination id and `/api/shipping-options` returns
+eight courier rates.
+
+AutoLaris is held off on purpose: the store's `is_autolaris_enabled` was set
+to 0 *before* its key went in, so QRIS/VA read "AutoLaris dinonaktifkan oleh
+toko" rather than becoming selectable. Create Order (`/submit`) also needs
+`AUTOLARIS_ORDER_ORIGIN_ID`/`AUTOLARIS_ORDER_DESTINATION_ID` — the
+merchant-account `courir_id: 1` profile, which cannot be derived from public
+data — and a warehouse row for the shipper; without them every prepaid
+checkout would fail at `requiredAreaId`. Once both exist, turn AutoLaris back
+on in `/admin/payments`.
