@@ -1,0 +1,739 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import Icon from '../components/storefront/shared/Icon.astro';
+import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
+import StickyCTA from '../components/storefront/landing-pages/StickyCTA.astro';
+import SocialProofToast from '../components/storefront/shared/SocialProofToast.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+import { defaultCatalogContentId } from '../lib/catalog-feed';
+import { getRuntimeEnv } from '../lib/env';
+import { nativeLandingCanonicalPath } from '../lib/landing-pages';
+import { recentOrderCount } from '../lib/social-proof';
+import '../styles/form-hybrid.css';
+
+export const prerender = false;
+
+const product = await getStorefrontProduct(Astro.locals, 'saratoga');
+if (!product) return Astro.rewrite('/404');
+const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
+
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'saratoga-anggrek')}`;
+const seoTitle = 'Saratoga Anggrek - Serum Asam Amino Perangsang Bunga Premium';
+const seoDescription =
+  'Saratoga untuk pecinta anggrek Indonesia: memaksa anggrek yang subur daun tapi enggan berbunga agar keluar tangkai dan mekar serempak, kuntum tidak mudah rontok.';
+
+const sectionTitle = 'text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950';
+const body = 'text-[16px] leading-relaxed text-slate-600';
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  image="/images/landing/saratoga-anggrek/hero-anggrek.webp"
+  canonical={canonical}
+  hideHeader={true}
+  hideFooter={true}
+  breadcrumbs={[
+    { name: 'Beranda', url: '/' },
+    { name: 'Saratoga Anggrek', url: '/saratoga-anggrek' },
+  ]}
+>
+  <main class="mx-auto min-h-screen w-full max-w-[480px] bg-white text-slate-950">
+    <MetaLandingTracker
+      slug="saratoga-anggrek"
+      contentId={defaultCatalogContentId(product)}
+      contentName={product.productName}
+      price={product.price}
+    />
+
+    <section class="bg-white pb-8 text-center">
+      <div class="px-5 pt-8">
+        <h1
+          class="mx-auto max-w-[440px] text-[clamp(32px,8.8vw,36px)] font-extrabold leading-[1.14] tracking-tight text-slate-950"
+        >
+          Anggrek Cuma Tumbuh Daun Terus? Saatnya Dipaksa <span class="hl-brush">Berbunga Lebat Serempak!</span>
+        </h1>
+        <p class="mx-auto mt-4 max-w-[400px] text-[16px] font-semibold leading-relaxed text-slate-700">
+          Bahkan anggrek <strong class="text-slate-950 font-bold">“bandel” yang bertahun-tahun cuma daun</strong>. Cukup
+          rutin semprot Saratoga — serum asam amino <span
+            class="font-bold text-slate-950 underline decoration-[#6D28D9]/40 decoration-2 underline-offset-4"
+            >teknologi Jepang</span
+          >: tangkai naik, kuncup kuat, warna makin cerah.
+        </p>
+      </div>
+
+      <div class="mt-8">
+        <div class="relative overflow-hidden bg-slate-950 aspect-[3/2]">
+          <img
+            src="/images/landing/saratoga-anggrek/hero-anggrek.webp"
+            alt="Banner Saratoga Serum Anggrek: anggrek ungu bermekaran lebat — dukung pembentukan tangkai, kuatkan kuncup, warna bunga lebih cerah"
+            class="h-full w-full object-cover"
+            loading="eager"
+            decoding="async"
+          />
+
+          <div class="absolute bottom-0 left-0 right-0 bg-slate-950/80 px-4 py-3 text-center backdrop-blur-sm">
+            <p class="text-[12.5px] font-bold text-[#BBF7D0] flex items-start justify-center gap-1.5">
+              <Icon name="lucide:thumbs-up" class="h-4 w-4 text-[#BBF7D0] shrink-0 mt-0.5" />
+              <span class="text-left leading-tight"
+                >9 dari 10 anggrek yang tadinya cuma daun akhirnya keluar tangkai &amp; berbunga berkat Saratoga!</span
+              >
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-5 flex justify-center gap-4 px-4">
+          <span class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-700">
+            <Icon name="lucide:flask-conical" class="h-4 w-4 text-[#14532D]" />
+            Teknologi Jepang
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-700">
+            <Icon name="lucide:truck" class="h-4 w-4 text-[#14532D]" />
+            Bisa COD
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-700">
+            <Icon name="lucide:badge-check" class="h-4 w-4 text-[#14532D]" />
+            Garansi Asli 100%
+          </span>
+        </div>
+
+        <div class="mt-6 px-5 text-left border-l-2 border-emerald-600 pl-4">
+          <h2 class="text-[15px] font-bold text-slate-950">Anggrek yang subur daun belum tentu mau berbunga.</h2>
+          <p class="text-[13.5px] leading-relaxed text-slate-600 mt-1">
+            Karena itu, perawatan anggrek perlu digeser: dari sekadar menyuburkan daun ke merangsang keluarnya tangkai,
+            menguatkan kuncup, hingga mekar serempak.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-red-50/30 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-red-600">Kondisi Hobiis</span>
+      <h2 class={`${sectionTitle} mt-1`}>
+        Anggrek Rajin Tumbuh Tapi Bunga Justru <span class="hl-brush">Tak Datang</span>
+      </h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Di awal, hobiis biasanya senang melihat daun tebal dan akar banyak. Tapi berbulan-bulan berlalu, tanaman tetap
+        sibuk mengejar daun — bukan menyiapkan bunga. Kebutuhan anggrek dewasa sebenarnya sudah berubah: fokusnya bukan
+        lagi daun, melainkan pembentukan tangkai bunga.
+      </p>
+      <div class="mt-6 space-y-4">
+        {
+          [
+            [
+              'Subur Daun, Enggan Berbunga',
+              'Anggrek terus mengeluarkan daun dan akar baru, tapi tak kunjung muncul tangkai bunga meski sudah cukup dewasa.',
+            ],
+            [
+              'Kuncup Rontok Sebelum Mekar',
+              'Tangkai sempat naik, tapi kuncup menguning lalu gugur (bud blast) sebelum sempat mekar sempurna.',
+            ],
+            [
+              'Bunga Kecil & Cepat Layu',
+              'Kalaupun mekar, kuntumnya sedikit, warna pucat, dan cepat rontok hanya dalam hitungan hari.',
+            ],
+          ].map(([title, desc]) => (
+            <div class="flex gap-3.5 items-start">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center text-red-600 mt-1">
+                <Icon name="lucide:x-circle" class="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div>
+                <h3 class="text-[16px] font-bold text-slate-900">{title}</h3>
+                <p class="text-[15px] text-slate-600 mt-0.5 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]"
+        >Perbandingan Fisik</span
+      >
+      <h2 class={`${sectionTitle} mt-1`}>Perbedaan Mulai Terlihat Saat Inisiasi Tangkai</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Dua anggrek bisa sama-sama hijau segar. Namun yang menentukan adalah: mana yang berhasil menaikkan tangkai
+        bunga, dan mana yang berhenti hanya di daun.
+      </p>
+      <div class="space-y-6">
+        <!-- Row 1: Pemunculan Tangkai -->
+        <div>
+          <p class="mb-2 text-[12px] font-semibold uppercase tracking-wider text-slate-500">
+            1. Pemunculan Tangkai Bunga
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
+              <img
+                src="/images/landing/saratoga-anggrek/tanpa-tangkai.webp"
+                alt="Anggrek hanya berdaun tanpa tangkai bunga"
+                class="aspect-[3/2] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Tanpa Tangkai
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-slate-900">Mandek di Daun</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
+                  Tanaman terus melebar ke daun, titik tumbuh pasif, tak ada tanda tangkai bunga muncul.
+                </p>
+              </div>
+            </div>
+            <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
+              <img
+                src="/images/landing/saratoga-anggrek/tangkai-lebat.webp"
+                alt="Anggrek dengan tangkai bunga penuh kuntum"
+                class="aspect-[3/2] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Tangkai Lebat
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-emerald-800">Tangkai Naik Serempak</h3>
+                <p class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                  Tangkai terangsang naik penuh calon kuntum dari pangkal hingga ujung.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Kualitas Bunga -->
+        <div>
+          <p class="mb-2 text-[12px] font-semibold uppercase tracking-wider text-slate-500">2. Kualitas Bunga Mekar</p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
+              <img
+                src="/images/landing/saratoga-anggrek/bunga-pucat.webp"
+                alt="Bunga anggrek pucat dan kecil"
+                class="aspect-[3/2] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Pucat & Rontok
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-slate-900">Bunga Pucat</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
+                  Kuntum kecil, warna kusam pudar, cepat layu dan rontok dalam hitungan hari.
+                </p>
+              </div>
+            </div>
+            <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
+              <img
+                src="/images/landing/saratoga-anggrek/bunga-prima.webp"
+                alt="Bunga anggrek mekar penuh warna pekat"
+                class="aspect-[3/2] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Cerah & Awet
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-emerald-800">Bunga Prima</h3>
+                <p class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                  Kuntum besar mekar penuh, warna pekat cerah, tahan lama menempel di tangkai.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-slate-950 px-5 py-10 text-white">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#BBF7D0]"
+        >Siklus Hidup Anggrek</span
+      >
+      <h2 class="text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-white mt-1">
+        Fase Generatif Menentukan <span class="text-[#BBF7D0]">Anggrek Mau Berbunga</span>
+      </h2>
+      <p class="mt-3 mb-8 text-[16px] leading-relaxed text-slate-400">
+        Saat tanaman berhenti fokus menambah daun dan mulai menyiapkan bunga, kebutuhan nutrisinya berubah total.
+      </p>
+
+      <div class="relative pl-6 border-l border-slate-800 space-y-6 ml-2">
+        {
+          ['Aklimatisasi', 'Vegetatif (Daun & Akar)', 'Inisiasi Tangkai', 'Muncul Kuntum', 'Mekar Serempak'].map(
+            (item, index) => {
+              const isActive = item === 'Inisiasi Tangkai';
+              return (
+                <div class="relative flex gap-4 items-start">
+                  <span
+                    class={`absolute -left-[37px] flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold ring-4 ring-slate-950 ${isActive ? 'bg-[#BBF7D0] text-slate-950 font-bold' : 'bg-slate-800 text-slate-400'}`}
+                  >
+                    {index + 1}
+                  </span>
+                  <div>
+                    <h3 class={`text-[16px] font-semibold ${isActive ? 'text-[#BBF7D0]' : 'text-slate-200'}`}>
+                      {item}
+                    </h3>
+                    {isActive && (
+                      <p class="text-[15px] text-slate-400 mt-1.5 leading-relaxed">
+                        Fase paling krusial penentu anggrek mau berbunga atau tidak. Nutrisi harus digeser ke arah
+                        generatif agar tangkai bunga terpicu naik.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              );
+            },
+          )
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-emerald-50/30 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Deteksi Dini</span>
+      <h2 class={`${sectionTitle} mt-1`}>Kapan Anggrek Siap Dipaksa Berbunga?</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Kenali perubahan fisik pada anggrek Anda. Jika tanda-tanda berikut mulai muncul, tanaman sudah cukup dewasa
+        untuk digiring masuk fase berbunga:
+      </p>
+      <div class="mb-6 rounded-xl bg-white/70 p-5">
+        <div class="relative border-l-2 border-emerald-100 pl-5 space-y-6">
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-600 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-900">1. Daun Dewasa Cukup</h3>
+            <p class="text-[15px] text-slate-600 mt-1">
+              Anggrek sudah punya cukup daun/pseudobulb dewasa sebagai cadangan energi berbunga.
+            </p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-600 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-900">2. Akar Aktif Hijau</h3>
+            <p class="text-[15px] text-slate-600 mt-1">
+              Ujung akar segar berwarna hijau, tanda tanaman sedang menyerap nutrisi dengan baik.
+            </p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-600 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-900">3. Muncul Titik Tumbuh Baru</h3>
+            <p class="text-[15px] text-slate-600 mt-1">
+              Terlihat tonjolan runcing di pangkal atau ketiak daun, cikal bakal tangkai bunga.
+            </p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-700 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-950">4. Tangkai Mulai Naik</h3>
+            <p class="text-[15px] text-slate-600 mt-1">
+              Tangkai bunga memanjang membawa deretan calon kuntum menuju mekar serempak.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-xl bg-amber-50/60 p-5 mt-6">
+        <h3 class="flex items-center gap-2 text-[15px] font-bold text-amber-900">
+          <Icon name="lucide:search" class="h-4.5 w-4.5 text-amber-700" />
+          Panduan Cek Fisik di Rumah:
+        </h3>
+        <ul class="mt-3 space-y-2.5 text-[15px] leading-relaxed text-slate-700">
+          <li class="flex items-start gap-2">
+            <span class="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600"></span>
+            <span
+              ><strong>Cek ujung akar:</strong> Jika hijau segar dan aktif, anggrek siap didorong ke fase berbunga.</span
+            >
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600"></span>
+            <span
+              ><strong>Raba pangkal daun:</strong> Jika muncul tonjolan runcing yang berbeda dari akar, itu calon tangkai
+              bunga.</span
+            >
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600"></span>
+            <span
+              ><strong>Amati titik tumbuh:</strong> Jika tunas baru mengarah ke atas (bukan menyamping), fase generatif sedang
+              dimulai.</span
+            >
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <img
+        src="/images/landing/saratoga-anggrek/saratoga-hamparan.webp"
+        alt="Saratoga Serum Premium Untuk Anggrek: asam amino siap serap, formula teknologi Jepang, aplikasi daun dan akar"
+        class="mb-6 aspect-[16/9] w-full rounded-xl object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]"
+        >Spesifikasi Produk</span
+      >
+      <h2 class={`${sectionTitle} mt-1`}>Serum Asam Amino Premium Perangsang Bunga Anggrek</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        SARATOGA difokuskan sebagai perangsang tangkai dan penguat bunga. Bukan pupuk daun biasa, bukan racun hama, dan
+        bukan fungisida. Perannya menyuplai asam amino bebas dan nutrisi mikro agar anggrek berani menggeser energi dari
+        daun ke bunga tanpa stres.
+      </p>
+
+      <div class="mt-8 space-y-6">
+        {
+          [
+            [
+              'lucide:flower-2',
+              'Merangsang Tangkai Bunga',
+              'Memicu titik tumbuh generatif agar tangkai bunga naik lebih cepat dan serempak di seluruh rumpun.',
+            ],
+            [
+              'lucide:sparkles',
+              'Kuntum Tidak Mudah Rontok',
+              'Menguatkan kuncup agar tidak gugur sebelum mekar, dengan warna bunga yang lebih pekat dan tahan lama.',
+            ],
+            [
+              'lucide:sprout',
+              'Formula Asam Amino Jepang',
+              'Nutrisi siap serap yang langsung diproses daun & akar tanpa membebani tanaman saat stres cuaca.',
+            ],
+          ].map(([icon, title, desc]) => (
+            <div class="flex gap-4 items-start">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5">
+                <Icon name={icon} class="h-4.5 w-4.5" />
+              </span>
+              <div>
+                <h3 class="text-[16px] font-bold text-slate-900">{title}</h3>
+                <p class="text-[15px] text-slate-600 mt-1 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Cara Kerja</span>
+      <h2 class={`${sectionTitle} mt-1`}>Alur Kerja Nutrisi Saratoga Pada Anggrek</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Saratoga tidak menunggu proses tanah yang lambat. Berikut alur kerjanya langsung pada organ anggrek:
+      </p>
+      {/* Infografis alur (inline, teks tajam — bukan gambar) */}
+      <figure class="mb-8 overflow-hidden rounded-2xl ring-1 ring-slate-200">
+        <figcaption
+          class="flex items-center gap-2 bg-[#6D28D9] px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white"
+        >
+          <Icon name="lucide:workflow" class="h-4 w-4 shrink-0" aria-hidden="true" />
+          3 Langkah Saratoga Bekerja
+        </figcaption>
+        <div class="flex items-start justify-between gap-1 bg-gradient-to-b from-violet-50 to-white px-3 py-6">
+          {
+            [
+              ['lucide:spray-can', 'Semprot', 'Daun & akar, pagi hari'],
+              ['lucide:zap', 'Serap Kilat', 'Meresap dalam hitungan jam'],
+              ['lucide:flower-2', 'Mekar Serempak', 'Tangkai naik, kuntum awet'],
+            ].map(([icon, title, sub], i, arr) => (
+              <>
+                <div class="flex-1 text-center">
+                  <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#6D28D9] text-white shadow-sm shadow-violet-200">
+                    <Icon name={icon} class="h-6 w-6" aria-hidden="true" />
+                  </span>
+                  <h3 class="mt-2.5 text-[13px] font-bold text-slate-900">{title}</h3>
+                  <p class="mx-auto mt-0.5 max-w-[110px] text-[11px] leading-tight text-slate-500">{sub}</p>
+                </div>
+                {i < arr.length - 1 && (
+                  <Icon name="lucide:chevron-right" class="mt-4 h-5 w-5 shrink-0 text-violet-300" aria-hidden="true" />
+                )}
+              </>
+            ))
+          }
+        </div>
+        <div
+          class="flex items-center justify-center gap-1.5 border-t border-emerald-100 bg-emerald-50/60 px-4 py-2.5 text-center text-[12px] font-semibold text-emerald-800"
+        >
+          <Icon name="lucide:badge-check" class="h-4 w-4 shrink-0" aria-hidden="true" />
+          Hasil: bunga mekar serempak, warna pekat, tahan lama
+        </div>
+      </figure>
+
+      <div class="relative border-l-2 border-emerald-100/80 pl-6 space-y-6 ml-2">
+        {
+          [
+            [
+              'lucide:spray-can',
+              'Penyemprotan Daun & Akar',
+              'Saratoga dilarutkan dalam air dan disemprot merata ke daun serta akar udara di pagi hari saat stomata terbuka.',
+            ],
+            [
+              'lucide:activity',
+              'Penyerapan Kilat',
+              'Jaringan daun dan akar menyerap asam amino bebas dalam hitungan jam, tanpa menunggu proses akar yang lambat.',
+            ],
+            [
+              'lucide:zap',
+              'Daya Dorong Generatif',
+              'Tanaman didorong menggeser seluruh energinya dari pertumbuhan daun ke pembentukan tangkai bunga.',
+            ],
+            [
+              'lucide:flower-2',
+              'Tangkai & Kuntum Naik',
+              'Titik tumbuh terangsang menaikkan tangkai penuh calon kuntum dari pangkal hingga ujung.',
+            ],
+            [
+              'lucide:award',
+              'Mekar Serempak & Awet',
+              'Bunga mekar lebih serempak, warna lebih pekat, dan bertahan jauh lebih lama menempel di tangkai.',
+            ],
+          ].map(([icon, title, desc], index) => (
+            <div class="relative">
+              <span class="absolute -left-[35px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-[#14532D] text-white text-[11px] font-bold ring-4 ring-white">
+                {index + 1}
+              </span>
+              <h3 class="text-[16px] font-bold text-slate-900 flex items-center gap-1.5">
+                <Icon name={icon} class="h-4 w-4 text-[#14532D]" />
+                {title}
+              </h3>
+              <p class="text-[15px] text-slate-600 mt-1 leading-relaxed">{desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10 bg-white">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Studi Kasus</span>
+      <h2 class={`${sectionTitle} mt-1`}>Hasil Nyata Pecinta Anggrek Indonesia</h2>
+      <p class={`${body} mt-3 mb-8`}>
+        Berikut adalah cerita pengalaman nyata para hobiis anggrek yang mulai memfokuskan nutrisi di fase perangsangan
+        tangkai dan pembungaan.
+      </p>
+
+      <div class="space-y-10">
+        {
+          [
+            {
+              name: 'Ibu Ratna',
+              location: 'Bogor, Jawa Barat',
+              cropProblem: 'Anggrek Bulan • Masalah: 2 Tahun Cuma Daun',
+              rating: 5,
+              review:
+                'Anggrek bulan saya sehat, daunnya tebal, tapi <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950 font-semibold">dua tahun tidak pernah keluar tangkai bunga</strong>. Saya sempat pasrah. Ikut arahan admin, saya semprot Saratoga rutin di pagi hari. Baru beberapa minggu, <strong class="box-decoration-clone bg-[#EDE9FE] px-1.5 pb-0.5 text-[#6D28D9] font-semibold">muncul tonjolan tangkai bunga</strong> dari ketiak daun. Sekarang malah berbunga penuh.',
+              highlight: 'Dari 2 tahun cuma daun, akhirnya keluar tangkai dan berbunga penuh.',
+              image: '/images/landing/saratoga-anggrek/testimoni-bogor.webp',
+            },
+            {
+              name: 'Pak Herman',
+              location: 'Malang, Jawa Timur',
+              cropProblem: 'Dendrobium • Masalah: Kuncup Rontok',
+              rating: 5,
+              review:
+                'Dendrobium saya sering keluar tangkai, tapi <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950 font-semibold">kuncupnya rontok sebelum sempat mekar</strong>. Setelah admin jelaskan pentingnya asam amino saat kuncup terbentuk, saya rutin spray Saratoga. <strong class="box-decoration-clone bg-[#EDE9FE] px-1.5 pb-0.5 text-[#6D28D9] font-semibold">Kuncup jadi kuat dan tidak gugur</strong>, mekarnya serempak satu tangkai penuh.',
+              highlight: 'Kuncup tidak lagi rontok, mekar serempak satu tangkai penuh.',
+              image: '/images/landing/saratoga-anggrek/testimoni-malang.webp',
+            },
+            {
+              name: 'Ibu Wayan',
+              location: 'Denpasar, Bali',
+              cropProblem: 'Vanda • Masalah: Bunga Pucat & Jarang',
+              rating: 5,
+              review:
+                'Vanda saya jarang berbunga dan <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950 font-semibold">warnanya pucat kurang menarik</strong>. Setelah dipandu aplikasi Saratoga, anggrek jadi <strong class="box-decoration-clone bg-[#EDE9FE] px-1.5 pb-0.5 text-[#6D28D9] font-semibold">lebih rajin berbunga dan warnanya pekat cerah</strong>. Kuntumnya juga lebih tahan lama. Sangat puas dengan pendampingan teknis adminnya.',
+              highlight: 'Lebih rajin berbunga, warna pekat cerah, dan kuntum tahan lama.',
+              image: '/images/landing/saratoga-anggrek/testimoni-denpasar.webp',
+            },
+          ].map((item, index, arr) => (
+            <div class="space-y-4">
+              <div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1">
+                    <h3 class="text-[16px] font-bold text-slate-900">{item.name}</h3>
+                    <span
+                      class="flex h-4 w-4 items-center justify-center text-blue-600"
+                      role="img"
+                      aria-label="Terverifikasi"
+                      title="Terverifikasi"
+                    >
+                      <Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </div>
+                  <div class="text-[13px] text-amber-600" role="img" aria-label="5 dari 5 bintang">
+                    ★★★★★
+                  </div>
+                </div>
+                <p class="text-[12px] text-slate-500 mt-0.5">{item.location}</p>
+                <p class="text-[12px] font-semibold text-amber-800 mt-1">{item.cropProblem}</p>
+              </div>
+
+              <div class="relative aspect-[16/9] w-full overflow-hidden rounded-xl">
+                <img
+                  src={item.image}
+                  alt={`Dokumentasi anggrek berbunga ${item.name}`}
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+
+              <p
+                class="mt-3 border-l-2 border-[#6D28D9]/25 pl-3 text-[15px] leading-relaxed text-slate-700 italic"
+                set:html={`"${item.review}"`}
+              />
+
+              {index < arr.length - 1 && (
+                <div class="my-8 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* Section "Bukti Chat" (WhatsApp) — wa1..4.webp = screenshot chat asli dari aset brand. */}
+    <section class="border-t border-slate-100 bg-slate-50 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Dokumentasi Chat</span>
+      <h2 class={`${sectionTitle} mt-1`}>Bukti Chat Pecinta Anggrek Yang Mulai Fokus Merangsang Bunga</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Beberapa hobiis mulai bertanya sejak anggrek belum berbunga, muncul tangkai, sampai kuntum menjelang mekar agar
+        aplikasinya lebih terarah.
+      </p>
+      <div class="grid grid-cols-2 gap-3">
+        {
+          [1, 2, 3, 4].map((n) => (
+            <img
+              src={`/images/landing/saratoga-anggrek/wa${n}.webp`}
+              alt={`Screenshot WhatsApp konsultasi Saratoga anggrek ${n}`}
+              class="aspect-[9/16] w-full rounded-xl object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]"
+        >Fasilitas Tambahan</span
+      >
+      <h2 class={`${sectionTitle} mt-1`}>Bukan Hanya Kirim Produk, Tapi Juga Panduan</h2>
+
+      <div class="grid grid-cols-2 gap-4 mt-6">
+        {
+          [
+            ['lucide:users', 'Grup WA Pecinta Anggrek', 'Wadah diskusi & tips merawat anggrek bersama hobiis lain.'],
+            ['lucide:clipboard-check', 'Timing Aplikasi', 'Pengingat rutin timing spray sesuai fase anggrek.'],
+            ['lucide:message-circle', 'Analisis Foto', 'Kirim foto kondisi anggrek untuk konsultasi.'],
+            ['lucide:book-open-check', 'Panduan Cetak', 'Buku panduan tertulis disertakan dalam paket.'],
+          ].map(([icon, title, desc]) => (
+            <div class="flex gap-3 items-start">
+              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5">
+                <Icon name={icon} class="h-4 w-4" />
+              </span>
+              <div>
+                <h3 class="text-[15px] font-bold text-slate-900">{title}</h3>
+                <p class="text-[14px] text-slate-500 mt-1 leading-normal">{desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-[#F8FAFC] px-5 py-10 text-center">
+      <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center text-emerald-600">
+        <Icon name="lucide:shield-check" class="h-12 w-12" aria-hidden="true" />
+      </div>
+      <p class="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">
+        Garansi Pendampingan Penggunaan
+      </p>
+      <h2 class="text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950">
+        AMAN DIPANDU ADMIN
+      </h2>
+      <p class="mx-auto mt-4 max-w-[340px] text-[16px] leading-relaxed text-slate-600">
+        Setiap pembelian SARATOGA mendapat bimbingan intensif agar Anda paham waktu penyemprotan terbaik sesuai fase
+        anggrek.
+      </p>
+
+      <div class="mt-8 space-y-6 text-left max-w-[360px] mx-auto">
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5"
+            ><Icon name="lucide:message-circle" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[16px] font-bold text-slate-900">Konsultasi Kondisi Tanaman</h3>
+            <p class="text-[15px] text-slate-500 mt-1 leading-relaxed">
+              Kirim foto/kondisi anggrek via WhatsApp untuk mendapatkan saran dosis sebelum penyemprotan.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5"
+            ><Icon name="lucide:clipboard-check" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[16px] font-bold text-slate-900">Panduan Timing Sesuai Fase</h3>
+            <p class="text-[15px] text-slate-500 mt-1 leading-relaxed">
+              Admin akan memandu timing aplikasi terbaik dari fase vegetatif hingga bunga mekar serempak.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5"
+            ><Icon name="lucide:badge-check" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[16px] font-bold text-slate-900">Garansi Produk Asli</h3>
+            <p class="text-[15px] text-slate-500 mt-1 leading-relaxed">
+              Produk dijamin resmi, original, dan dikirim langsung dari gudang utama Petani Sejahtera.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="checkout" class="border-t-8 border-slate-100 bg-white py-12">
+      <div class="px-5 pb-8 text-center">
+        <div class="mx-auto mb-5 inline-flex items-center justify-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#14532D] ring-1 ring-emerald-100/50">
+          <Icon name="lucide:arrow-down" class="h-3.5 w-3.5" aria-hidden="true" />
+          Langkah Terakhir
+        </div>
+        <h2
+          class="mx-auto max-w-[320px] text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950"
+        >
+          Lengkapi Data <span class="hl-brush">Pengiriman</span>
+        </h2>
+        <p class="mx-auto mt-4 max-w-[320px] text-[15px] font-medium leading-relaxed text-slate-600">
+          Isi data di bawah ini dengan benar. <span class="text-slate-900 font-bold border-b-2 border-emerald-200">Form akan menyesuaikan wilayah Anda</span>, lalu tim kami memproses pesanan dan panduan penggunaan.
+        </p>
+      </div>
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+    </section>
+    <StickyCTA productSlug={product.slug} productName={product.productName} />
+    <SocialProofToast orderCount={socialProofOrders} heroSelector="" formSelector="#checkout" />
+  </main>
+</BaseLayout>
+
+<style>
+  /* Highlight sapuan kuas (brush underline) untuk frasa kunci di headline.
+     Teks tetap gelap; sapuan ungu di bawah — tidak menumpuk saat teks wrap ke baris baru. */
+  .hl-brush {
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    padding-bottom: 0.14em;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20320%2024'%20preserveAspectRatio='none'%3E%3Cpath%20d='M3%2013C55%206%20120%2016%20182%2011S292%208%20317%2012L315%2020C252%2015%20150%2023%2072%2019S13%2021%205%2020C2%2017%202%2016%203%2013Z'%20fill='%236D28D9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center 100%;
+    background-size: 100% 0.32em;
+  }
+</style>

@@ -35,14 +35,44 @@ export type NativeLandingPage = {
   isActive?: boolean;
 };
 
+// Ported from petanisejahtera.com (2026-10-06), the brand this install becomes.
 export const nativeLandingPages: NativeLandingPage[] = [
-  // Example, and the only entry that ships with the product:
-  // {
-  //   slug: 'promo-lebaran',
-  //   title: 'Promo Lebaran',
-  //   productSlug: 'pupuk-organik-cair',
-  //   description: 'Landing khusus kampanye Lebaran.',
-  // },
+  {
+    slug: 'bensu-jagung',
+    title: 'Bensu Jagung',
+    productSlug: 'bensu',
+    description: 'Jagung kuning, kerdil, dan pertumbuhan mandek.',
+  },
+  {
+    slug: 'aussie-sawit-ganoderma',
+    title: 'Aussie Sawit Ganoderma',
+    productSlug: 'aussie',
+    description: 'Recovery sawit kuning, busuk akar/batang/pucuk, dan Ganoderma.',
+  },
+  {
+    slug: 'aussie-buah-landak',
+    title: 'Aussie Buah Landak',
+    productSlug: 'aussie',
+    description: 'Tandan sawit landak, buah jarang, dan biji kosong.',
+  },
+  {
+    slug: 'saratoga-padi',
+    title: 'Saratoga Padi',
+    productSlug: 'saratoga',
+    description: 'Gabah hampa dan pengisian bulir padi.',
+  },
+  {
+    slug: 'saratoga-anggrek',
+    title: 'Saratoga Anggrek',
+    productSlug: 'saratoga',
+    description: 'Anggrek tidak keluar tangkai dan bunga pucat.',
+  },
+  {
+    slug: 'saratoga-anthurium',
+    title: 'Saratoga Anthurium',
+    productSlug: 'saratoga',
+    description: 'Anthurium hanya berdaun dan bunga kusam.',
+  },
 ];
 
 /**

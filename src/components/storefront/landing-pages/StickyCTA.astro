@@ -1,0 +1,108 @@
+---
+/**
+ * Floating "order" button for a native landing page, ported from
+ * petanisejahtera's StickyCTA. It appears only while neither the hero (the
+ * page's first <section>) nor `#checkout` is on screen, and scrolls to
+ * `#checkout` on tap. Wiring starts a second after `load` so it never costs
+ * the page's first paint.
+ *
+ * The label comes from the product the page resolved, not from a list of
+ * slugs; the colour is the page's own accent, keyed by product slug, with the
+ * store's green for any product the page set does not name.
+ */
+import Icon from '../shared/Icon.astro';
+
+interface Props {
+  productSlug: string;
+  productName: string;
+}
+
+const { productSlug, productName } = Astro.props;
+
+const accents: Record<string, string> = {
+  aussie: 'bg-[#8B1E1E] hover:bg-[#701A1A] active:bg-[#5C1515] shadow-[#8B1E1E]/20',
+  bensu: 'bg-[#0F2A5F] hover:bg-[#0C224C] active:bg-[#09193A] shadow-[#0F2A5F]/20',
+  kojien: 'bg-[#0F2A5F] hover:bg-[#0C224C] active:bg-[#09193A] shadow-[#0F2A5F]/20',
+  saratoga: 'bg-[#14532D] hover:bg-[#0F3F22] active:bg-[#0B3019] shadow-[#14532D]/20',
+};
+const accent = accents[productSlug] ?? 'bg-[#1B5E20] hover:bg-[#164D1A] active:bg-[#113D14] shadow-[#1B5E20]/20';
+const label = `Pesan ${productName}`;
+---
+
+<div
+  data-sticky-cta
+  class="pointer-events-none fixed bottom-5 left-1/2 z-40 w-[calc(100%-2rem)] max-w-[440px] -translate-x-1/2 translate-y-10 opacity-0 transition-all duration-500"
+>
+  <button
+    type="button"
+    class={`flex w-full items-center justify-center gap-2.5 rounded-2xl px-6 py-4 text-white shadow-xl transition duration-200 active:scale-[0.98] ${accent}`}
+  >
+    <span class="relative flex h-2 w-2 shrink-0" aria-hidden="true">
+      <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+      <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+    </span>
+    <span class="whitespace-nowrap text-[15px] font-bold tracking-wide">{label}</span>
+    <Icon name="lucide:arrow-down" class="sticky-cta-arrow h-5 w-5 shrink-0 text-white" />
+  </button>
+</div>
+
+<style>
+  @keyframes sticky-cta-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-2px);
+    }
+  }
+  :global(.sticky-cta-arrow) {
+    animation: sticky-cta-bounce 2s infinite ease-in-out;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.sticky-cta-arrow) {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const initStickyCta = () => {
+    const wrapper = document.querySelector<HTMLElement>('[data-sticky-cta]');
+    const checkout = document.getElementById('checkout');
+    const hero = document.querySelector('main section');
+    if (!wrapper || !checkout) return;
+
+    let heroVisible = true;
+    let checkoutVisible = false;
+    const update = () => {
+      const show = !heroVisible && !checkoutVisible;
+      wrapper.classList.toggle('opacity-0', !show);
+      wrapper.classList.toggle('pointer-events-none', !show);
+      wrapper.classList.toggle('translate-y-10', !show);
+      wrapper.classList.toggle('translate-y-0', show);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.target === hero) heroVisible = entry.isIntersecting;
+          if (entry.target === checkout) checkoutVisible = entry.isIntersecting;
+        }
+        update();
+      },
+      { threshold: 0.05 },
+    );
+    if (hero) observer.observe(hero);
+    else heroVisible = false;
+    observer.observe(checkout);
+
+    wrapper.querySelector('button')?.addEventListener('click', () => {
+      checkout.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+
+  const start = () => setTimeout(initStickyCta, 1000);
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
+</script>

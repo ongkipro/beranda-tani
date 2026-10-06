@@ -1,0 +1,697 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import Icon from '../components/storefront/shared/Icon.astro';
+import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
+import StickyCTA from '../components/storefront/landing-pages/StickyCTA.astro';
+import SocialProofToast from '../components/storefront/shared/SocialProofToast.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+import { defaultCatalogContentId } from '../lib/catalog-feed';
+import { getRuntimeEnv } from '../lib/env';
+import { nativeLandingCanonicalPath } from '../lib/landing-pages';
+import { recentOrderCount } from '../lib/social-proof';
+import '../styles/form-hybrid.css';
+
+export const prerender = false;
+
+const product = await getStorefrontProduct(Astro.locals, 'saratoga');
+if (!product) return Astro.rewrite('/404');
+const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
+
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'saratoga-padi')}`;
+const seoTitle = 'Saratoga Padi - Serum Asam Amino Premium Fase Generatif';
+const seoDescription =
+  'Saratoga untuk petani padi Indonesia: mendukung fase pembungaan dan pengisian bulir agar potensi hasil panen tidak turun karena bulir tidak terisi optimal.';
+
+const sectionTitle = 'text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950';
+const body = 'text-[16px] leading-relaxed text-slate-600';
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  image="/images/landing/saratoga-padi/hero-padi.webp"
+  canonical={canonical}
+  hideHeader={true}
+  hideFooter={true}
+  breadcrumbs={[
+    { name: 'Beranda', url: '/' },
+    { name: 'Saratoga Padi', url: '/saratoga-padi' },
+  ]}
+>
+  <main class="mx-auto min-h-screen w-full max-w-[480px] bg-white text-slate-950">
+    <MetaLandingTracker
+      slug="saratoga-padi"
+      contentId={defaultCatalogContentId(product)}
+      contentName={product.productName}
+      price={product.price}
+    />
+
+    <section class="bg-white pb-8 text-center">
+      <div class="px-5 pt-8">
+        <h1
+          class="mx-auto max-w-[440px] text-[clamp(32px,8.8vw,36px)] font-extrabold leading-[1.14] tracking-tight text-slate-950"
+        >
+          Jangan Biarkan Hasil Panen Turun Akibat <span
+            class="box-decoration-clone rounded-[0.18em] bg-[#0F2A5F] px-[0.18em] py-[0.02em] text-white"
+            >Bulir Kopong!</span
+          >
+        </h1>
+        <p class="mx-auto mt-4 max-w-[390px] text-[16px] font-semibold leading-relaxed text-slate-700">
+          Atasi padi <strong class="text-slate-950 font-bold">gagal berbunga &amp; bulir kopong</strong> dengan formula premium
+          <span class="font-bold text-slate-950 underline decoration-[#14532D]/35 decoration-2 underline-offset-4"
+            >berteknologi Jepang</span
+          >.
+        </p>
+      </div>
+
+      <div class="mt-8">
+        <div class="relative overflow-hidden bg-white aspect-[5/4]">
+          <img
+            src="/images/landing/saratoga-padi/hero-padi.webp"
+            alt="Hamparan bulir padi emas yang sangat lebat dan padat hasil panen maksimal"
+            class="h-full w-full object-cover"
+            loading="eager"
+            decoding="async"
+          />
+          <div
+            class="absolute left-4 top-4 rounded-md bg-[#14532D] px-3 py-1.5 text-[11px] font-medium uppercase tracking-widest text-white"
+          >
+            Fase Generatif
+          </div>
+
+          <div class="absolute bottom-0 left-0 right-0 bg-slate-950/80 px-4 py-3 text-center backdrop-blur-sm">
+            <p class="text-[12.5px] font-bold text-[#BBF7D0] flex items-start justify-center gap-1.5">
+              <Icon name="lucide:thumbs-up" class="h-4 w-4 text-[#BBF7D0] shrink-0 mt-0.5" />
+              <span class="text-left leading-tight"
+                >8 dari 10 petani berhasil selamatkan hasil panennya berkat Saratoga!</span
+              >
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-5 flex justify-center gap-4 px-4">
+          <span class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-700">
+            <Icon name="lucide:cpu" class="h-4 w-4 text-[#14532D]" />
+            Teknologi Jepang
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-700">
+            <Icon name="lucide:truck" class="h-4 w-4 text-[#14532D]" />
+            Bisa COD
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-700">
+            <Icon name="lucide:badge-check" class="h-4 w-4 text-[#14532D]" />
+            Garansi Asli 100%
+          </span>
+        </div>
+
+        <div class="mt-6 px-5 text-left border-l-2 border-emerald-600 pl-4">
+          <h2 class="text-[15px] font-bold text-slate-950">Bulir tidak padat sering baru terasa saat timbang panen.</h2>
+          <p class="text-[13.5px] leading-relaxed text-slate-600 mt-1">
+            Karena itu, perawatan tanaman padi perlu lebih fokus mulai dari fase bunting, keluar malai, pembungaan,
+            hingga pengisian bulir.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-red-50/30 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-red-600">Kondisi Lapangan</span>
+      <h2 class={`${sectionTitle} mt-1`}>
+        Fase Paling Penting Justru Sering <span
+          class="box-decoration-clone rounded-[0.18em] bg-[#0F2A5F] px-[0.18em] py-[0.02em] leading-[1.18] text-white"
+          >Terlewat</span
+        >
+      </h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Di awal tanam, petani biasanya rajin mengejar hijau dan anakan. Tapi saat tanaman mulai bunting sampai keluar
+        malai, kebutuhan tanaman berubah: fokusnya bukan lagi sekadar daun, melainkan pembentukan hasil.
+      </p>
+      <div class="mt-6 space-y-4">
+        {
+          [
+            [
+              'Malai Keluar Tanpa Isi',
+              'Sebagian bulir padi tetap kosong (kopong) karena kegagalan pengisian karbohidrat di fase kritis.',
+            ],
+            [
+              'Gabah Lebat Tapi Ringan',
+              'Tanaman terlihat rimbun dan lebat dari kejauhan, tetapi bobot riil saat timbang susut drastis.',
+            ],
+            [
+              'Kualitas Gabah Menurun',
+              'Kulit gabah kusam, banyak butir patah, dan nilai jual di tingkat tengkulak merosot.',
+            ],
+          ].map(([title, desc]) => (
+            <div class="flex gap-3.5 items-start">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center text-red-600 mt-1">
+                <Icon name="lucide:x-circle" class="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div>
+                <h3 class="text-[16px] font-bold text-slate-900">{title}</h3>
+                <p class="text-[15px] text-slate-600 mt-0.5 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]"
+        >Perbandingan Fisik</span
+      >
+      <h2 class={`${sectionTitle} mt-1`}>Perbedaan Hasil Mulai Terlihat Saat Pengisian</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Dari jauh sawah bisa sama-sama terlihat hijau. Namun, perbedaan kualitas pengisian bulir akan menentukan hasil
+        timbangan akhir Anda.
+      </p>
+      <div class="space-y-6">
+        <!-- Row 1: Pengisian Malai -->
+        <div>
+          <p class="mb-2 text-[12px] font-semibold uppercase tracking-wider text-slate-500">1. Pengisian Malai Padi</p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
+              <img
+                src="/images/landing/saratoga-padi/hampa.webp"
+                alt="Kondisi bulir padi hampa dan kurang terisi akibat kekurangan nutrisi pembungaan"
+                class="aspect-[3/2] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Kurang Terisi
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-slate-900">Bulir Hampa</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
+                  Gabah terasa kosong saat diraba, banyak kopong di pangkal malai.
+                </p>
+              </div>
+            </div>
+            <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
+              <img
+                src="/images/landing/saratoga-padi/padat.webp"
+                alt="Bulir padi padat terisi penuh hingga ke pangkal berkat nutrisi asam amino Saratoga"
+                class="aspect-[3/2] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Terisi Optimal
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-emerald-800">Bulir Bernas</h3>
+                <p class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                  Gabah terisi penuh padat hingga ke pangkal, malai merunduk berat.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Kualitas Gabah -->
+        <div>
+          <p class="mb-2 text-[12px] font-semibold uppercase tracking-wider text-slate-500">
+            2. Kualitas Gabah Hasil Panen
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
+              <img
+                src="/images/landing/saratoga-padi/gabah-kusam.webp"
+                alt="Gabah padi kusam, berdebu, dan kurang berbobot saat panen"
+                class="aspect-[3/2] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Kusam & Susut
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-slate-900">Gabah Kusam</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
+                  Warna kusam berdebu, kulit tipis rapuh, dan banyak pecah saat digiling.
+                </p>
+              </div>
+            </div>
+            <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
+              <img
+                src="/images/landing/saratoga-padi/gabah-bersih.webp"
+                alt="Hasil panen gabah kuning bersih, mengkilap, dan berbobot tinggi"
+                class="aspect-[3/2] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Kuning Bersih
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-emerald-800">Gabah Mengkilap</h3>
+                <p class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                  Kuning bersih mengkilap, kulit tebal padat, rendemen beras tinggi.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-slate-950 px-5 py-10 text-white">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#BBF7D0]">Siklus Hidup Padi</span
+      >
+      <h2 class="text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-white mt-1">
+        Fase Generatif Menentukan <span class="text-[#BBF7D0]">Kualitas Hasil Panen</span>
+      </h2>
+      <p class="mt-3 mb-8 text-[16px] leading-relaxed text-slate-400">
+        Saat tanaman berubah dari mengejar pertumbuhan ke membentuk hasil, perlakuannya juga perlu disesuaikan.
+      </p>
+
+      <div class="relative pl-6 border-l border-slate-800 space-y-6 ml-2">
+        {
+          ['Persemaian', 'Vegetatif', 'Bunting', 'Keluar Malai', 'Pengisian Bulir'].map((item, index) => {
+            const isActive = item === 'Pengisian Bulir';
+            return (
+              <div class="relative flex gap-4 items-start">
+                <span
+                  class={`absolute -left-[37px] flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold ring-4 ring-slate-950 ${isActive ? 'bg-[#BBF7D0] text-slate-950 font-bold' : 'bg-slate-800 text-slate-400'}`}
+                >
+                  {index + 1}
+                </span>
+                <div>
+                  <h3 class={`text-[16px] font-semibold ${isActive ? 'text-[#BBF7D0]' : 'text-slate-200'}`}>{item}</h3>
+                  {isActive && (
+                    <p class="text-[15px] text-slate-400 mt-1.5 leading-relaxed">
+                      Fase paling krusial yang menentukan bobot akhir padi. Nutrisi harus terarah agar bulir tidak
+                      hampa.
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-emerald-50/30 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Deteksi Dini</span>
+      <h2 class={`${sectionTitle} mt-1`}>Kapan Petani Mulai Perlu Waspada?</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Pahami perubahan fisik pada tanaman Anda. Jika tanda-tanda berikut mulai muncul, tanaman padi Anda sedang
+        bertransisi ke fase penentuan hasil:
+      </p>
+      <div class="mb-6 rounded-xl bg-white/70 p-5">
+        <div class="relative border-l-2 border-emerald-100 pl-5 space-y-6">
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-600 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-900">1. Fase Bunting</h3>
+            <p class="text-[15px] text-slate-600 mt-1">Malai mulai terbentuk di dalam batang tanaman.</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-600 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-900">2. Keluar Malai</h3>
+            <p class="text-[15px] text-slate-600 mt-1">Ujung malai mulai terlihat keluar dari pelepah daun bendera.</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-600 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-900">3. Fase Berbunga</h3>
+            <p class="text-[15px] text-slate-600 mt-1">Proses penyerbukan alami bulir padi dimulai.</p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-700 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-950">4. Pengisian Bulir</h3>
+            <p class="text-[15px] text-slate-600 mt-1">
+              Sari pati dialirkan mengisi bulir gabah hingga menguning & merunduk.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-xl bg-amber-50/60 p-5 mt-6">
+        <h3 class="flex items-center gap-2 text-[15px] font-bold text-amber-900">
+          <Icon name="lucide:search" class="h-4.5 w-4.5 text-amber-700" />
+          Panduan Cek Fisik di Sawah:
+        </h3>
+        <ul class="mt-3 space-y-2.5 text-[15px] leading-relaxed text-slate-700">
+          <li class="flex items-start gap-2">
+            <span class="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600"></span>
+            <span
+              ><strong>Raba batang padi:</strong> Jika terasa membulat membengkak, tandanya tanaman mulai bunting.</span
+            >
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600"></span>
+            <span
+              ><strong>Lihat pelepah daun bendera:</strong> Jika malai mulai menyembul keluar, fase penyerbukan akan segera
+              berjalan.</span
+            >
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600"></span>
+            <span
+              ><strong>Pencet gabah muda:</strong> Jika cairan susu di dalamnya mulai mengental, pengisian karbohidrat sedang
+              berjalan cepat.</span
+            >
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <img
+        src="/images/landing/saratoga-padi/saratoga-hamparan.webp"
+        alt="Saratoga Serum Padi premium untuk pengisian bulir gabah padat dan kuning mengkilap"
+        class="mb-6 aspect-[4/3] w-full rounded-xl object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]"
+        >Spesifikasi Produk</span
+      >
+      <h2 class={`${sectionTitle} mt-1`}>Serum Asam Amino Premium Untuk Fase Generatif Padi</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        SARATOGA difokuskan sebagai pendamping fase pembungaan dan pengisian bulir. Bukan pupuk makro umum (NPK), bukan
+        racun pestisida, dan bukan fungisida. Perannya menyuplai nutrisi mikro dan asam amino bebas agar tanaman tidak
+        stres saat fokus pengisian.
+      </p>
+
+      <div class="mt-8 space-y-6">
+        {
+          [
+            [
+              'lucide:flower-2',
+              'Mendukung Fase Pembungaan',
+              'Membantu memperlancar keluarnya malai secara serempak di seluruh petak sawah.',
+            ],
+            [
+              'lucide:wheat',
+              'Optimalisasi Pengisian Gabah',
+              'Mendorong transfer karbohidrat to bulir agar gabah terisi penuh sampai pangkal malai.',
+            ],
+            [
+              'lucide:sprout',
+              'Formula Asam Amino Jepang',
+              'Nutrisi siap serap yang langsung diproses daun tanpa membebani tanaman saat stres cuaca.',
+            ],
+          ].map(([icon, title, desc]) => (
+            <div class="flex gap-4 items-start">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5">
+                <Icon name={icon} class="h-4.5 w-4.5" />
+              </span>
+              <div>
+                <h3 class="text-[16px] font-bold text-slate-900">{title}</h3>
+                <p class="text-[15px] text-slate-600 mt-1 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Cara Kerja</span>
+      <h2 class={`${sectionTitle} mt-1`}>Alur Kerja Nutrisi Saratoga Pada Tanaman Padi</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Saratoga tidak melewati proses pemecahan tanah yang lambat. Berikut alur kerjanya langsung pada organ tanaman:
+      </p>
+      <img
+        src="/images/landing/saratoga-padi/saratoga-infografis.webp"
+        alt="Infografis cara kerja Saratoga untuk padi"
+        class="-mx-5 w-[calc(100%+2.5rem)] max-w-none aspect-square h-auto mb-6"
+        loading="lazy"
+        decoding="async"
+        width="800"
+        height="800"
+      />
+
+      <div class="relative border-l-2 border-emerald-100/80 pl-6 space-y-6 ml-2">
+        {
+          [
+            [
+              'lucide:spray-can',
+              'Penyemprotan Daun',
+              'Saratoga dilarutkan dalam air dan disemprotkan merata ke daun padi di pagi hari saat stomata terbuka.',
+            ],
+            [
+              'lucide:activity',
+              'Penyerapan Kilat',
+              'Jaringan daun menyerap asam amino bebas dalam hitungan jam tanpa harus menunggu akar bekerja.',
+            ],
+            [
+              'lucide:zap',
+              'Daya Dorong Generatif',
+              'Tanaman didorong memfokuskan seluruh energinya untuk memproduksi sari pati buah/biji.',
+            ],
+            [
+              'lucide:wheat',
+              'Bulir Terisi Padat',
+              'Sari makanan mengalir deras mengisi gabah dari ujung hingga pangkal malai.',
+            ],
+            [
+              'lucide:award',
+              'Hasil Timbang Naik',
+              'Gabah menjadi lebih padat, bernas, dan minim kopong sehingga bobot timbang saat panen meningkat.',
+            ],
+          ].map(([icon, title, desc], index) => (
+            <div class="relative">
+              <span class="absolute -left-[35px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-[#14532D] text-white text-[11px] font-bold ring-4 ring-white">
+                {index + 1}
+              </span>
+              <h3 class="text-[16px] font-bold text-slate-900 flex items-center gap-1.5">
+                <Icon name={icon} class="h-4 w-4 text-[#14532D]" />
+                {title}
+              </h3>
+              <p class="text-[15px] text-slate-600 mt-1 leading-relaxed">{desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10 bg-white">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Studi Kasus</span>
+      <h2 class={`${sectionTitle} mt-1`}>Hasil Nyata Petani Padi Indonesia</h2>
+      <p class={`${body} mt-3 mb-8`}>
+        Berikut adalah cerita pengalaman nyata para petani padi yang mulai memfokuskan nutrisi di fase generatif
+        pembungaan dan pengisian bulir.
+      </p>
+
+      <div class="space-y-10">
+        {
+          [
+            {
+              name: 'Pak Supardi',
+              location: 'Subang, Jawa Barat',
+              cropProblem: 'Padi Inpari 32 • Masalah: Bulir Kopong di Pangkal',
+              rating: 5,
+              review:
+                'Tahun lalu saya sempat kecewa karena malai keluar lebat tapi waktu diraba <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950 font-semibold">banyak yang kosong di bagian pangkalnya</strong>. Musim ini saya ikuti arahan admin untuk semprot Saratoga waktu padi mulai bunting dan keluar malai. Hasilnya luar biasa, <strong class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F] font-semibold">pengisian bulir lebih merata</strong> sampai ke bawah pelepah.',
+              highlight: 'Bulir padi terisi penuh sampai pangkal pelepah, minim kopong.',
+              image: '/images/landing/saratoga-padi/testimoni-subang.webp',
+            },
+            {
+              name: 'Haji Budi Santoso',
+              location: 'Sragen, Jawa Tengah',
+              cropProblem: 'Padi Ciherang • Masalah: Hasil Timbang Susut',
+              rating: 5,
+              review:
+                'Biasanya padi terlihat kuning bersih tapi pas ditimbang <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950 font-semibold">bobotnya kurang mantap</strong>. Baru paham setelah admin jelaskan pentingnya asam amino di fase pengisian biji. Saya spray Saratoga di fase keluar malai sampai pengisian bulir. <strong class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F] font-semibold">Hasil timbangan gabah basah naik</strong> cukup terasa dibanding musim lalu.',
+              highlight: 'Bobot timbangan gabah basah meningkat signifikan.',
+              image: '/images/landing/saratoga-padi/testimoni-sragen.webp',
+            },
+            {
+              name: 'Ibu Sumarni',
+              location: 'Sidrap, Sulawesi Selatan',
+              cropProblem: 'Padi Mapan 05 • Masalah: Pengisian Tidak Serempak',
+              rating: 5,
+              review:
+                'Cuaca yang tidak menentu bikin <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950 font-semibold">pengisian bulir tidak merata</strong>, ada yang sudah kuning tapi sebagian masih hijau. Setelah dipandu aplikasi Saratoga, <strong class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F] font-semibold">malai keluar serempak</strong> dan pengisian gabahnya seragam kuningnya. Sangat puas dengan pendampingan teknis adminnya.',
+              highlight: 'Keluarnya malai serempak dan kuning gabah seragam.',
+              image: '/images/landing/saratoga-padi/testimoni-sidrap.webp',
+            },
+          ].map((item, index, arr) => (
+            <div class="space-y-4">
+              <div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1">
+                    <h3 class="text-[16px] font-bold text-slate-900">{item.name}</h3>
+                    <span
+                      class="flex h-4 w-4 items-center justify-center text-blue-600"
+                      role="img"
+                      aria-label="Terverifikasi"
+                      title="Terverifikasi"
+                    >
+                      <Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </div>
+                  <div class="text-[13px] text-amber-600" role="img" aria-label="5 dari 5 bintang">
+                    ★★★★★
+                  </div>
+                </div>
+                <p class="text-[12px] text-slate-500 mt-0.5">{item.location}</p>
+                <p class="text-[12px] font-semibold text-amber-800 mt-1">{item.cropProblem}</p>
+              </div>
+
+              <div class="relative aspect-[16/9] w-full overflow-hidden rounded-xl">
+                <img
+                  src={item.image}
+                  alt={`Dokumentasi hasil panen ${item.name}`}
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+
+              <p
+                class="mt-3 border-l-2 border-[#0F2A5F]/25 pl-3 text-[15px] leading-relaxed text-slate-700 italic"
+                set:html={`"${item.review}"`}
+              />
+
+              {index < arr.length - 1 && (
+                <div class="my-8 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-slate-50 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Dokumentasi Chat</span>
+      <h2 class={`${sectionTitle} mt-1`}>Bukti Chat Petani Yang Mulai Fokus di Fase Pengisian Bulir</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Beberapa petani mulai bertanya sejak padi bunting, keluar malai, sampai pengisian bulir agar aplikasi lebih
+        terarah.
+      </p>
+      <div class="grid grid-cols-2 gap-3">
+        {
+          [1, 2, 3, 4, 5, 6].map((n) => (
+            <img
+              src={`/images/landing/saratoga/wa${n}.webp`}
+              alt={`Screenshot WhatsApp konsultasi Saratoga padi ${n}`}
+              class="aspect-[9/16] w-full rounded-xl object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]"
+        >Fasilitas Tambahan</span
+      >
+      <h2 class={`${sectionTitle} mt-1`}>Bukan Hanya Kirim Produk, Tapi Juga Panduan</h2>
+
+      <div class="grid grid-cols-2 gap-4 mt-6">
+        {
+          [
+            ['lucide:users', 'Grup WA Petani', 'Wadah diskusi & tips lapangan bersama petani.'],
+            ['lucide:clipboard-check', 'Timing Aplikasi', 'Pengingat rutin timing spray sesuai umur padi.'],
+            ['lucide:message-circle', 'Analisis Foto', 'Kirim foto kondisi sawah untuk konsultasi.'],
+            ['lucide:book-open-check', 'Panduan Cetak', 'Buku panduan tertulis disertakan dalam paket.'],
+          ].map(([icon, title, desc]) => (
+            <div class="flex gap-3 items-start">
+              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5">
+                <Icon name={icon} class="h-4 w-4" />
+              </span>
+              <div>
+                <h3 class="text-[15px] font-bold text-slate-900">{title}</h3>
+                <p class="text-[14px] text-slate-500 mt-1 leading-normal">{desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-[#F8FAFC] px-5 py-10 text-center">
+      <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center text-emerald-600">
+        <Icon name="lucide:shield-check" class="h-12 w-12" aria-hidden="true" />
+      </div>
+      <p class="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">
+        Garansi Pendampingan Penggunaan
+      </p>
+      <h2 class="text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950">
+        AMAN DIPANDU ADMIN
+      </h2>
+      <p class="mx-auto mt-4 max-w-[340px] text-[16px] leading-relaxed text-slate-600">
+        Setiap pembelian SARATOGA mendapat bimbingan intensif agar Anda paham waktu penyemprotan terbaik sesuai umur
+        padi.
+      </p>
+
+      <div class="mt-8 space-y-6 text-left max-w-[360px] mx-auto">
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5"
+            ><Icon name="lucide:message-circle" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[16px] font-bold text-slate-900">Konsultasi Kondisi Tanaman</h3>
+            <p class="text-[15px] text-slate-500 mt-1 leading-relaxed">
+              Kirim foto/kondisi padi via WhatsApp untuk mendapatkan saran dosis sebelum penyemprotan.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5"
+            ><Icon name="lucide:clipboard-check" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[16px] font-bold text-slate-900">Panduan Timing Sesuai Umur</h3>
+            <p class="text-[15px] text-slate-500 mt-1 leading-relaxed">
+              Admin akan memandu timing aplikasi terbaik dari fase bunting hingga menjelang panen.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5"
+            ><Icon name="lucide:badge-check" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[16px] font-bold text-slate-900">Garansi Produk Asli</h3>
+            <p class="text-[15px] text-slate-500 mt-1 leading-relaxed">
+              Produk dijamin resmi, original, dan dikirim langsung dari gudang utama Petani Sejahtera.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="checkout" class="border-t-8 border-slate-100 bg-white py-12">
+      <div class="px-5 pb-8 text-center">
+        <div class="mx-auto mb-5 inline-flex items-center justify-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#14532D] ring-1 ring-emerald-100/50">
+          <Icon name="lucide:arrow-down" class="h-3.5 w-3.5" aria-hidden="true" />
+          Langkah Terakhir
+        </div>
+        <h2
+          class="mx-auto max-w-[320px] text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950"
+        >
+          Lengkapi Data <span
+            class="inline rounded-[0.18em] bg-[#0F2A5F] px-[0.18em] py-[0.02em] leading-[1.18] text-white box-decoration-clone"
+            >Pengiriman</span
+          >
+        </h2>
+        <p class="mx-auto mt-4 max-w-[320px] text-[15px] font-medium leading-relaxed text-slate-600">
+          Isi data di bawah ini dengan benar. <span class="text-slate-900 font-bold border-b-2 border-emerald-200">Form akan menyesuaikan wilayah Anda</span>, lalu tim kami memproses pesanan dan panduan penggunaan.
+        </p>
+      </div>
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+    </section>
+    <StickyCTA productSlug={product.slug} productName={product.productName} />
+    <SocialProofToast orderCount={socialProofOrders} heroSelector="" formSelector="#checkout" />
+  </main>
+</BaseLayout>

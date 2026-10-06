@@ -1,0 +1,549 @@
+---
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import Icon from '../components/storefront/shared/Icon.astro';
+import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
+import StickyCTA from '../components/storefront/landing-pages/StickyCTA.astro';
+import SocialProofToast from '../components/storefront/shared/SocialProofToast.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+import { defaultCatalogContentId } from '../lib/catalog-feed';
+import { getRuntimeEnv } from '../lib/env';
+import { nativeLandingCanonicalPath } from '../lib/landing-pages';
+import { recentOrderCount } from '../lib/social-proof';
+import '../styles/form-hybrid.css';
+
+export const prerender = false;
+
+const product = await getStorefrontProduct(Astro.locals, 'aussie');
+if (!product) return Astro.rewrite('/404');
+const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
+
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'aussie-buah-landak')}`;
+const seoTitle = 'AUSSIE Buah Landak Sawit - Paksa Tandan Landak Berhenti, Buah Padat & Fruit Set Meledak';
+const seoDescription =
+  'Tandan landak membakar tonase sawit Anda tiap panen. AUSSIE menghajar akar masalah fruit set: tandan berduri, buah jarang, biji kosong. Paket COD, retur lewat CS, panduan tempur.';
+
+const sectionTitle = 'text-[26px] font-bold leading-[1.16] tracking-tight text-[#8B1E1E]';
+const body = 'text-[15px] leading-relaxed text-slate-600';
+const listIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#8B1E1E]';
+const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#9A3412]';
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  image="/images/landing/aussie/aussie-buah-landak-hero.webp"
+  canonical={canonical}
+  hideHeader={true}
+  hideFooter={true}
+  breadcrumbs={[
+    { name: 'Beranda', url: '/' },
+    { name: 'Aussie Buah Landak', url: '/aussie-buah-landak' },
+  ]}
+>
+  <main class="mx-auto min-h-screen w-full max-w-[480px] bg-white text-slate-950">
+    <MetaLandingTracker
+      slug="aussie-buah-landak"
+      contentId={defaultCatalogContentId(product)}
+      contentName={product.productName}
+      price={product.price}
+    />
+    <section class="bg-white pb-8 text-left text-slate-950">
+      <div class="px-5 pt-8">
+        <p
+          class="mb-4 inline-flex items-center rounded-md bg-[#FFF6F2] px-3 py-1.5 text-[11px] font-medium uppercase tracking-widest text-[#8B1E1E] ring-1 ring-[#8B1E1E]/10"
+        >
+          <span class="mr-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#FBBF24] text-[#8B1E1E]"
+            ><Icon name="lucide:triangle-alert" class="h-2.5 w-2.5" aria-hidden="true" /></span
+          >
+          Pembasmi Tandan Landak #1
+        </p>
+        <h1 class="max-w-[410px] text-[34px] font-bold leading-[1.08] tracking-tight text-slate-950">
+          Tandan Landak Diam-Diam <span
+            class="box-decoration-clone px-0.5 text-[#8B1E1E]"
+            style="background-image: linear-gradient(to top, #FFD84D 0.22em, rgba(255,216,77,0) 0.22em); background-repeat: no-repeat; background-position: 0 94%; background-size: 100% 100%;"
+            >Membakar Tonase Sawit Anda Jadi Abu!</span
+          >
+        </h1>
+        <p class="mt-5 max-w-[390px] text-[16px] font-semibold leading-relaxed text-slate-700">
+          <strong class="text-[#8B1E1E]">Tandan berduri, buah jarang, biji kosong, fruit set ANJLOK</strong> — tiap janjang
+          landak yang Anda biarkan itu <span class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >uang yang dibakar hidup-hidup tiap panen.</span
+          >
+        </p>
+      </div>
+
+      <div class="relative mt-8">
+        <div
+          class="relative overflow-hidden border-y border-slate-100 bg-white shadow-[0_14px_34px_rgba(139,30,30,0.10)]"
+        >
+          <img
+            src="/images/landing/aussie/aussie-buah-landak-hero.webp"
+            alt="Tandan sawit buah landak berduri dengan buah jarang"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
+            width="1200"
+            height="800"
+            fetchpriority="high"
+            decoding="async"
+          />
+          <div
+            class="absolute left-4 top-4 rounded-md bg-[#8B1E1E] px-3 py-1.5 text-[11px] font-medium uppercase tracking-widest text-white shadow-lg"
+          >
+            Tandan Landak = Bom Waktu
+          </div>
+        </div>
+        <div
+          class="relative z-20 mx-auto -mt-6 w-[90%] rounded-lg border border-[#FFD84D]/70 bg-white p-4 text-left shadow-[0_14px_34px_rgba(139,30,30,0.14)]"
+        >
+          <div class="flex gap-3">
+            <span class="relative mt-1 flex h-3 w-3 shrink-0">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#8B1E1E] opacity-70"></span>
+              <span
+                class="relative inline-flex h-3 w-3 rounded-full bg-[#8B1E1E] shadow-[0_0_0_6px_rgba(139,30,30,0.10)]"
+              ></span>
+            </span>
+            <div>
+              <h2 class="text-[18px] font-bold leading-tight text-[#8B1E1E]">Fruit set hancur, tandan jadi LANDAK.</h2>
+              <p class="mt-2 text-[14px] leading-relaxed text-slate-700">
+                Begitu penyerbukan gagal dan nutrisi bunga timpang, <strong class="text-[#9A3412]"
+                  >buah langsung jarang dan tandan berduri</strong
+                >. Dibiarkan = tonase Anda terjun bebas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-5 py-10">
+      <h2 class={sectionTitle}>
+        AUSSIE bukan pupuk biasa. Ini <span class="box-decoration-clone bg-[#FDE2D2] px-1.5 pb-0.5 text-[#8B1E1E]"
+          >senjata pemusnah tandan landak</span
+        > yang bikin pohon Anda kembali rakus berbuah.
+      </h2>
+      <p class={`${body} mt-3`}>
+        Fokusnya brutal: hajar akar masalah buah jarang, paksa pohon kembali kuat dan ganas di masa berbunga — tandan
+        berikutnya wajib lebih padat dan berisi.
+      </p>
+      <div class="mt-7 grid gap-3">
+        <div class="rounded-2xl border border-[#8B1E1E]/10 bg-[#FFF6F2] p-4">
+          <div class="flex gap-3">
+            <span class={listIcon}><Icon name="lucide:leaf" class="h-4 w-4" aria-hidden="true" /></span><p class={body}>
+              Menendang balik pohon yang <strong class="text-slate-950"
+                >bunga rontok, buah jarang, tandan berduri, dan fruit set nol</strong
+              > supaya berhenti membakar duit Anda.
+            </p>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-[#8B1E1E]/10 bg-white p-4">
+          <div class="flex gap-3">
+            <span class={listIcon}><Icon name="lucide:droplets" class="h-4 w-4" aria-hidden="true" /></span><p
+              class={body}
+            >
+              Menutup paksa <strong class="text-slate-950">kekurangan nutrisi mikro penting (boron & magnesium)</strong> yang
+              jadi biang tandan berubah jadi landak.
+            </p>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-[#8B1E1E]/10 bg-[#FFF6F2] p-4">
+          <div class="flex gap-3">
+            <span class={listIcon}><Icon name="lucide:calendar-sync" class="h-4 w-4" aria-hidden="true" /></span><p
+              class={body}
+            >
+              Dihantam rutin lewat <strong class="text-slate-950">semprot pelepah/daun + kocor/siram akar</strong> di fase
+              pembungaan dan blok rawan landak.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-[#8B1E1E]/10 bg-[#FFF7ED] px-5 py-10">
+      <h2 class={sectionTitle}>
+        Kalau tanda ini muncul, kebun Anda sudah <span
+          class="text-[#9A3412] underline decoration-orange-200 decoration-4 underline-offset-4">mode rugi berat</span
+        >
+      </h2>
+      <div class="mt-7 grid gap-5">
+        <div class="flex gap-3">
+          <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span><p
+            class={body}
+          >
+            Tandan tumbuh berduri seperti landak, buah jarang dan kerdil, banyak buah batu yang tak pernah matang.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span><p
+            class={body}
+          >
+            Biji sedikit atau kosong, buah yang jadi (fruit set) jeblok sampai di bawah 2%, dan berat janjang (BJR)
+            rontok tiap panen.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span><p
+            class={body}
+          >
+            Pohon tetap dipupuk mahal, tapi tonase TBS dan rendemen minyak terjun — duit pupuk hangus, hasil nyaris nol.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <h2 class={sectionTitle}>
+        Buah landak itu lahir <span class="box-decoration-clone bg-[#FDE2D2] px-1.5 pb-0.5 text-[#8B1E1E]"
+          >dari bunga yang gagal</span
+        >
+      </h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Berhenti cuma kejar daun hijau. Kalau penyerbukan gagal dan nutrisi bunga timpang, percuma tambah pupuk dasar —
+        yang wajib dihajar itu masa berbunga dan kekuatan pohon.
+      </p>
+      <div class="grid gap-4">
+        <figure class="relative overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+          <img
+            src="/images/landing/aussie/aussie-buah-landak-pohon-sekarat.webp"
+            alt="Sawit sekarat dengan pembungaan dan pembuahan gagal"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption
+            class="absolute left-3 top-3 rounded-md bg-[#9A3412] px-3 py-1 text-[12px] font-medium uppercase tracking-wide text-white shadow-sm"
+          >
+            Pohon Sekarat
+          </figcaption>
+        </figure>
+        <figure class="relative overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+          <img
+            src="/images/landing/aussie/aussie-buah-landak-bunga-nutrisi.webp"
+            alt="Bunga sawit dan kumbang penyerbuk pada fase pembungaan"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption
+            class="absolute left-3 top-3 rounded-md bg-[#8B1E1E] px-3 py-1 text-[12px] font-medium uppercase tracking-wide text-white shadow-sm"
+          >
+            Bunga & Nutrisi
+          </figcaption>
+        </figure>
+      </div>
+      <p class="mt-5 text-[14px] leading-relaxed text-slate-500">
+        <strong class="text-slate-950">Catatan jujur:</strong> AUSSIE bukan sulap sekali siram dan bukan pengganti serangga
+        penyerbuk atau polinasi buatan. Tetap dampingi sanitasi kebun, kendali gulma, dan penyerbukan. Normalisasi tandan
+        butuh proses (± 6 bulan ikut siklus buah) — tapi sekali AUSSIE bekerja, tandan baru Anda yang bicara.
+      </p>
+    </section>
+
+    <section class="border-t border-[#8B1E1E]/20 bg-[#2B0B0B] px-5 py-10 text-white">
+      <h2 class="text-[28px] font-bold leading-[1.12] tracking-tight text-white">
+        Cara Pakai yang <span class="text-[#FDE2D2]">menghantam langsung ke sumber</span>
+      </h2>
+      <p class="mt-3 mb-6 text-[15px] leading-relaxed text-slate-400">
+        Gunakan kombo semprot pelepah/daun + kocor/siram akar. Bidik pohon yang bunga/buahnya bermasalah dan blok yang
+        dipenuhi tandan landak.
+      </p>
+      <div class="-mx-5 grid gap-4">
+        <div class="relative overflow-hidden bg-slate-900">
+          <img
+            src="/images/landing/aussie/aussie-buah-landak-sebelum-perawatan.webp"
+            alt="Kondisi Sebelum Perawatan Aussie"
+            class="aspect-[3/2] w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <div
+            class="absolute left-4 top-4 rounded bg-[#9A3412] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow"
+          >
+            Sebelum
+          </div>
+        </div>
+        <div class="relative overflow-hidden bg-slate-900">
+          <img
+            src="/images/landing/aussie/aussie-buah-landak-setelah-perawatan.webp"
+            alt="Hasil Setelah Perawatan Aussie"
+            class="aspect-[3/2] w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <div
+            class="absolute left-4 top-4 rounded bg-[#15803D] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow"
+          >
+            Setelah Perawatan
+          </div>
+        </div>
+      </div>
+      <div class="mt-7 grid gap-5">
+        <div class="flex gap-3">
+          <span
+            class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#FDE2D2] text-[14px] font-medium text-slate-950"
+            >1</span
+          ><p class="text-[15px] leading-relaxed text-slate-300">
+            Tandai blok pembantai: tandan landak, buah jarang, bunga rontok, atau pohon yang fruit set-nya jeblok.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <span
+            class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#FDE2D2] text-[14px] font-medium text-slate-950"
+            >2</span
+          ><p class="text-[15px] leading-relaxed text-slate-300">
+            Campur AUSSIE sesuai arahan label/admin, lalu hantam dengan <strong class="bg-slate-800 px-1 text-white"
+              >semprot pelepah/daun + kocor/siram akar</strong
+            > ke pohon sasaran.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <span
+            class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#FDE2D2] text-[14px] font-medium text-slate-950"
+            >3</span
+          ><p class="text-[15px] leading-relaxed text-slate-300">
+            Pantau pembungaan dan tandan baru sambil rawat sanitasi & penyerbukan. Blok rawan wajib lanjut serangan
+            rutin.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <h2 class={sectionTitle}>
+        Dipakai saat tonase mulai <span class="box-decoration-clone bg-[#FDE2D2] px-1.5 pb-0.5 text-[#8B1E1E]"
+          >bocor jutaan rupiah</span
+        >
+      </h2>
+      <p class={`${body} mt-3 mb-7`}>
+        Begitu tandan landak dan buah jarang merajalela, petani sawit butuh pukulan telak — bukan sekadar nambah pupuk
+        lalu pasrah menunggu tandan berisi sendiri.
+      </p>
+      <div class="grid divide-y divide-[#8B1E1E]/10 border-y border-[#8B1E1E]/10 py-2">
+        <div class="py-5 first:pt-0">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="flex items-center gap-1 text-[16px] font-bold text-slate-950">
+                Pak Herman <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                  ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+                >
+              </p>
+              <p class="mt-0.5 text-[13px] font-medium text-slate-500">Kampar, Riau • Tandan Landak</p>
+            </div>
+            <div class="shrink-0 text-[14px] text-[#FBBF24]" role="img" aria-label="5 dari 5 bintang">★★★★★</div>
+          </div>
+          <p class="mt-3 border-l-2 border-[#8B1E1E]/25 pl-3 text-[15px] leading-relaxed text-slate-700">
+            “Blok saya tadinya penuh <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950"
+              >tandan berduri dan buah jarang</strong
+            >. Setelah rutin AUSSIE, tandan baru langsung lebih padat — saya sampai kaget hasilnya.”
+          </p>
+        </div>
+        <div class="py-5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="flex items-center gap-1 text-[16px] font-bold text-slate-950">
+                Rahmat S <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                  ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+                >
+              </p>
+              <p class="mt-0.5 text-[13px] font-medium text-slate-500">Muaro Jambi, Jambi • Fruit Set Jeblok</p>
+            </div>
+            <div class="shrink-0 text-[14px] text-[#FBBF24]" role="img" aria-label="5 dari 5 bintang">★★★★★</div>
+          </div>
+          <p class="mt-3 border-l-2 border-[#8B1E1E]/25 pl-3 text-[15px] leading-relaxed text-slate-700">
+            “Fruit set blok pinggir kebun saya hampir mati. AUSSIE saya jadikan andalan, <strong class="text-[#8B1E1E]"
+              >tonase pelan-pelan balik naik</strong
+            > dan ada panduan pemakaian yang jelas.”
+          </p>
+        </div>
+        <div class="py-5 last:pb-0">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="flex items-center gap-1 text-[16px] font-bold text-slate-950">
+                M. Arif <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                  ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+                >
+              </p>
+              <p class="mt-0.5 text-[13px] font-medium text-slate-500">
+                Labuhanbatu, Sumatera Utara • Perawatan Tandan
+              </p>
+            </div>
+            <div class="shrink-0 text-[14px] text-[#FBBF24]" role="img" aria-label="5 dari 5 bintang">★★★★★</div>
+          </div>
+          <p class="mt-3 border-l-2 border-[#8B1E1E]/25 pl-3 text-[15px] leading-relaxed text-slate-700">
+            “Saya gempur pohon yang tandannya landak. Beberapa siklus kemudian, <strong
+              class="box-decoration-clone bg-[#FDE2D2] px-1.5 pb-0.5 text-[#8B1E1E]"
+              >tandan baru jauh lebih berisi</strong
+            > dan kebun jadi gampang dipantau.”
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-slate-50 px-5 py-10">
+      <h2 class={sectionTitle}>
+        Jangan biarkan tandan landak <span class="text-[#9A3412]">membantai kebun Anda</span>
+      </h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Kirim kondisi kebun, pilih paket, lalu admin langsung bantu proses pesanan dan arahan tempur pertama pemakaian.
+      </p>
+      <div class="grid grid-cols-2 gap-3">
+        {
+          [1, 2, 3, 4].map((n) => (
+            <img
+              src={`/images/landing/aussie/testimoni-wa-aussie-buah-landak-${n}.webp`}
+              alt={`Screenshot WhatsApp pemesanan Aussie ${n}`}
+              class="aspect-[9/16] w-full rounded-lg border border-slate-200 object-cover shadow-sm"
+              loading="lazy"
+              decoding="async"
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-[#8B1E1E]/10 bg-[#FFF6F2] px-5 py-10">
+      <div class="mb-5 flex items-center gap-2">
+        <span
+          class="flex h-6 w-6 animate-pulse items-center justify-center rounded-full bg-[#9A3412] text-white shadow-[0_0_12px_rgba(220,38,38,0.6)]"
+          ><Icon name="lucide:badge-alert" class="h-4 w-4" aria-hidden="true" /></span
+        >
+        <p class="text-[11px] font-medium uppercase tracking-widest text-[#8B1E1E]">Product Knowledge</p>
+      </div>
+      <h2 class="text-[30px] font-bold leading-[1.12] tracking-tight text-slate-950">
+        AUSSIE Sawit: <span class="inline-block rounded-md bg-[#FDE2D2] px-2 py-1 leading-none text-[#8B1E1E]"
+          >Pelipat Ganda Fruit Set</span
+        >
+      </h2>
+      <p class="mt-4 text-[15px] leading-relaxed text-slate-700">
+        <strong class="text-slate-950">AUSSIE bukan pupuk sawit biasa.</strong> Ini perangsang tumbuh (plant stimulator) berbahan
+        organik tinggi yang menghajar akar masalah tandan landak — memaksa pohon kembali kuat dan ganas di masa berbunga.
+      </p>
+      <div class="mt-8 grid gap-6">
+        <figure>
+          <img
+            src="/images/landing/aussie/produk.webp"
+            alt="Botol Aussie pemusnah tandan landak sawit"
+            class="aspect-[3/2] w-full rounded-lg border border-slate-200 object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption class="mt-3 border-l-4 border-[#8B1E1E] pl-3">
+            <h3 class="text-[16px] font-bold text-slate-950">Mesin Pemadat Tandan</h3>
+            <p class="mt-1 text-[15px] leading-relaxed text-slate-600">
+              Bahan organik tinggi, unsur nutrisi, dan bahan aktif organik yang menggempur dari akar, batang, hingga
+              pembungaan.
+            </p>
+          </figcaption>
+        </figure>
+        <figure>
+          <img
+            src="/images/landing/aussie/aussie-buah-landak-sebelum-perawatan.webp"
+            alt="Tandan sawit buah landak yang wajib dihajar"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption class="mt-3 border-l-4 border-[#9A3412] pl-3">
+            <h3 class="text-[16px] font-bold text-slate-950">Bidik Vitalitas & Pembungaan</h3>
+            <p class="mt-1 text-[15px] leading-relaxed text-slate-600">
+              Melibas pohon yang fruit set-nya jeblok, bunga rontok, dan tandan berduri supaya kembali membentuk buah
+              padat.
+            </p>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="mt-9 grid gap-5 border-t border-[#8B1E1E]/15 pt-8">
+        <div class="flex gap-4">
+          <span class={listIcon}><Icon name="lucide:flower-2" class="h-4 w-4" aria-hidden="true" /></span><p
+            class="text-[15px] leading-relaxed text-slate-700"
+          >
+            <strong class="mb-1 block text-slate-950">Kuasai Fase Pembungaan.</strong> Pohon dipaksa siap di fase bunga, saat
+            tandan landak paling rawan lahir.
+          </p>
+        </div>
+        <div class="flex gap-4">
+          <span class={listIcon}><Icon name="lucide:droplets" class="h-4 w-4" aria-hidden="true" /></span><p
+            class="text-[15px] leading-relaxed text-slate-700"
+          >
+            <strong class="mb-1 block text-slate-950">Banjiri Nutrisi Mikro.</strong> Menutup paksa kekurangan boron & magnesium
+            yang jadi biang tandan landak.
+          </p>
+        </div>
+        <div class="flex gap-4">
+          <span class={listIcon}><Icon name="lucide:activity" class="h-4 w-4" aria-hidden="true" /></span><p
+            class="text-[15px] leading-relaxed text-slate-700"
+          >
+            <strong class="mb-1 block text-slate-950">Vitalitas Dulu, Tonase Meledak.</strong> Memacu pembentukan tandan baru
+            begitu fase stres mulai dijinakkan.
+          </p>
+        </div>
+        <div class="flex gap-4">
+          <span class={listIcon}><Icon name="lucide:calendar-sync" class="h-4 w-4" aria-hidden="true" /></span><p
+            class="text-[15px] leading-relaxed text-slate-700"
+          >
+            <strong class="mb-1 block text-slate-950">Kunci Mati Blok Rawan Tiap Bulan.</strong> Untuk blok yang dibanjiri
+            tandan landak, buah jarang, dan fruit set jeblok.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-[#8B1E1E]/10 bg-[#8B1E1E] px-5 py-10 text-center text-white">
+      <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center text-[#FBBF24]">
+        <Icon name="lucide:shield-check" class="h-14 w-14" aria-hidden="true" />
+      </div>
+      <p class="mb-2 text-[11px] font-medium uppercase tracking-widest text-[#FAD7D7]">Belanja Aman</p>
+      <h2 class="text-[36px] font-bold leading-[1.1] tracking-tight text-white">BELANJA AMAN</h2>
+      <p class="mx-auto mt-4 max-w-[320px] text-[15px] leading-relaxed text-red-50/80">
+        Order diproses lewat form resmi Petani Sejahtera. Aman, jelas, dan bisa dibayar saat barang sampai.
+      </p>
+      <div class="mt-8 grid gap-5 text-left">
+        <div class="flex items-start gap-4 rounded-2xl border border-[#FBBF24]/30 bg-white p-4 shadow-sm">
+          <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center text-[#8B1E1E]"
+            ><Icon name="lucide:badge-check" class="h-5 w-5" aria-hidden="true" /></span
+          ><p class="text-[15px] leading-relaxed text-slate-700">
+            <strong class="mb-1 block text-slate-950">100% Original.</strong> Produk asli tersegel dari distributor resmi.
+          </p>
+        </div>
+        <div class="flex items-start gap-4 rounded-2xl border border-[#FBBF24]/30 bg-white p-4 shadow-sm">
+          <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center text-[#8B1E1E]"
+            ><Icon name="lucide:badge-check" class="h-5 w-5" aria-hidden="true" /></span
+          ><p class="text-[15px] leading-relaxed text-slate-700">
+            <strong class="mb-1 block text-slate-950">Bisa COD.</strong> Pesan sekarang, bayar ke kurir saat paket sampai.
+          </p>
+        </div>
+        <div class="flex items-start gap-4 rounded-2xl border border-[#FBBF24]/30 bg-white p-4 shadow-sm">
+          <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center text-[#8B1E1E]"
+            ><Icon name="lucide:badge-check" class="h-5 w-5" aria-hidden="true" /></span
+          ><p class="text-[15px] leading-relaxed text-slate-700">
+            <strong class="mb-1 block text-slate-950">Retur Lewat CS.</strong> Barang salah atau rusak? Hubungi CS dengan nomor pesanan dan foto kondisi barang untuk pengajuan retur.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="checkout" class="border-t-8 border-slate-100 bg-white py-12">
+      <div class="px-5 pb-8 text-center">
+        <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center">
+          <span class="flex h-6 w-6 items-center justify-center text-[#8B1E1E]"
+            ><Icon name="lucide:arrow-down" class="h-5 w-5" aria-hidden="true" /></span
+          >
+        </div>
+        <p class="mb-2 text-[11px] font-medium uppercase tracking-widest text-[#8B1E1E]">
+          Stok Terbatas, Jangan Ditunda
+        </p>
+        <h2 class="mx-auto max-w-[320px] text-[30px] font-bold leading-[1.12] tracking-tight text-slate-950">
+          Amankan Paket <span class="inline-block rounded-md bg-[#FDE2D2] px-2 py-1 leading-none text-[#8B1E1E]"
+            >AUSSIE</span
+          >
+        </h2>
+        <p class="mx-auto mt-4 max-w-[320px] text-[15px] leading-relaxed text-slate-600">
+          Isi data dengan benar biar paket penghancur tandan landak bisa <strong class="text-slate-950"
+            >langsung meluncur hari ini.</strong
+          >
+        </p>
+      </div>
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+    </section>
+    <StickyCTA productSlug={product.slug} productName={product.productName} />
+    <SocialProofToast orderCount={socialProofOrders} heroSelector="" formSelector="#checkout" />
+  </main>
+</BaseLayout>

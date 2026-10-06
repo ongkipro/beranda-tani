@@ -1,0 +1,758 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import Icon from '../components/storefront/shared/Icon.astro';
+import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
+import StickyCTA from '../components/storefront/landing-pages/StickyCTA.astro';
+import SocialProofToast from '../components/storefront/shared/SocialProofToast.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+import { defaultCatalogContentId } from '../lib/catalog-feed';
+import { getRuntimeEnv } from '../lib/env';
+import { nativeLandingCanonicalPath } from '../lib/landing-pages';
+import { recentOrderCount } from '../lib/social-proof';
+import '../styles/form-hybrid.css';
+
+export const prerender = false;
+
+const product = await getStorefrontProduct(Astro.locals, 'saratoga');
+if (!product) return Astro.rewrite('/404');
+const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
+
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'saratoga-anthurium')}`;
+const seoTitle = 'Saratoga Anthurium - Serum Asam Amino Perangsang Bunga Premium';
+const seoDescription =
+  'Saratoga untuk penghobi anthurium Indonesia: membantu anthurium yang subur daun tapi susah berbunga agar tangkai bunganya keluar, kelopaknya melebar merah pekat, dan berbunga terus-menerus.';
+
+const sectionTitle = 'text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950';
+const body = 'text-[16px] leading-relaxed text-slate-600';
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  image="/images/landing/saratoga-anthurium/saratoga-serum-anthurium-merah-berbunga-lebat.webp"
+  canonical={canonical}
+  hideHeader={true}
+  hideFooter={true}
+  breadcrumbs={[
+    { name: 'Beranda', url: '/' },
+    { name: 'Saratoga Anthurium', url: '/saratoga-anthurium' },
+  ]}
+>
+  <main class="mx-auto min-h-screen w-full max-w-[480px] bg-white text-slate-950">
+    <MetaLandingTracker
+      slug="saratoga-anthurium"
+      contentId={defaultCatalogContentId(product)}
+      contentName={product.productName}
+      price={product.price}
+    />
+
+    <section class="bg-white pb-8 text-center">
+      <div class="px-5 pt-8">
+        <h1
+          class="mx-auto max-w-[440px] text-[clamp(32px,8.8vw,36px)] font-extrabold leading-[1.14] tracking-tight text-slate-950"
+        >
+          Anthurium Cuma Tumbuh Daun Terus? Saatnya Dipaksa <span class="hl-brush">Rajin Berbunga!</span>
+        </h1>
+        <p class="mx-auto mt-4 max-w-[400px] text-[16px] font-semibold leading-relaxed text-slate-700">
+          Bahkan anthurium <strong class="text-slate-950 font-bold">“bandel” yang bertahun-tahun cuma berdaun</strong>.
+          Cukup rutin disemprot Saratoga — serum asam amino <span
+            class="font-bold text-slate-950 underline decoration-[#BE123C]/40 decoration-2 underline-offset-4"
+            >teknologi Jepang</span
+          >: tangkai bunga naik, kelopak melebar, warnanya makin merah pekat.
+        </p>
+      </div>
+
+      <div class="mt-8">
+        <div class="relative overflow-hidden bg-slate-950 aspect-[3/2]">
+          <img
+            src="/images/landing/saratoga-anthurium/saratoga-serum-anthurium-merah-berbunga-lebat.webp"
+            alt="Serum asam amino Saratoga untuk anthurium merah berbunga lebat: memicu tangkai bunga muncul, kelopak melebar mengilap, dan warna merah pekat"
+            class="h-full w-full object-cover"
+            width="1000"
+            height="667"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+
+          <div class="absolute bottom-0 left-0 right-0 bg-slate-950/80 px-4 py-3 text-center backdrop-blur-sm">
+            <p class="text-[12.5px] font-bold text-[#BBF7D0] flex items-start justify-center gap-1.5">
+              <Icon name="lucide:thumbs-up" class="h-4 w-4 text-[#BBF7D0] shrink-0 mt-0.5" />
+              <span class="text-left leading-tight"
+                >9 dari 10 anthurium yang tadinya cuma berdaun akhirnya keluar tangkai bunga berkat Saratoga!</span
+              >
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2.5 px-4">
+          <span class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-700">
+            <Icon name="lucide:flask-conical" class="h-4 w-4 text-[#14532D]" />
+            Teknologi Jepang
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-700">
+            <Icon name="lucide:truck" class="h-4 w-4 text-[#14532D]" />
+            Bisa COD
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-700">
+            <Icon name="lucide:badge-check" class="h-4 w-4 text-[#14532D]" />
+            Garansi Asli 100%
+          </span>
+        </div>
+
+        <div class="mt-6 px-5 text-left border-l-2 border-emerald-600 pl-4">
+          <h2 class="text-[15px] font-bold text-slate-950">Anthurium berdaun lebat belum tentu mau memunculkan bunga.</h2>
+          <p class="text-[13.5px] leading-relaxed text-slate-600 mt-1">
+            Oleh karena itu, fokus perawatannya harus diubah: dari yang awalnya hanya untuk menyuburkan daun, kini beralih pada merangsang munculnya tangkai bunga dari sela ketiak daun, memaksimalkan lebar kelopak, hingga membuatnya rutin berbunga.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-red-50/30 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-red-600">Keluhan Penghobi</span>
+      <h2 class={`${sectionTitle} mt-1`}>
+        Anthurium Rajin Tumbuh, tapi <span class="hl-brush">Tak Kunjung Berbunga</span>
+      </h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Awalnya, kita tentu bangga melihat daun yang tumbuh lebar dan segar. Namun setelah berbulan-bulan, tanaman justru hanya sibuk memproduksi daun baru tanpa ada tanda-tanda berbunga. Padahal, pada anthurium dewasa, setiap daun penuh seharusnya diiringi oleh tumbuhnya satu tangkai bunga baru dari sela ketiaknya.
+      </p>
+      <div class="mt-6 space-y-4">
+        {
+          [
+            [
+              'Subur Daun, Susah Berbunga',
+              'Anthurium terus mengeluarkan daun baru yang lebar dan mengilap, tapi ketiak daunnya tetap kosong. Tidak ada tangkai bunga yang muncul, padahal tanamannya sudah cukup dewasa.',
+            ],
+            [
+              'Bunga Kecil dan Warnanya Tetap Hijau',
+              'Bunga sempat keluar, tapi kelopaknya sempit dan tidak kunjung melebar. Warnanya pun berhenti di hijau, tidak pernah berubah jadi merah pekat.',
+            ],
+            [
+              'Bunga Cepat Kusam dan Menghitam',
+              'Kalaupun mekar, warna kelopaknya cepat pudar dan ujungnya mengering kecokelatan hanya dalam hitungan minggu.',
+            ],
+          ].map(([title, desc]) => (
+            <div class="flex gap-3.5 items-start">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center text-red-600 mt-1">
+                <Icon name="lucide:x-circle" class="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div>
+                <h3 class="text-[16px] font-bold text-slate-900">{title}</h3>
+                <p class="text-[15px] text-slate-600 mt-0.5 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]"
+        >Perbandingan Fisik</span
+      >
+      <h2 class={`${sectionTitle} mt-1`}>Bedanya Terlihat Saat Tangkai Bunga Mulai Muncul</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Dua pot anthurium bisa sama-sama terlihat hijau dan rimbun. Perbedaannya hanya satu: tanaman mana yang sukses memunculkan tangkai bunga dari sela daunnya, dan tanaman mana yang mandek hanya menumbuhkan daun.
+      </p>
+      <div class="space-y-6">
+        <!-- Baris 1: Munculnya tangkai bunga -->
+        <div>
+          <p class="mb-2 text-[12px] font-semibold uppercase tracking-wider text-slate-500">
+            1. Munculnya Tangkai Bunga
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="relative overflow-hidden bg-slate-50/60 border border-slate-100">
+              <img
+                src="/images/landing/saratoga-anthurium/anthurium-hanya-berdaun-tanpa-bunga.webp"
+                alt="Kondisi anthurium yang hanya berdaun lebat namun ketiak daun kosong tanpa tangkai bunga"
+                class="aspect-[3/2] w-full object-cover"
+                width="760"
+                height="507"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Tanpa Bunga
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-slate-900">Mandek di Daun</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
+                  Daunnya terus bertambah lebar, tapi ketiak daun tetap kosong. Tidak ada tanda calon tangkai bunga.
+                </p>
+              </div>
+            </div>
+            <div class="relative overflow-hidden bg-slate-50/60 border border-slate-100">
+              <img
+                src="/images/landing/saratoga-anthurium/anthurium-berbunga-lebat-tangkai-muncul.webp"
+                alt="Kondisi anthurium prima berbunga lebat setelah tangkai bunga terus bermunculan berkat asam amino"
+                class="aspect-[3/2] w-full object-cover"
+                width="760"
+                height="507"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Bunga Lebat
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-emerald-800">Tangkai Bunga Rutin Tumbuh</h3>
+                <p class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                  Hampir di setiap ketiak daun muncul bakal tangkai bunga, sehingga tanaman terus berbunga silih berganti.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Baris 2: Kualitas bunga saat mekar -->
+        <div>
+          <p class="mb-2 text-[12px] font-semibold uppercase tracking-wider text-slate-500">
+            2. Kualitas Bunga Saat Mekar
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="relative overflow-hidden bg-slate-50/60 border border-slate-100">
+              <img
+                src="/images/landing/saratoga-anthurium/bunga-anthurium-sempit-dan-kusam.webp"
+                alt="Bunga anthurium yang kekurangan nutrisi pembungaan dengan kelopak sempit, kusam, dan pucat kehijauan"
+                class="aspect-[3/2] w-full object-cover"
+                width="760"
+                height="507"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Sempit &amp; Kusam
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-slate-900">Bunga Pucat</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
+                  Kelopaknya sempit, warnanya kusam kehijauan, permukaannya datar tanpa kilap.
+                </p>
+              </div>
+            </div>
+            <div class="relative overflow-hidden bg-slate-50/60 border border-slate-100">
+              <img
+                src="/images/landing/saratoga-anthurium/bunga-anthurium-merah-pekat-mengilap.webp"
+                alt="Bunga anthurium premium dengan kelopak melebar penuh, berwarna merah pekat mengilap yang tahan lama"
+                class="aspect-[3/2] w-full object-cover"
+                width="760"
+                height="507"
+                loading="lazy"
+                decoding="async"
+              />
+              <div
+                class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
+              >
+                Lebar &amp; Mengilap
+              </div>
+              <div class="p-3">
+                <h3 class="text-[13px] font-medium text-emerald-800">Bunga Prima</h3>
+                <p class="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                  Kelopaknya melebar penuh, merah pekat mengilap, dan bertahan lama di tangkainya.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-slate-950 px-5 py-10 text-white">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#BBF7D0]"
+        >Siklus Hidup Anthurium</span
+      >
+      <h2 class="text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-white mt-1">
+        Fase Inilah yang Menentukan <span class="text-[#BBF7D0]">Anthurium Mau Berbunga</span>
+      </h2>
+      <p class="mt-3 mb-8 text-[16px] leading-relaxed text-slate-400">
+        Begitu tanaman berhenti fokus melebarkan daun dan mulai menyiapkan bunga, kebutuhan nutrisinya berubah total.
+      </p>
+
+      <div class="relative pl-6 border-l border-slate-800 space-y-6 ml-2">
+        {
+          [
+            'Adaptasi Awal',
+            'Masa Daun & Akar',
+            'Muncul Tangkai Bunga',
+            'Kelopak Membuka',
+            'Berbunga Terus-Menerus',
+          ].map((item, index) => {
+            const isActive = item === 'Muncul Tangkai Bunga';
+            return (
+              <div class="relative flex gap-4 items-start">
+                <span
+                  class={`absolute -left-[37px] flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold ring-4 ring-slate-950 ${isActive ? 'bg-[#BBF7D0] text-slate-950 font-bold' : 'bg-slate-800 text-slate-400'}`}
+                >
+                  {index + 1}
+                </span>
+                <div>
+                  <h3 class={`text-[16px] font-semibold ${isActive ? 'text-[#BBF7D0]' : 'text-slate-200'}`}>{item}</h3>
+                  {isActive && (
+                    <p class="text-[15px] text-slate-400 mt-1.5 leading-relaxed">
+                      Masa krusial penentu apakah anthurium siap berbunga atau hanya terus berdaun. Fokus nutrisinya harus segera dialihkan pada pembungaan agar tangkai bunga cepat terdorong keluar.
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-emerald-50/30 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Tanda-Tanda Awal</span>
+      <h2 class={`${sectionTitle} mt-1`}>Kapan Anthurium Siap Didorong Berbunga?</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Amati perubahan fisik pada anthurium Anda. Jika tanda-tanda berikut mulai terlihat, artinya tanaman sudah masuk usia matang dan sangat siap dipacu untuk segera berbunga:
+      </p>
+      <div class="mb-6 bg-white/70 p-5 border border-slate-100">
+        <div class="relative border-l-2 border-emerald-100 pl-5 space-y-6">
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-600 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-900">1. Daun Dewasanya Sudah Cukup</h3>
+            <p class="text-[15px] text-slate-600 mt-1">
+              Anthurium sudah punya beberapa daun berukuran penuh sebagai cadangan energi untuk berbunga.
+            </p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-600 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-900">2. Akarnya Aktif dan Segar</h3>
+            <p class="text-[15px] text-slate-600 mt-1">
+              Ujung akarnya terlihat segar dan aktif menembus media tanam — tanda tanaman sedang menyerap nutrisi dengan
+              baik.
+            </p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-600 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-900">3. Muncul Tonjolan di Ketiak Daun</h3>
+            <p class="text-[15px] text-slate-600 mt-1">
+              Terlihat tonjolan runcing di pangkal tangkai daun. Itu calon tangkai bunga, bukan daun baru.
+            </p>
+          </div>
+          <div class="relative">
+            <span class="absolute -left-[27px] top-1.5 flex h-3 w-3 rounded-full bg-emerald-700 ring-4 ring-emerald-50"
+            ></span>
+            <h3 class="text-[16px] font-bold text-slate-950">4. Kelopaknya Mulai Membuka</h3>
+            <p class="text-[15px] text-slate-600 mt-1">
+              Kelopaknya membuka lalu melebar, dan warnanya berubah dari hijau menjadi merah pekat mengilap.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-amber-50/60 p-5 mt-6 border border-amber-100/50">
+        <h3 class="flex items-center gap-2 text-[15px] font-bold text-amber-900">
+          <Icon name="lucide:search" class="h-4.5 w-4.5 text-amber-700" />
+          Cara Mengeceknya di Rumah:
+        </h3>
+        <ul class="mt-3 space-y-2.5 text-[15px] leading-relaxed text-slate-700">
+          <li class="flex items-start gap-2">
+            <span class="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600"></span>
+            <span
+              ><strong>Cek ujung akarnya.</strong> Kalau segar dan aktif menembus media tanam, anthurium sudah siap didorong
+              berbunga.</span
+            >
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600"></span>
+            <span
+              ><strong>Raba ketiak daunnya.</strong> Kalau ada tonjolan runcing yang bentuknya beda dari gulungan daun, itu
+              calon tangkai bunga.</span
+            >
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="mt-1.5 flex h-1.5 w-1.5 shrink-0 rounded-full bg-amber-600"></span>
+            <span
+              ><strong>Hitung daun dewasanya.</strong> Kalau sudah ada beberapa daun berukuran penuh, cadangan energinya cukup
+              untuk berbunga.</span
+            >
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <div class="-mx-5 mb-8 relative border-y border-slate-100">
+        <img
+          src="/images/landing/saratoga-anthurium/saratoga-serum-perangsang-bunga-anthurium-premium.webp"
+          alt="Botol serum Saratoga premium perangsang bunga anthurium: kaya asam amino esensial teknologi Jepang untuk memacu tangkai bunga dan melebarkan kelopak"
+          class="aspect-[16/9] w-full object-cover"
+          width="1000"
+          height="563"
+          loading="lazy"
+          decoding="async"
+        />
+        <div
+          class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-950/90 to-transparent pt-10 pb-3.5 px-5 text-center"
+        >
+          <p class="text-[12px] font-bold uppercase tracking-widest text-[#BBF7D0]">Formulasi Khusus Anthurium</p>
+        </div>
+      </div>
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]"
+        >Spesifikasi Produk</span
+      >
+      <h2 class={`${sectionTitle} mt-1`}>Serum Asam Amino Premium Perangsang Bunga Anthurium</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        SARATOGA diramu secara khusus untuk memacu tumbuhnya tangkai bunga sekaligus menguatkan struktur kelopak. Ini bukanlah pupuk daun biasa, pestisida, ataupun anti-jamur. Tugas utamanya adalah menyuplai asam amino esensial dan nutrisi mikro, sehingga anthurium mampu mengalihkan energi pertumbuhannya dari daun menuju pembentukan bunga tanpa mengalami stres.
+      </p>
+
+      <div class="mt-8 space-y-6">
+        {
+          [
+            [
+              'lucide:flower-2',
+              'Merangsang Pertumbuhan Bunga',
+              'Memicu titik tumbuh aktif di ketiak daun agar tangkai bunga lebih cepat memanjang dan mekar merata di seluruh rumpun.',
+            ],
+            [
+              'lucide:sparkles',
+              'Kelopak Lebar & Warna Merona',
+              'Membantu proses mekarnya kelopak secara maksimal dengan hasil warna merah merona, mengilap, dan tidak mudah layu.',
+            ],
+            [
+              'lucide:sprout',
+              'Formula Asam Amino Jepang',
+              'Asupan yang siap serap melalui daun maupun akar tanpa memberatkan kerja tanaman, bahkan dalam kondisi cuaca ekstrem sekalipun.',
+            ],
+          ].map(([icon, title, desc]) => (
+            <div class="flex gap-4 items-start">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-emerald-50 text-[#14532D] mt-0.5">
+                <Icon name={icon} class="h-4.5 w-4.5" />
+              </span>
+              <div>
+                <h3 class="text-[16px] font-bold text-slate-900">{title}</h3>
+                <p class="text-[15px] text-slate-600 mt-1 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Cara Kerja</span>
+      <h2 class={`${sectionTitle} mt-1`}>Cara Saratoga Bekerja pada Anthurium</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Saratoga tidak perlu menunggu proses penyerapan via akar yang memakan waktu. Berikut adalah alur kerjanya secara instan pada tanaman:
+      </p>
+
+      <div class="-mx-5 mb-8 mt-4 border-y border-slate-100">
+        <img
+          src="/images/landing/saratoga-anthurium/saratoga-cara-kerja-langkah-1.webp"
+          alt="Ilustrasi penyemprotan asam amino Saratoga ke daun dan akar anthurium"
+          class="w-full object-cover"
+          width="800"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <div class="relative border-l-2 border-emerald-100/80 pl-7 space-y-5 ml-2 mt-8">
+        {
+          [
+            [
+              'lucide:spray-can',
+              'Disemprot ke Daun dan Akar',
+              'Saratoga yang telah dilarutkan disemprotkan secara merata ke daun dan pangkal akar pada pagi hari, di saat stomata (mulut daun) sedang terbuka lebar.',
+            ],
+            [
+              'lucide:activity',
+              'Cepat Diserap Tanaman',
+              'Jaringan daun dan akar langsung menyerap nutrisi asam amino hanya dalam hitungan jam, jauh lebih efisien dibandingkan penyerapan tanah.',
+            ],
+            [
+              'lucide:zap',
+              'Energi Teralihkan ke Bunga',
+              'Asupan ini memicu tanaman untuk berhenti menghabiskan energi pada daun, dan beralih fokus membentuk tangkai bunga.',
+            ],
+            [
+              'lucide:flower-2',
+              'Tangkai Tumbuh & Kelopak Mekar',
+              'Titik tumbuh di sela ketiak daun aktif memanjangkan tangkai bunga, dilanjutkan dengan kelopak yang mekar berukuran maksimal.',
+            ],
+            [
+              'lucide:award',
+              'Warna Merona dan Awet',
+              'Kelopak bunga matang sempurna dengan warna merah yang sangat pekat mengilap, serta tidak mudah rontok atau layu.',
+            ],
+          ].map(([icon, title, desc], index) => (
+            <div class="relative bg-white p-4 rounded-xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+              <span class="absolute -left-[41px] top-4 flex h-7 w-7 items-center justify-center rounded-full bg-[#14532D] text-white text-[12px] font-bold ring-4 ring-white shadow-sm shadow-emerald-200">
+                {index + 1}
+              </span>
+              <h3 class="text-[15px] font-bold text-slate-900 flex items-center gap-2.5">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-[#14532D]">
+                  <Icon name={icon} class="h-4 w-4" />
+                </span>
+                {title}
+              </h3>
+              <p class="text-[14px] text-slate-600 mt-2.5 leading-relaxed">{desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      /*
+      PLACEHOLDER — testimoni di bawah ini BUKAN testimoni pelanggan asli.
+      Wajib diganti dengan testimoni + foto nyata dari brand sebelum publish.
+      Badge "Terverifikasi" tidak boleh menempel pada cerita karangan.
+      Lihat SARATOGA_ANTHURIUM_IMAGE_BRIEF.md.
+    */
+    }
+    <section class="border-t border-slate-100 px-5 py-10 bg-white">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Studi Kasus</span>
+      <h2 class={`${sectionTitle} mt-1`}>Hasil Nyata Penghobi Anthurium Indonesia</h2>
+      <p class={`${body} mt-3 mb-8`}>
+        Berikut adalah pengalaman nyata para penghobi anthurium setelah mereka beralih memberikan nutrisi khusus perangsang bunga.
+      </p>
+
+      <div class="space-y-10">
+        {
+          [
+            {
+              name: 'Ibu Ratna',
+              location: 'Bandung, Jawa Barat',
+              cropProblem: 'Anthurium Merah • Keluhan: 2 Tahun Cuma Berdaun',
+              review:
+                'Anthurium saya sehat, daunnya lebar dan mengilap, tapi <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950 font-semibold">dua tahun tidak pernah keluar tangkai bunga</strong>. Saya sempat pasrah. Setelah diarahkan admin, saya semprot Saratoga rutin tiap pagi. Baru beberapa minggu, <strong class="box-decoration-clone bg-emerald-100 px-1.5 pb-0.5 text-emerald-800 font-semibold">muncul tonjolan tangkai bunga</strong> di ketiak daunnya. Sekarang malah berbunga bergantian.',
+              image: '/images/landing/saratoga-anthurium/testimoni-ibu-ratna-bandung-anthurium-berbunga.webp',
+            },
+            {
+              name: 'Pak Herman',
+              location: 'Surabaya, Jawa Timur',
+              cropProblem: 'Anthurium Oranye • Keluhan: Bunga Kecil dan Hijau',
+              review:
+                'Anthurium saya sering keluar tangkai bunga, tapi <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950 font-semibold">kelopaknya sempit dan warnanya berhenti di hijau</strong>. Setelah admin menjelaskan pentingnya asam amino saat kelopak mulai membuka, saya rutin menyemprot Saratoga. <strong class="box-decoration-clone bg-emerald-100 px-1.5 pb-0.5 text-emerald-800 font-semibold">Kelopaknya jadi melebar penuh</strong> dan warnanya pekat mengilap.',
+              image: '/images/landing/saratoga-anthurium/testimoni-pak-herman-surabaya-kelopak-anthurium-melebar.webp',
+            },
+            {
+              name: 'Ibu Wayan',
+              location: 'Denpasar, Bali',
+              cropProblem: 'Anthurium Pink • Keluhan: Jarang Berbunga dan Cepat Kusam',
+              review:
+                'Anthurium saya jarang berbunga dan <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950 font-semibold">warnanya cepat pudar</strong>. Setelah dipandu cara pakai Saratoga, tanamannya jadi <strong class="box-decoration-clone bg-emerald-100 px-1.5 pb-0.5 text-emerald-800 font-semibold">lebih rajin berbunga dan warnanya pekat mengilap</strong>. Kelopaknya juga lebih tahan lama. Saya puas dengan pendampingan adminnya.',
+              image: '/images/landing/saratoga-anthurium/testimoni-ibu-wayan-denpasar-anthurium-warna-pekat.webp',
+            },
+          ].map((item, index, arr) => (
+            <div class="space-y-4">
+              <div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1">
+                    <h3 class="text-[16px] font-bold text-slate-900">{item.name}</h3>
+                    <span
+                      class="flex h-4 w-4 items-center justify-center text-blue-600"
+                      role="img"
+                      aria-label="Terverifikasi"
+                      title="Terverifikasi"
+                    >
+                      <Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </div>
+                  <div class="text-[13px] text-amber-600" role="img" aria-label="5 dari 5 bintang">
+                    ★★★★★
+                  </div>
+                </div>
+                <p class="text-[12px] text-slate-500 mt-0.5">{item.location}</p>
+                <p class="text-[12px] font-semibold text-amber-800 mt-1">{item.cropProblem}</p>
+              </div>
+
+              <div class="relative aspect-[16/9] w-full overflow-hidden border border-slate-100">
+                <img
+                  src={item.image}
+                  alt={`Dokumentasi anthurium berbunga milik ${item.name}`}
+                  class="h-full w-full object-cover"
+                  width="900"
+                  height="506"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+
+              <p
+                class="mt-3 border-l-2 border-[#BE123C]/25 pl-3 text-[15px] leading-relaxed text-slate-700 italic"
+                set:html={`"${item.review}"`}
+              />
+
+              {index < arr.length - 1 && (
+                <div class="my-8 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      /*
+      Section "Bukti Chat" (WhatsApp) — wa1..4.webp WAJIB screenshot chat ASLI dari aset brand.
+      JANGAN generate percakapan WhatsApp palsu (DEV_NOTES §3: memalsukan bukti).
+      Placeholder saat ini sengaja bertanda; hapus seluruh section ini bila
+      aset asli belum tersedia saat publish.
+    */
+    }
+    <section class="border-t border-slate-100 bg-slate-50 px-5 py-10">
+      <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">Dokumentasi Chat</span>
+      <h2 class={`${sectionTitle} mt-1`}>Bukti Percakapan Penghobi yang Berhasil Memacu Bunga</h2>
+      <p class={`${body} mt-3 mb-6`}>
+        Banyak pelanggan kami yang rutin berkonsultasi—mulai dari tanaman belum berbunga, saat tangkai mulai terlihat, hingga kelopaknya mekar—demi memastikan takaran dan cara pakainya sudah sangat tepat.
+      </p>
+      <div class="grid grid-cols-2 gap-3">
+        {
+          [
+            [
+              '/images/landing/saratoga-anthurium/konsultasi-whatsapp-saratoga-anthurium-1.webp',
+              'Bukti chat konsultasi via WhatsApp dari Pak Arif yang berhasil merangsang tangkai bunga anthurium berkat Saratoga',
+            ],
+            [
+              '/images/landing/saratoga-anthurium/konsultasi-whatsapp-saratoga-anthurium-2.webp',
+              'Testimoni chat WhatsApp Bu Maya mengenai perubahan anthurium setelah rutin disemprot serum asam amino',
+            ],
+            [
+              '/images/landing/saratoga-anthurium/konsultasi-whatsapp-saratoga-anthurium-3.webp',
+              'Bukti chat WhatsApp Mas Dedi yang anthuriumnya mulai mengeluarkan kelopak lebar dan merah pekat',
+            ],
+            [
+              '/images/landing/saratoga-anthurium/konsultasi-whatsapp-saratoga-anthurium-4.webp',
+              'Testimoni chat WhatsApp Ibu Lestari tentang anthurium yang berbunga lebat setelah pendampingan dari admin Saratoga',
+            ],
+          ].map(([src, alt]) => (
+            <img
+              src={src}
+              alt={alt}
+              class="aspect-[9/16] w-full object-cover ring-1 ring-slate-100"
+              width="480"
+              height="853"
+              loading="lazy"
+              decoding="async"
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-slate-100 bg-[#F8FAFC] px-5 py-10 text-center">
+      <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center text-emerald-600">
+        <Icon name="lucide:shield-check" class="h-12 w-12" aria-hidden="true" />
+      </div>
+      <p class="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]">
+        Garansi & Fasilitas Pendampingan
+      </p>
+      <h2 class="text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950">
+        Dipandu Sampai Berhasil
+      </h2>
+      <p class="mx-auto mt-4 max-w-[340px] text-[15px] leading-relaxed text-slate-600">
+        Setiap pembelian SARATOGA sudah termasuk fasilitas konsultasi eksklusif. Tim kami siap memastikan Anda tidak kebingungan saat praktek langsung di rumah.
+      </p>
+
+      <div class="mt-8 space-y-6 text-left max-w-[360px] mx-auto">
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-emerald-50 text-[#14532D] mt-0.5 border border-emerald-100/50"
+            ><Icon name="lucide:message-circle" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[15.5px] font-bold text-slate-900">Analisis Kondisi Tanaman</h3>
+            <p class="text-[14.5px] text-slate-500 mt-1 leading-relaxed">
+              Kirimkan foto kondisi anthurium Anda melalui WhatsApp untuk mendapatkan rekomendasi dosis penyemprotan yang tepat.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-emerald-50 text-[#14532D] mt-0.5 border border-emerald-100/50"
+            ><Icon name="lucide:clipboard-check" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[15.5px] font-bold text-slate-900">Jadwal Pemakaian Terarah</h3>
+            <p class="text-[14.5px] text-slate-500 mt-1 leading-relaxed">
+              Admin akan memandu jadwal pemakaian terbaik, mulai dari fase daun tumbuh hingga kelopak bunga membuka sempurna.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-emerald-50 text-[#14532D] mt-0.5 border border-emerald-100/50"
+            ><Icon name="lucide:users" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[15.5px] font-bold text-slate-900">Grup WA Komunitas</h3>
+            <p class="text-[14.5px] text-slate-500 mt-1 leading-relaxed">
+              Akses eksklusif ke grup diskusi untuk saling bertukar tips dan pengalaman merawat anthurium bersama penghobi lainnya.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-emerald-50 text-[#14532D] mt-0.5 border border-emerald-100/50"
+            ><Icon name="lucide:book-open-check" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[15.5px] font-bold text-slate-900">Buku Panduan Cetak</h3>
+            <p class="text-[14.5px] text-slate-500 mt-1 leading-relaxed">
+              Buku panduan fisik dalam bentuk cetak juga disertakan di dalam setiap paket pengiriman untuk memudahkan Anda.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-emerald-50 text-[#14532D] mt-0.5 border border-emerald-100/50"
+            ><Icon name="lucide:badge-check" class="h-4.5 w-4.5" aria-hidden="true" /></span
+          >
+          <div>
+            <h3 class="text-[15.5px] font-bold text-slate-900">Garansi Produk Asli</h3>
+            <p class="text-[14.5px] text-slate-500 mt-1 leading-relaxed">
+              Produk dijamin 100% original, dikemas dan dikirim langsung dari gudang distribusi resmi Petani Sejahtera.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="checkout" class="border-t-8 border-slate-100 bg-white py-12">
+      <div class="px-5 pb-8 text-center">
+        <div class="mx-auto mb-5 inline-flex items-center justify-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#14532D] ring-1 ring-emerald-100/50">
+          <Icon name="lucide:arrow-down" class="h-3.5 w-3.5" aria-hidden="true" />
+          Langkah Terakhir
+        </div>
+        <h2
+          class="mx-auto max-w-[320px] text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950"
+        >
+          Lengkapi Data <span class="hl-brush">Pengiriman</span>
+        </h2>
+        <p class="mx-auto mt-4 max-w-[320px] text-[15px] font-medium leading-relaxed text-slate-600">
+          Isi data di bawah ini dengan benar. <span class="text-slate-900 font-bold border-b-2 border-emerald-200">Form akan menyesuaikan wilayah Anda</span>, lalu tim kami memproses pesanan dan panduan penggunaan.
+        </p>
+      </div>
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+    </section>
+    <StickyCTA productSlug={product.slug} productName={product.productName} />
+    <SocialProofToast orderCount={socialProofOrders} heroSelector="" formSelector="#checkout" />
+  </main>
+</BaseLayout>
+
+<style>
+  /* Highlight sapuan kuas (brush underline) untuk frasa kunci di headline.
+     Teks tetap gelap; sapuan crimson anthurium di bawah — tidak menumpuk saat teks wrap ke baris baru. */
+  .hl-brush {
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    padding-bottom: 0.14em;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20320%2024'%20preserveAspectRatio='none'%3E%3Cpath%20d='M3%2013C55%206%20120%2016%20182%2011S292%208%20317%2012L315%2020C252%2015%20150%2023%2072%2019S13%2021%205%2020C2%2017%202%2016%203%2013Z'%20fill='%23BE123C'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center 100%;
+    background-size: 100% 0.32em;
+  }
+</style>

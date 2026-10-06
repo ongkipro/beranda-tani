@@ -116,25 +116,25 @@
   // change here only takes effect after `npm run build`. Redeploying an already
   // built bundle with new vars changes nothing. See ARCHITECTURE.md §5.
   "vars": {
-    "PUBLIC_SITE_NAME": "Beranda Tani",
+    "PUBLIC_SITE_NAME": "Petani Sejahtera",
     "PUBLIC_SITE_URL": "https://beranda.click",
     // The product leaves this empty so a placeholder never becomes a store's
     // meta description; this install has a real one. `stores.description`
     // carries the same text and wins at runtime.
-    "PUBLIC_SITE_DESCRIPTION": "Nutrisi dan stimulan tanaman lini AUSSIE: Saratoga, Bensu, Aussie, dan Kojien. Dikirim ke seluruh Indonesia, COD tersedia di banyak wilayah.",
+    "PUBLIC_SITE_DESCRIPTION": "Temukan nutrisi dan recovery tanaman untuk sawit, kakao, cabai, tomat, semangka, dan melon. Order cepat, aman, dan bisa COD.",
     // Deliberately empty. A non-empty default here becomes the second half of
     // every unconfigured store's <title>, which is how a fresh install came to
     // announce itself as "Toko Anda — Belum Dikonfigurasi".
     "PUBLIC_SITE_TAGLINE": "",
-    "PUBLIC_ADMIN_NAME": "Beranda Tani Admin",
+    "PUBLIC_ADMIN_NAME": "Petani Sejahtera Admin",
     "PUBLIC_EMBED_ALLOWED_ORIGINS": "https://beranda.click",
 
     // Root-relative or absolute. Replace the placeholder wordmark in
     // public/images/ with the store's own brand assets.
-    "PUBLIC_SITE_LOGO": "/images/beranda-tani-logo.webp",
+    "PUBLIC_SITE_LOGO": "/images/petanisejahtera-logo.webp",
 
     // Must match #rrggbb or the code falls back to its own default.
-    "PUBLIC_SITE_THEME_COLOR": "#1F6B3A",
+    "PUBLIC_SITE_THEME_COLOR": "#1B5E20",
 
     // Drives <html lang> and the Open Graph locale.
     "PUBLIC_SITE_LOCALE": "id-ID",
