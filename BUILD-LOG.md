@@ -6372,3 +6372,42 @@ mirrors what `POST /api/admin/products` writes, image at the key
 `/api/admin/upload-r2` would have produced; price matches the shared price list,
 and the 500 ml weight follows this store's convention rather than the 1000 g
 recorded on the sibling. It is in the catalogue, both feeds and the sitemap.
+
+### 2026-10-06 — Brand, catalogue content and feed classification
+
+**Brand.** The install still wore the product's AdsBook mark as its favicon
+and, through `PUBLIC_SITE_LOGO`, as the `og:image` and Organization logo of
+every shared link. An original sprout mark and a "Beranda Tani Sejahtera"
+wordmark replace it (`public/images/beranda-tani-*`, favicons, admin
+`logo.svg`); `stores.logo`, `stores.theme_color` (`#1F6B3A`) and
+`stores.description` were set in D1 to match the build-time fallbacks.
+
+**Catalogue content**, published to `storefront_content` for the home page and
+all four products. Every claim is sourced and attributed rather than written
+fresh: Bensu and Aussie from the manufacturer's own pages
+(aussiesustainagro.com — PT Sustain Agro Sejahtera, Surabaya), including their
+per-crop dosages; Kojien from the text on its genuine packshot label; Saratoga
+only from the AUSSIE Official listing title, so its dosage defers to the label.
+An amino-acid percentage and dosage that search results attached to
+"Saratoga" belonged to a different brand (Aminoaktif/SASGROW) and were not
+used. The manufacturer markets these as "obat"; no Kementan registration
+number was found, so the copy positions them as nutrition and stimulants and
+never says "mengobati". No reviews, ratings or sold counts were written.
+`products.brand` is `AUSSIE` for all four.
+
+**Feed classification.** The first category names sent Saratoga ("Serum Asam
+Amino") to Google category 2547 — Skin Care — because `serum` and `kojien` are
+skincare keywords in `src/lib/ad-taxonomy.ts`, and left Bensu unclassified.
+The categories are now Asam Amino Tanaman, Nutrisi Sayur & Buah, Perawatan
+Sawit and Nutrisi Tanaman; all four resolve to 2863 (Fertilizer). A
+misclassified Merchant Center item is grounds for a misrepresentation flag.
+
+**Product fix merged** (AdsBookCMS `87f3230`): `mergeStorefrontCatalog` never
+copied `products.brand` onto the product, so the feeds and the product JSON-LD
+named the store as every product's brand. Mutation-verified test.
+
+**Not done, needs the owner.** `stores.support_whatsapp` is still the
+placeholder `08123456789`, so every WhatsApp link — including the new `/thanks`
+hand-off — reaches a number that is not the store's. The Saratoga and Aussie
+photos (and part of Bensu's) carry illegible, generated-looking label text;
+real packshots should replace them before they go to a catalogue.
