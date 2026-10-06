@@ -193,6 +193,10 @@ const sectionTone = {
     quote: 'border-[#6D28D9]/22',
   },
 } as const;
+// Counted from the groups below, not written by hand: the source's fixed
+// "16" no longer matched its own 18 chat screenshots.
+const storyCount = testimonialsByProduct.reduce((n, g) => n + g.items.length, 0);
+const proofCount = testimonialsByProduct.reduce((n, g) => n + g.proofs.length, 0);
 ---
 
 <BaseLayout
@@ -224,15 +228,15 @@ const sectionTone = {
     <section class="mx-auto max-w-[480px] px-5 py-8">
       <div class="grid grid-cols-3 gap-4 border-y border-slate-200 py-5 text-center">
         <div>
-          <p class="text-[22px] font-extrabold text-slate-950">4</p>
+          <p class="text-[22px] font-extrabold text-slate-950">{testimonialsByProduct.length}</p>
           <p class="mt-1 text-[12px] leading-5 text-slate-500">Landing page live</p>
         </div>
         <div class="border-x border-slate-200 px-2">
-          <p class="text-[22px] font-extrabold text-slate-950">12</p>
+          <p class="text-[22px] font-extrabold text-slate-950">{storyCount}</p>
           <p class="mt-1 text-[12px] leading-5 text-slate-500">Cerita petani</p>
         </div>
         <div>
-          <p class="text-[22px] font-extrabold text-slate-950">16</p>
+          <p class="text-[22px] font-extrabold text-slate-950">{proofCount}</p>
           <p class="mt-1 text-[12px] leading-5 text-slate-500">Bukti chat</p>
         </div>
       </div>
@@ -244,7 +248,7 @@ const sectionTone = {
           testimonialsByProduct.map((group, index) => {
             const tone = sectionTone[group.color as keyof typeof sectionTone];
             return (
-              <div class="testimonial-group-wrapper hidden" data-index={index}>
+              <div class:list={['testimonial-group-wrapper', index >= 2 && 'hidden']} data-index={index}>
                 <section class={`border-t pt-8 ${tone.divider}`}>
                   <div class="mb-6">
                     <span
@@ -343,15 +347,17 @@ const sectionTone = {
                                         .format(productMap[group.slug].price)
                                         .replace(',00', '')}
                                     </span>
+                                    {(productMap[group.slug].comparePrice ?? 0) > productMap[group.slug].price && (
                                     <span class="text-[12.5px] leading-none text-slate-400 line-through">
                                       {new Intl.NumberFormat('id-ID', {
                                         style: 'currency',
                                         currency: 'IDR',
                                         maximumFractionDigits: 0,
                                       })
-                                        .format(productMap[group.slug].comparePrice ?? productMap[group.slug].price)
+                                        .format(productMap[group.slug].comparePrice ?? 0)
                                         .replace(',00', '')}
                                     </span>
+                                    )}
                                   </div>
                                   <p class="text-[12px] font-medium text-slate-500">
                                     Varian:{' '}
@@ -406,7 +412,7 @@ const sectionTone = {
         }
       </div>
 
-      <div id="load-more-testimonials-container" class="hidden text-center mt-10">
+      <div id="load-more-testimonials-container" class:list={['text-center mt-10', testimonialsByProduct.length <= 2 && 'hidden']}>
         <button
           id="load-more-testimonials-btn"
           class="inline-flex justify-center items-center gap-2 px-6 py-3 border border-[#E5E7EB] bg-[#FAFAFA] hover:bg-[#EDF6EA] text-[#1B5E20] hover:text-[#1B5E20] font-semibold rounded-lg text-sm shadow-sm transition-all duration-200 cursor-pointer active:scale-95 w-full"

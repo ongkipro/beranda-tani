@@ -4,6 +4,10 @@
  * wordmark left, a round menu button right that opens a side drawer of the
  * store's key pages. The source's Artikel entry is left out — this store does
  * not carry the article section.
+ *
+ * The ids carry a `ps-` prefix because BaseLayout still ships an inline drawer
+ * script bound to `#menu-toggle`/`#mobile-menu`; two scripts on one drawer
+ * raced, and the other one's close skipped this one's focus return.
  */
 import Icon from './Icon.astro';
 import SiteBrand from './SiteBrand.astro';
@@ -21,11 +25,11 @@ const links = [
   <div class="mx-auto flex h-16 max-w-[480px] items-center justify-between px-5">
     <SiteBrand href="/" />
     <button
-      id="menu-toggle"
+      id="ps-menu-toggle"
       type="button"
       class="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#D7E7D8] bg-[#F4FAF2] text-[#1B5E20] shadow-[0_8px_18px_rgba(36,94,40,0.08)] transition-all duration-200 hover:border-[#1B5E20]/30 hover:bg-[#EDF6EA] active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]"
       aria-expanded="false"
-      aria-controls="mobile-menu"
+      aria-controls="ps-mobile-menu"
       aria-label="Buka menu"
     >
       <span class="flex w-5 flex-col items-end gap-1.5" aria-hidden="true">
@@ -37,9 +41,9 @@ const links = [
   </div>
 </header>
 
-<div id="menu-backdrop" class="pointer-events-none fixed inset-0 z-40 bg-slate-950/30 opacity-0 transition-opacity duration-200"></div>
+<div id="ps-menu-backdrop" class="pointer-events-none fixed inset-0 z-40 bg-slate-950/30 opacity-0 transition-opacity duration-200"></div>
 <nav
-  id="mobile-menu"
+  id="ps-mobile-menu"
   class="invisible fixed right-0 top-0 z-50 flex h-[100dvh] w-[84%] max-w-[336px] translate-x-full flex-col border-l border-[#E5E7EB] bg-white transition-transform duration-200 ease-out"
   aria-label="Menu utama"
   aria-hidden="true"
@@ -48,7 +52,7 @@ const links = [
     <div class="flex items-start justify-between gap-4">
       <SiteBrand href="/" />
       <button
-        id="menu-close"
+        id="ps-menu-close"
         type="button"
         class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#1B5E20] text-white shadow-[0_8px_18px_rgba(36,94,40,0.22)] transition-all duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B5E20]"
         aria-label="Tutup menu"
@@ -81,10 +85,10 @@ const links = [
 </nav>
 
 <script>
-  const menu = document.getElementById('mobile-menu');
-  const backdrop = document.getElementById('menu-backdrop');
-  const toggle = document.getElementById('menu-toggle');
-  const close = document.getElementById('menu-close');
+  const menu = document.getElementById('ps-mobile-menu');
+  const backdrop = document.getElementById('ps-menu-backdrop');
+  const toggle = document.getElementById('ps-menu-toggle');
+  const close = document.getElementById('ps-menu-close');
 
   const openMenu = () => {
     if (!menu) return;
@@ -117,6 +121,23 @@ const links = [
   backdrop?.addEventListener('click', closeMenu);
   menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeMenu();
+    if (!menu || menu.classList.contains('translate-x-full')) return;
+    if (event.key === 'Escape') {
+      closeMenu();
+      return;
+    }
+    // Keep Tab inside the open drawer.
+    if (event.key === 'Tab') {
+      const focusable = [...menu.querySelectorAll<HTMLElement>('a[href], button')];
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    }
   });
 </script>

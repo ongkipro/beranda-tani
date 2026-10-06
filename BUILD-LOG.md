@@ -6614,3 +6614,67 @@ merchant-account `courir_id: 1` profile, which cannot be derived from public
 data — and a warehouse row for the shipper; without them every prepaid
 checkout would fail at `requiredAreaId`. Once both exist, turn AutoLaris back
 on in `/admin/payments`.
+
+### 2026-10-06 — Whole-system review: SEO, sitemap, storefront, public readiness
+
+The product + landing pages are the store's surface; there is no article
+section here (the source's articles were never ported), and the published
+ratings stay. `b585c8c` is a checkpoint of this pass taken before a product
+merge; this entry describes it with the rest.
+
+**SEO audit** of every public route (status, title/description length,
+canonical, robots, H1, og:image, JSON-LD, sitemap membership):
+- Landing pages carried no Product JSON-LD, so their prices and the rating
+  were invisible to search. `src/lib/landing-product-jsonld.ts` (tested)
+  builds it from the D1 product — every variant as an Offer, the published
+  rating, brand AUSSIE, the landing's own URL — through BaseLayout's
+  `product` prop, so each page still emits exactly one Product block.
+- Meta titles/descriptions that Google truncates were shortened on
+  `aussie-buah-landak` (87/178), `aussie-sawit-ganoderma` (67) and
+  `saratoga-anthurium` (189 description). On-page copy is unchanged.
+- `/testimoni` and `/tentang` are real, linked pages here and were missing
+  from `sitemap.xml`; they are listed now.
+- `/landing-page` becomes the "Solusi Terbaru" page of the source: published
+  landing pages dressed with their home-content solution cards (photo, crop,
+  excerpt, "Live"), with a proper title and description.
+- Utility routes were confirmed noindex or redirecting: the form test pages,
+  `/payment`, `/thanks`, `/hello`, `/kebijakan-cookie`, `/disclaimer`,
+  `/sitemap`; `robots.txt` blocks admin, API, embed, login and install.
+
+**Product fixes merged** (AdsBookCMS `3a376e9`, `57d2a49`): `/solusi-terbaru`
+now 301s to `/landing-page` (it pointed at `/produk` from before that route
+existed; the click-id test still holds), the sitemap lists `/landing-page`
+whenever it lists a landing page, and the human `/sitemap` no longer labels
+the indexable policy pages "#noindex".
+
+**Storefront.** The human sitemap's navigation lists the same pages as the
+header and footer (`src/data/site.ts`), and the 404 button takes the store's
+green.
+
+**Public readiness** (owner asked for the repository to be public). Every
+added line in all 341 commits was scanned: none of the 34 credential values
+held in secrets-env appears anywhere in history, and no private key, cloud,
+GitHub, Meta or Slack token pattern is present. The flagged strings — a seed
+admin hash, a test fixture `cmsads_live_…` key and example IDs in
+`.env.example` — all come from the AdsBookCMS history, which is already
+public. Install-only commits carry the store's published contact details and
+the Worker's D1/KV resource ids, which are identifiers, not credentials.
+
+**Code review of the install's diff** (seven defects found, all fixed; no
+commerce-invariant breach, no XSS):
+1. Footer WhatsApp: a number saved as `08…` produced a dead `wa.me/08…` link
+   on every page; it is normalised to `62…` like /kontak.
+2. Drawer focus: BaseLayout's legacy inline script bound the same ids as the
+   themed header, and its close won the race, so focus fell to `<body>`. The
+   header's drawer uses `ps-` ids, owns focus in and out, and traps Tab.
+3. /testimoni rendered every group `hidden` until JavaScript ran; the first two
+   are server-rendered now.
+4. /testimoni crossed out a product's own price when it had no compare price.
+5. The landing StickyCTA stayed in the Tab order while invisible.
+6. The product page's "Pilihan unggul" badge sat inside the H1, so every
+   product's heading began with it.
+7. `shimmer` keyframes defined (with reduced-motion off), the Bensu Jagung hero
+   given intrinsic size, and /testimoni's stats counted from its data — the
+   source's fixed "16 bukti chat" did not match its 18 screenshots.
+Kept on purpose: the five stars on the home field stories (owner: ratings and
+stories are genuine and stay).

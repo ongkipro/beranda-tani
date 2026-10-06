@@ -13,10 +13,12 @@ import { getStorefrontProducts } from '../../../lib/catalog';
 import { getStoreSupportWhatsapp } from '../../../lib/public-store';
 
 const tenant = Astro.locals.tenant;
-const [products, whatsapp] = await Promise.all([
+const [products, whatsappRaw] = await Promise.all([
   getStorefrontProducts(Astro.locals),
   getStoreSupportWhatsapp(Astro.locals),
 ]);
+// Admin saves the number as typed; wa.me needs the international form.
+const whatsapp = whatsappRaw.replace(/^0/, '62');
 const whatsappLabel = whatsapp.startsWith('62')
   ? `+62 ${whatsapp.slice(2, 5)}-${whatsapp.slice(5, 9)}-${whatsapp.slice(9)}`
   : whatsapp;

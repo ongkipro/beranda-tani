@@ -41,3 +41,17 @@
   --sf-accent-soft: #edf6ea;
   --sf-accent-ring: rgba(27, 94, 32, 0.28);
 }
+
+/* The Bensu Jagung warning badge sweeps a highlight across itself
+   (`animate-[shimmer_2s_infinite]`); the source named the animation but never
+   defined it. */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[shimmer_2s_infinite\] {
+    animation: none;
+  }
+}

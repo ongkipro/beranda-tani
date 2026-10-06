@@ -31,7 +31,7 @@ const label = `Pesan ${productName}`;
 
 <div
   data-sticky-cta
-  class="pointer-events-none fixed bottom-5 left-1/2 z-40 w-[calc(100%-2rem)] max-w-[440px] -translate-x-1/2 translate-y-10 opacity-0 transition-all duration-500"
+  class="invisible pointer-events-none fixed bottom-5 left-1/2 z-40 w-[calc(100%-2rem)] max-w-[440px] -translate-x-1/2 translate-y-10 opacity-0 transition-all duration-500"
 >
   <button
     type="button"
@@ -79,6 +79,8 @@ const label = `Pesan ${productName}`;
       const show = !heroVisible && !checkoutVisible;
       wrapper.classList.toggle('opacity-0', !show);
       wrapper.classList.toggle('pointer-events-none', !show);
+      // `invisible` too: opacity alone left the button in the Tab order.
+      wrapper.classList.toggle('invisible', !show);
       wrapper.classList.toggle('translate-y-10', !show);
       wrapper.classList.toggle('translate-y-0', show);
     };
