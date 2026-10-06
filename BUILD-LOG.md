@@ -6411,3 +6411,51 @@ placeholder `08123456789`, so every WhatsApp link — including the new `/thanks
 hand-off — reaches a number that is not the store's. The Saratoga and Aussie
 photos (and part of Bensu's) carry illegible, generated-looking label text;
 real packshots should replace them before they go to a catalogue.
+
+### 2026-10-06 — This install becomes Petani Sejahtera
+
+The owner decided this store is what petanisejahtera.com becomes; it runs on
+`beranda.click` until the domain moves. Source: `ongkipro/petanisejahtera`
+`origin/main` (`4d59785`), read from an archive so the local clone's
+uncommitted work was not touched. Articles and authors were left out.
+
+**Owner decisions recorded here.** Product reviews, ratings, review counts,
+sold counts and the WhatsApp testimonial screenshots are genuine and were
+ported as-is. Landing copy is verbatim. The money-back guarantee was not a
+policy the store runs: the "GARANSI 100% / Uang Kembali" blocks on
+`bensu-jagung` and both Aussie pages now state the return route the store's
+own Pengiriman & Retur page describes (through CS, order number and photos);
+"Garansi Produk Asli" (authenticity) stays. The brand is Petani Sejahtera now.
+
+**Landing pages.** Six native routes — `bensu-jagung`,
+`aussie-sawit-ganoderma`, `aussie-buah-landak`, `saratoga-padi`,
+`saratoga-anggrek`, `saratoga-anthurium` — registered in
+`src/data/native-landing-pages.ts`, imagery under `public/images/landing/`.
+Only the wiring changed: product from D1, hybrid `GeoIpResolvedForm`,
+canonical from `nativeLandingCanonicalPath`, `defaultCatalogContentId` for the
+tracker, and the product's real-count `SocialProofToast` in place of the
+source's rotating buyers (A-300). `StickyCTA` is ported as a landing component.
+
+**Catalogue and home.** Product content (headline through reviews) and home
+content (slides, six solution cards, proofs) come from the source's
+`products.ts`/`home.ts`. Packshots are the source's set, upscaled from 350 px
+to 1000 px because Meta's catalogue refuses images under 500 px. Variants
+carry the source's strike-through prices. Product categories stay the ones
+that classify as Fertilizer (2863): the source's "Strategic Plant Serum"
+would classify Saratoga as skin care. Identity: name, tagline, description,
+logo, theme `#1B5E20`, and `support_whatsapp` `6282341016595` — the number
+petanisejahtera.com publishes, replacing the `08123456789` placeholder.
+
+**Product fixes merged.** AdsBookCMS `f71b90c`: a product's price is its
+cheapest variant; it had been whichever variant D1 returned first, so Bensu
+and Aussie cards listed their 1-litre price.
+
+**Commit note.** `df1915f` carries only the removal of the interim Beranda
+Tani mark — its `git add` stopped on an already-removed path — and
+`18331f4` holds the files its message describes.
+
+**Evidence.** 798 tests pass (1 intentional skip), `astro check` 0/0/0.
+Local store on production data: home, four product pages and six landing
+pages at 390 px and 1440 px with no console errors, failed requests, broken
+images, horizontal overflow or leftover "Beranda Tani" text; a COD order from
+the `/bensu-jagung` form reached `/thanks`.
