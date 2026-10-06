@@ -10,6 +10,7 @@ import { defaultCatalogContentId } from '../lib/catalog-feed';
 import { getRuntimeEnv } from '../lib/env';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
 import { recentOrderCount } from '../lib/social-proof';
+import { landingProductJsonLd } from '../lib/landing-product-jsonld';
 import '../styles/form-hybrid.css';
 import '../styles/petani-sejahtera.css';
 
@@ -30,6 +31,7 @@ const dangerIcon = 'mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-cen
 ---
 
 <BaseLayout
+  product={landingProductJsonLd(product, canonical)}
   preloadImages="/images/landing/bensu-jagung/hero-utama.webp"
   title={seoTitle}
   description={seoDescription}

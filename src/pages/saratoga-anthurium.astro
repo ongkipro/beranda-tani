@@ -10,6 +10,7 @@ import { defaultCatalogContentId } from '../lib/catalog-feed';
 import { getRuntimeEnv } from '../lib/env';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
 import { recentOrderCount } from '../lib/social-proof';
+import { landingProductJsonLd } from '../lib/landing-product-jsonld';
 import '../styles/form-hybrid.css';
 import '../styles/petani-sejahtera.css';
 
@@ -22,13 +23,14 @@ const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OM
 const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'saratoga-anthurium')}`;
 const seoTitle = 'Saratoga Anthurium - Serum Asam Amino Perangsang Bunga Premium';
 const seoDescription =
-  'Saratoga untuk penghobi anthurium Indonesia: membantu anthurium yang subur daun tapi susah berbunga agar tangkai bunganya keluar, kelopaknya melebar merah pekat, dan berbunga terus-menerus.';
+  'Saratoga untuk anthurium yang subur daun tapi susah berbunga: bantu tangkai bunga keluar, kelopak melebar merah pekat, dan rajin berbunga.';
 
 const sectionTitle = 'text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950';
 const body = 'text-[16px] leading-relaxed text-slate-600';
 ---
 
 <BaseLayout
+  product={landingProductJsonLd(product, canonical)}
   preloadImages="/images/landing/saratoga-anthurium/saratoga-serum-anthurium-merah-berbunga-lebat.webp"
   title={seoTitle}
   description={seoDescription}

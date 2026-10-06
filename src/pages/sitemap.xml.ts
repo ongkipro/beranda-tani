@@ -18,6 +18,9 @@ export const prerender = false;
 const STATIC_PATHS = [
   { path: "/", priority: "1.0", changefreq: "daily" },
   { path: "/produk", priority: "0.9", changefreq: "daily" },
+  // Install theme (Petani Sejahtera): these two are real, linked pages here.
+  { path: "/testimoni", priority: "0.6", changefreq: "weekly" },
+  { path: "/tentang", priority: "0.4", changefreq: "monthly" },
   { path: "/kontak", priority: "0.5", changefreq: "monthly" },
   { path: "/pengiriman", priority: "0.4", changefreq: "monthly" },
   { path: "/kebijakan-privasi", priority: "0.3", changefreq: "yearly" },

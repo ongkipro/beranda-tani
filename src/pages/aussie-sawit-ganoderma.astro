@@ -10,6 +10,7 @@ import { defaultCatalogContentId } from '../lib/catalog-feed';
 import { getRuntimeEnv } from '../lib/env';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
 import { recentOrderCount } from '../lib/social-proof';
+import { landingProductJsonLd } from '../lib/landing-product-jsonld';
 import '../styles/form-hybrid.css';
 import '../styles/petani-sejahtera.css';
 
@@ -20,7 +21,7 @@ if (!product) return Astro.rewrite('/404');
 const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
 
 const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'aussie-sawit-ganoderma')}`;
-const seoTitle = 'Aussie Sawit Ganoderma - Recovery Sawit Kuning, Jamur & Pohon Lemah';
+const seoTitle = 'Aussie Sawit Ganoderma - Recovery Sawit Kuning & Jamur';
 const seoDescription =
   'Landing page Aussie Sawit Ganoderma untuk perawatan pendamping sawit kuning, jamur, busuk akar, busuk batang, busuk pucuk, dan gejala Ganoderma.';
 
@@ -31,6 +32,7 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
 ---
 
 <BaseLayout
+  product={landingProductJsonLd(product, canonical)}
   preloadImages="/images/landing/aussie/ganoderma.webp"
   title={seoTitle}
   description={seoDescription}

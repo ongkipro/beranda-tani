@@ -10,6 +10,7 @@ import { defaultCatalogContentId } from '../lib/catalog-feed';
 import { getRuntimeEnv } from '../lib/env';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
 import { recentOrderCount } from '../lib/social-proof';
+import { landingProductJsonLd } from '../lib/landing-product-jsonld';
 import '../styles/form-hybrid.css';
 import '../styles/petani-sejahtera.css';
 
@@ -20,9 +21,9 @@ if (!product) return Astro.rewrite('/404');
 const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
 
 const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'aussie-buah-landak')}`;
-const seoTitle = 'AUSSIE Buah Landak Sawit - Paksa Tandan Landak Berhenti, Buah Padat & Fruit Set Meledak';
+const seoTitle = 'AUSSIE Buah Landak Sawit - Tandan Padat, Fruit Set Naik';
 const seoDescription =
-  'Tandan landak membakar tonase sawit Anda tiap panen. AUSSIE menghajar akar masalah fruit set: tandan berduri, buah jarang, biji kosong. Paket COD, retur lewat CS, panduan tempur.';
+  'Tandan landak, buah jarang, dan biji kosong menggerus tonase sawit. AUSSIE bantu perbaiki fruit set. Bisa COD, retur lewat CS, ada panduan pemakaian.';
 
 const sectionTitle = 'text-[26px] font-bold leading-[1.16] tracking-tight text-[#8B1E1E]';
 const body = 'text-[15px] leading-relaxed text-slate-600';
@@ -31,6 +32,7 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
 ---
 
 <BaseLayout
+  product={landingProductJsonLd(product, canonical)}
   preloadImages="/images/landing/aussie/aussie-buah-landak-hero.webp"
   title={seoTitle}
   description={seoDescription}

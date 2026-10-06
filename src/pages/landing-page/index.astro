@@ -1,121 +1,110 @@
 ---
+/**
+ * Solutions index (install theme: Petani Sejahtera), the page the storefront
+ * calls "Solusi Terbaru" — ported from petanisejahtera.com's /solusi-terbaru.
+ *
+ * The list is the store's *published* landing pages (read-only, as in the
+ * product's version: a storefront request never reconciles the register).
+ * Each is dressed with its solution card from the published home content —
+ * photo, crop and excerpt — when one points at it; a page without a card
+ * still lists, without a photo. A card whose page is not published is not
+ * shown, so nothing here links to a 404.
+ */
 import PageIntro from '../../components/storefront/shared/PageIntro.astro';
 import Icon from '../../components/storefront/shared/Icon.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { listPublicLandingPages } from '../../lib/landing-pages';
+import { getTenantHomeContent } from '../../lib/tenant-content';
 
 export const prerender = false;
 
-// Read-only: unlike the admin list this never reconciles the native register,
-// because a storefront request must not write to the store.
-const pages = await listPublicLandingPages(Astro.locals);
-const INITIAL_COUNT = 10;
+const [pages, home] = await Promise.all([
+  listPublicLandingPages(Astro.locals),
+  getTenantHomeContent(Astro.locals),
+]);
+const cards = home.state === 'ready' ? home.content.solutions : [];
+const cardFor = (href: string, slug: string) =>
+  cards.find((card) => card.href === href || card.href === `/${slug}`);
+
+const items = pages.map((page) => {
+  const card = cardFor(page.href, page.slug);
+  return {
+    href: page.href,
+    title: card?.title || page.title,
+    excerpt: card?.excerpt || page.excerpt,
+    image: card?.image,
+    crop: card?.crop || 'Solusi',
+  };
+});
+const cropTone = (crop: string) =>
+  /sawit/i.test(crop) ? '#8B1E1E' : /jagung/i.test(crop) ? '#B45309' : '#14532D';
+const storeName = Astro.locals.tenant.name;
 ---
 
 <BaseLayout
-  title={`Halaman - ${Astro.locals.tenant.name}`}
-  description={`Daftar halaman penawaran ${Astro.locals.tenant.name}.`}
+  title={`Solusi Terbaru - ${storeName}`}
+  description={`Pilih halaman solusi ${storeName} sesuai masalah tanaman: sawit, jagung, padi, anggrek, dan anthurium — lengkap dengan edukasi, bukti lapangan, dan form order.`}
   breadcrumbs={[
     { name: 'Beranda', url: '/' },
-    { name: 'Halaman', url: '/landing-page' },
+    { name: 'Solusi Terbaru', url: '/landing-page' },
   ]}
 >
-  <main id="konten-utama" class="min-h-screen bg-white text-[#111111]">
+  <main id="konten-utama" class="min-h-screen bg-white text-[#263238]">
     <PageIntro
-      badge="Semua Halaman"
-      title={`Halaman ${Astro.locals.tenant.name}`}
-      description="Halaman penawaran yang sedang aktif. Pilih satu untuk melihat detail dan memesan."
-      breadcrumbs={[{ label: 'Beranda', href: '/' }, { label: 'Halaman' }]}
+      badge="Solusi Lapangan"
+      title="Pilih Solusi Sesuai Masalah Tanaman"
+      description="Setiap halaman membahas satu masalah lapangan secara spesifik: gejala, edukasi, bukti visual, dan form order yang fokus."
+      breadcrumbs={[{ label: 'Beranda', href: '/' }, { label: 'Solusi Terbaru' }]}
     />
 
-    <section aria-label="Daftar halaman" class="mx-auto max-w-[480px] px-4 py-8">
-      {pages.length > 0 ? (
-        <>
-          <ul class="flex flex-col" id="landing-list">
-            {pages.map((page, index) => (
-              <li
-                class={`landing-list-item border-fade-t first:border-t-0 ${index >= INITIAL_COUNT ? 'hidden' : ''}`}
-                data-index={index}
-              >
-                <a
-                  href={page.href}
-                  class="flex min-h-14 items-center justify-between gap-3 py-3.5 transition-colors hover:bg-[#F5F5F5]"
-                >
-                  <span class="min-w-0">
-                    <span class="block truncate text-sm font-semibold text-[#111111]">
-                      {page.title}
-                    </span>
-                    {page.excerpt && (
-                      <span class="mt-0.5 block truncate text-xs font-normal text-[#555555]">
-                        {page.excerpt}
-                      </span>
-                    )}
+    <section aria-label="Daftar solusi" class="mx-auto max-w-[480px] px-5 py-8">
+      {items.length > 0 ? (
+        <div class="divide-y divide-[#E5E7EB]">
+          {items.map((item, index) => (
+            <article>
+              <a href={item.href} class:list={['group block py-5', index === 0 && 'pt-0']}>
+                {item.image && (
+                  <div class="relative aspect-[3/2] overflow-hidden rounded-[14px] bg-slate-100">
+                    <img
+                      src={item.image}
+                      alt={`Solusi ${item.title}`}
+                      width="600"
+                      height="400"
+                      class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.025]"
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      fetchpriority={index === 0 ? 'high' : undefined}
+                      decoding="async"
+                    />
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent p-3">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <span class="inline-flex rounded-md bg-white/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em]" style={`color: ${cropTone(item.crop)}`}>
+                          {item.crop}
+                        </span>
+                        <span class="inline-flex rounded-md bg-[#D9F99D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#1B5E20]">Live</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div class:list={[item.image && 'pt-3']}>
+                  <h2 class:list={['font-semibold leading-[1.28] tracking-[-0.02em] text-[#263238]', index === 0 ? 'text-[21px]' : 'text-[19px]']}>
+                    {item.title}
+                  </h2>
+                  {item.excerpt && <p class="mt-2 text-[13px] leading-6 text-[#616161]">{item.excerpt}</p>}
+                  <span class="mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#1B5E20]">
+                    Lihat detail solusi
+                    <Icon name="lucide:arrow-right" class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                   </span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="size-4 shrink-0 text-[#767676]"
-                    aria-hidden="true"
-                  >
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          {pages.length > INITIAL_COUNT && (
-            <div class="mt-8 flex flex-col items-center gap-3" id="load-more-container">
-              <p class="text-[11px] font-normal text-[#555555]">
-                Menampilkan <span id="visible-count" class="font-semibold text-[#111111]">{Math.min(INITIAL_COUNT, pages.length)}</span> dari{' '}
-                <span id="total-count" class="font-semibold text-[#111111]">{pages.length}</span> halaman
-              </p>
-              <button
-                id="load-more-btn"
-                type="button"
-                class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-none border border-[#111111] bg-[#111111] px-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#000000] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111]"
-              >
-                <span>Lihat Halaman Lainnya</span>
-                <Icon name="lucide:chevron-down" class="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          )}
-        </>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
       ) : (
-        <div class="border-fade-y py-10 text-center">
-          <h2 class="text-lg font-semibold text-[#111111]">Belum ada halaman</h2>
-          <p class="mt-2 text-sm leading-6 text-[#555555]">
-            Halaman penawaran akan muncul di sini setelah diterbitkan.
-          </p>
+        <div class="rounded-xl border border-[#E5E7EB] py-10 text-center">
+          <h2 class="text-lg font-semibold text-[#263238]">Belum ada halaman solusi</h2>
+          <p class="mt-2 text-sm leading-6 text-[#616161]">Halaman solusi akan muncul di sini setelah diterbitkan.</p>
         </div>
       )}
     </section>
   </main>
-
-  <script>
-    const INITIAL_COUNT = 10;
-    const STEP = 10;
-    let visibleCount = INITIAL_COUNT;
-
-    const items = document.querySelectorAll<HTMLElement>('.landing-list-item');
-    const loadMoreBtn = document.getElementById('load-more-btn');
-    const visibleCountEl = document.getElementById('visible-count');
-
-    if (loadMoreBtn && items.length > 0) {
-      loadMoreBtn.addEventListener('click', () => {
-        const nextCount = Math.min(visibleCount + STEP, items.length);
-        for (let i = visibleCount; i < nextCount; i++) {
-          items[i]?.classList.remove('hidden');
-        }
-        visibleCount = nextCount;
-        if (visibleCountEl) visibleCountEl.textContent = String(visibleCount);
-        if (visibleCount >= items.length) loadMoreBtn.classList.add('hidden');
-      });
-    }
-  </script>
 </BaseLayout>

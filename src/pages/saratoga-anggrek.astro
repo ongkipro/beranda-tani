@@ -10,6 +10,7 @@ import { defaultCatalogContentId } from '../lib/catalog-feed';
 import { getRuntimeEnv } from '../lib/env';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
 import { recentOrderCount } from '../lib/social-proof';
+import { landingProductJsonLd } from '../lib/landing-product-jsonld';
 import '../styles/form-hybrid.css';
 import '../styles/petani-sejahtera.css';
 
@@ -29,6 +30,7 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
 ---
 
 <BaseLayout
+  product={landingProductJsonLd(product, canonical)}
   preloadImages="/images/landing/saratoga-anggrek/hero-anggrek.webp"
   title={seoTitle}
   description={seoDescription}

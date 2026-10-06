@@ -22,15 +22,15 @@ The [Modules](#modules) section is the same book read from the other side.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `/` | GET | public | — | `src/pages/index.astro` | `catalog` `daily-rotation` `env` `storefront-template` `tenant-content` | `product_variants` `products` `storefront_templates` `stores` | `catalog.test.ts` `daily-rotation.test.ts` `env.test.ts` `storefront-template.test.ts` `tenant-content.test.ts` |
 | `/404` | GET | public | — | `src/pages/404.astro` | `catalog` `image-derivative` | `product_variants` `products` | `catalog.test.ts` `image-derivative.test.ts` |
-| `/aussie-buah-landak` | GET | public | — | `src/pages/aussie-buah-landak.astro` | `catalog` `catalog-feed` `env` `landing-pages` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` |
-| `/aussie-sawit-ganoderma` | GET | public | — | `src/pages/aussie-sawit-ganoderma.astro` | `catalog` `catalog-feed` `env` `landing-pages` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` |
-| `/bensu-jagung` | GET | public | — | `src/pages/bensu-jagung.astro` | `catalog` `catalog-feed` `env` `landing-pages` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` |
+| `/aussie-buah-landak` | GET | public | — | `src/pages/aussie-buah-landak.astro` | `catalog` `catalog-feed` `env` `landing-pages` `landing-product-jsonld` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` `landing-product-jsonld.test.ts` |
+| `/aussie-sawit-ganoderma` | GET | public | — | `src/pages/aussie-sawit-ganoderma.astro` | `catalog` `catalog-feed` `env` `landing-pages` `landing-product-jsonld` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` `landing-product-jsonld.test.ts` |
+| `/bensu-jagung` | GET | public | — | `src/pages/bensu-jagung.astro` | `catalog` `catalog-feed` `env` `landing-pages` `landing-product-jsonld` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` `landing-product-jsonld.test.ts` |
 | `/payment` | GET | public | — | `src/pages/payment.astro` | `format-idr` `payment-brand` | — | `format-idr.test.ts` `payment-brand.test.ts` |
 | `/produk` | GET | public | — | `src/pages/produk/index.astro` | `catalog` `format-idr` | `product_variants` `products` | `catalog.test.ts` `format-idr.test.ts` |
 | `/produk/[slug]` | GET | public | — | `src/pages/produk/[slug].astro` | `catalog` `catalog-feed` `env` `form-mode` `geo` `landing-pages` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` `stores` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `form-mode.test.ts` `geo.test.ts` `landing-pages.test.ts` |
-| `/saratoga-anggrek` | GET | public | — | `src/pages/saratoga-anggrek.astro` | `catalog` `catalog-feed` `env` `landing-pages` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` |
-| `/saratoga-anthurium` | GET | public | — | `src/pages/saratoga-anthurium.astro` | `catalog` `catalog-feed` `env` `landing-pages` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` |
-| `/saratoga-padi` | GET | public | — | `src/pages/saratoga-padi.astro` | `catalog` `catalog-feed` `env` `landing-pages` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` |
+| `/saratoga-anggrek` | GET | public | — | `src/pages/saratoga-anggrek.astro` | `catalog` `catalog-feed` `env` `landing-pages` `landing-product-jsonld` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` `landing-product-jsonld.test.ts` |
+| `/saratoga-anthurium` | GET | public | — | `src/pages/saratoga-anthurium.astro` | `catalog` `catalog-feed` `env` `landing-pages` `landing-product-jsonld` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` `landing-product-jsonld.test.ts` |
+| `/saratoga-padi` | GET | public | — | `src/pages/saratoga-padi.astro` | `catalog` `catalog-feed` `env` `landing-pages` `landing-product-jsonld` `social-proof` | `landing_pages` `landing_sections` `orders` `product_variants` `products` | `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` `landing-product-jsonld.test.ts` |
 | `/thanks` | GET | public | — | `src/pages/thanks.astro` | `catalog` `cn` `public-store` `thanks-whatsapp` `ui-variants` | `product_variants` `products` `stores` | `catalog.test.ts` `cn.test.ts` `public-store.test.ts` `thanks-whatsapp.test.ts` `ui-variants.test.ts` |
 
 ## Content page (9)
@@ -52,7 +52,7 @@ The [Modules](#modules) section is the same book read from the other side.
 | Route | Methods | Auth | Roles | File | Libs | Tables | Tests |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `/[slug]` | GET | public | — | `src/pages/[slug].astro` | `admin-session` `auth-secret` `catalog` `catalog-feed` `env` `landing-pages` `native-landing-pages` `public-store` `social-proof` | `admin_credentials` `admin_sessions` `install_secrets` `landing_pages` `landing_sections` `orders` `product_variants` `products` `stores` | `admin-session.test.ts` `auth-secret.test.ts` `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` `native-landing-pages.test.ts` `public-store.test.ts` |
-| `/landing-page` | GET | public | — | `src/pages/landing-page/index.astro` | `landing-pages` | `landing_pages` `landing_sections` `products` | `landing-pages.test.ts` |
+| `/landing-page` | GET | public | — | `src/pages/landing-page/index.astro` | `landing-pages` `tenant-content` | `landing_pages` `landing_sections` `products` | `landing-pages.test.ts` `tenant-content.test.ts` |
 | `/solusi-terbaru` | GET | public | — | `src/pages/solusi-terbaru.astro` | — | — | — |
 
 ## Checkout form (8)
@@ -194,7 +194,7 @@ The [Modules](#modules) section is the same book read from the other side.
 
 ## Modules
 
-105 modules under `src/lib`; 7 without a sibling test.
+106 modules under `src/lib`; 7 without a sibling test.
 `used by` lists routes importing the module directly — a module used by nothing
 is either transitive (imported by another lib) or dead, and only reading tells which.
 
@@ -248,6 +248,7 @@ is either transitive (imported by another lib) or dead, and only reading tells w
 | `json-ld` | 14 | — | ✓ | — |
 | `json-script` | 1 | — | ✓ | — |
 | `landing-pages` | 33 | `landing_pages` `landing_sections` `products` | ✓ | `/aussie-buah-landak` `/aussie-sawit-ganoderma` `/bensu-jagung` `/produk/[slug]` `/saratoga-anggrek` `/saratoga-anthurium` `/saratoga-padi` `/sitemap` `/[slug]` `/landing-page` `/sitemap.xml` `/api/admin/landing-pages` `/api/admin/landing-pages/[id]` |
+| `landing-product-jsonld` | 1 | — | ✓ | `/aussie-buah-landak` `/aussie-sawit-ganoderma` `/bensu-jagung` `/saratoga-anggrek` `/saratoga-anthurium` `/saratoga-padi` |
 | `location-cache` | 5 | — | ✓ | `/api/locations` |
 | `location-search` | 14 | — | ✓ | `/api/locations` `/api/v1/geo/districts` |
 | `manual-payment-reconciliation` | 6 | `admin_credentials` `orders` `payment_reconciliation_audits` `payment_transactions` `stores` | ✓ | `/api/admin/payment-reconciliation` |
@@ -296,7 +297,7 @@ is either transitive (imported by another lib) or dead, and only reading tells w
 | `storefront-content` | 12 | `storefront_content` | ✓ | `/api/admin/content` |
 | `storefront-media` | 3 | — | ✓ | `/api/admin/media` |
 | `storefront-template` | 9 | `storefront_templates` `stores` | ✓ | `/` `/api/admin/settings` |
-| `tenant-content` | 3 | — | ✓ | `/` `/api/v1/storefront` |
+| `tenant-content` | 3 | — | ✓ | `/` `/landing-page` `/api/v1/storefront` |
 | `tenant-contract` | 3 | — | ✓ | — |
 | `tenant` | 10 | `stores` | ✓ | `/install` `/api/install` `/api/admin/settings` |
 | `thanks-whatsapp` | 5 | — | ✓ | `/thanks` |
