@@ -31,6 +31,9 @@ export type NativeLandingPage = {
   productSlug: string;
   /** Shown in the CMS list beneath the title. */
   description: string;
+  /** Optional list thumbnail (root-relative or https). Without it the lists
+   *  show the product's photo. */
+  image?: string;
   /** A page can be registered before it is ready to be linked. */
   isActive?: boolean;
 };
@@ -42,36 +45,42 @@ export const nativeLandingPages: NativeLandingPage[] = [
     title: 'Bensu Jagung',
     productSlug: 'bensu',
     description: 'Jagung kuning, kerdil, dan pertumbuhan mandek.',
+    image: '/images/landing/bensu-jagung/hero-utama.webp',
   },
   {
     slug: 'aussie-sawit-ganoderma',
     title: 'Aussie Sawit Ganoderma',
     productSlug: 'aussie',
     description: 'Recovery sawit kuning, busuk akar/batang/pucuk, dan Ganoderma.',
+    image: '/images/landing/aussie/ganoderma.webp',
   },
   {
     slug: 'aussie-buah-landak',
     title: 'Aussie Buah Landak',
     productSlug: 'aussie',
     description: 'Tandan sawit landak, buah jarang, dan biji kosong.',
+    image: '/images/landing/aussie/aussie-buah-landak-hero.webp',
   },
   {
     slug: 'saratoga-padi',
     title: 'Saratoga Padi',
     productSlug: 'saratoga',
     description: 'Gabah hampa dan pengisian bulir padi.',
+    image: '/images/landing/saratoga-padi/hero-padi.webp',
   },
   {
     slug: 'saratoga-anggrek',
     title: 'Saratoga Anggrek',
     productSlug: 'saratoga',
     description: 'Anggrek tidak keluar tangkai dan bunga pucat.',
+    image: '/images/landing/saratoga-anggrek/hero-anggrek.webp',
   },
   {
     slug: 'saratoga-anthurium',
     title: 'Saratoga Anthurium',
     productSlug: 'saratoga',
     description: 'Anthurium hanya berdaun dan bunga kusam.',
+    image: '/images/landing/saratoga-anthurium/hero-anthurium.webp',
   },
 ];
 

@@ -7,7 +7,7 @@
  * product's version: a storefront request never reconciles the register).
  * Each is dressed with its solution card from the published home content —
  * photo, crop and excerpt — when one points at it; a page without a card
- * still lists, without a photo. A card whose page is not published is not
+ * still lists, with the product's list thumbnail. A card whose page is not published is not
  * shown, so nothing here links to a 404.
  */
 import PageIntro from '../../components/storefront/shared/PageIntro.astro';
@@ -32,7 +32,9 @@ const items = pages.map((page) => {
     href: page.href,
     title: card?.title || page.title,
     excerpt: card?.excerpt || page.excerpt,
-    image: card?.image,
+    // The home card's photo first; else the list thumbnail the product picks
+    // (the page's own image, its register image, or its product's photo).
+    image: card?.image || page.image,
     crop: card?.crop || 'Solusi',
   };
 });

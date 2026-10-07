@@ -6717,3 +6717,50 @@ across products, content, landing sections and the logo (all zero); live
 requests for them return 404, current images 200. The product page's
 "Pilihan unggul" badge is gone: it named every product the pick with nothing
 behind it.
+
+## 2026-10-07 — QRIS/VA offered only when Create Order can run; landing thumbnails
+
+Found while bringing an install (beranda-tani) live; each fix is product-wide.
+
+- **AutoLaris readiness was the API key alone.** `/api/payment-methods`
+  offered QRIS/VA to every buyer of a store with a key but no
+  `AUTOLARIS_ORDER_ORIGIN_ID`/`AUTOLARIS_ORDER_DESTINATION_ID` or warehouse,
+  and `/submit` then refused each payment after the order already existed.
+  `autoLarisOrderRailGap` (`provider-config.ts`, tested) names what is
+  missing — key, a positive-integer area pair, a warehouse address — and both
+  `/api/payment-methods` (the reason shown) and `/api/submit-order` use it.
+  The server now also refuses a prepaid order when the store's
+  `is_autolaris_enabled` switch is off; before, only the UI hid it.
+- **`getStoreSupportWhatsapp` returns `62…`.** The admin stores the number as
+  typed, so an `08…` number reached every caller that builds a `wa.me` link
+  in a form that link cannot resolve. Normalised once at the source.
+- **Landing thumbnails.** The admin list and `/landing-page` showed text only.
+  `landingThumbnail` picks the page's first `image` section, then a legacy
+  HTML `<img>`, then a native register `image` (new optional field, validated
+  as a site path or https URL), else the product's photo; both lists render it
+  through the card derivative. No migration: the picture comes from data the
+  page already has.
+- **Dead code.** BaseLayout carried an inline drawer script bound to
+  `#menu-toggle`/`#mobile-menu`, ids no product component renders; an install
+  whose themed header used those ids got two scripts racing on one drawer.
+- **`dev:seed` over a tailnet.** A store started with `dev:local --ip=<addr>`
+  could not be seeded: install refused `http://<addr>` as its address, by
+  design. The seed installs such a store as `http://localhost:<port>`, the one
+  http address install accepts. Verified: install and seeding over a
+  Tailscale address.
+- **Docs.** INSTALLATION and RELEASE said 59 migrations (`0000`–`0058`); the
+  tree has 62 (`0000`–`0061`), matching `schemaVersion`.
+
+### 2026-10-07 — Product fixes merged; landing thumbnails here
+
+Merges AdsBookCMS `e573020` and `b71b846`: QRIS/VA are offered (and accepted
+by submit-order) only when Create Order can run, `getStoreSupportWhatsapp`
+returns `62…`, landing lists carry thumbnails, BaseLayout's dead drawer script
+is gone, `dev:seed` works over a tailnet, and the migration counts in the docs
+are right. The theme stays install-only: the product keeps its default look.
+
+Here, the six native landings declare their hero as the register `image`, so
+the admin list shows each page's own picture; the themed `/landing-page` keeps
+the home solution card's photo first and falls back to the product's
+thumbnail. Merge conflicts were the BUILD-LOG (both sides kept), the generated
+route map (regenerated) and `/landing-page` (the themed page kept).

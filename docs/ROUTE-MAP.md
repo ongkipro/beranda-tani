@@ -101,7 +101,7 @@ The [Modules](#modules) section is the same book read from the other side.
 | `/api/locations` | GET | public | — | `src/pages/api/locations.ts` | `district-catalog` `env` `location-cache` `location-search` `mengantar-client` `provider-config` `rate-limit` | `rate_limits` `stores` | `district-catalog.test.ts` `env.test.ts` `location-cache.test.ts` `location-search.test.ts` `mengantar-client.test.ts` `provider-config.test.ts` `rate-limit.test.ts` |
 | `/api/meta-event` | POST | public | — | `src/pages/api/meta-event.ts` | `autolaris-payment` `capi-outbox` `click-ids` `env` `meta-capi` `meta-event-contract` `meta-identity` `meta-purchase-order` `rate-limit` `store-ads` | `autolaris_callbacks` `capi_event_outbox` `order_items` `orders` `payment_transactions` `product_variants` `products` `rate_limits` `stores` `warehouses` | `autolaris-payment.test.ts` `capi-outbox.test.ts` `click-ids.test.ts` `env.test.ts` `meta-capi.test.ts` `meta-event-contract.test.ts` `meta-identity.test.ts` `meta-purchase-order.test.ts` `rate-limit.test.ts` `store-ads.test.ts` |
 | `/api/order-status` | POST | public | — | `src/pages/api/order-status.ts` | `autolaris-client` `autolaris-payment` `env` `order-status` `rate-limit` | `autolaris_callbacks` `order_items` `orders` `payment_transactions` `product_variants` `products` `rate_limits` `stores` `warehouses` | `autolaris-client.test.ts` `autolaris-payment.test.ts` `env.test.ts` `order-status.test.ts` `rate-limit.test.ts` |
-| `/api/payment-methods` | GET | public | — | `src/pages/api/payment-methods.ts` | `autolaris-client` `env` `payment-brand` `payment-fee-policy` `provider-config` | `seller_bank_accounts` `stores` | `autolaris-client.test.ts` `env.test.ts` `payment-brand.test.ts` `payment-fee-policy.test.ts` `provider-config.test.ts` |
+| `/api/payment-methods` | GET | public | — | `src/pages/api/payment-methods.ts` | `autolaris-client` `env` `payment-brand` `payment-fee-policy` `provider-config` | `seller_bank_accounts` `stores` `warehouses` | `autolaris-client.test.ts` `env.test.ts` `payment-brand.test.ts` `payment-fee-policy.test.ts` `provider-config.test.ts` |
 | `/api/record-abandoned-order` | POST | public | — | `src/pages/api/record-abandoned-order.ts` | `api` `env` `order-persistence` `rate-limit` `validation` | `order_items` `order_number_counters` `orders` `payment_transactions` `product_variants` `products` `rate_limits` `seller_bank_accounts` `stores` | `api.test.ts` `env.test.ts` `order-persistence.test.ts` `rate-limit.test.ts` `validation.test.ts` |
 | `/api/shipping-options` | GET | public | — | `src/pages/api/shipping-options.ts` | — | — | — |
 | `/api/shipping-rates` | GET | public | — | `src/pages/api/shipping-rates.ts` | `env` `rate-limit` `shipping-quote` | `courier_rules` `product_variants` `products` `rate_limits` `warehouses` | `env.test.ts` `rate-limit.test.ts` `shipping-quote.test.ts` |
@@ -247,7 +247,7 @@ is either transitive (imported by another lib) or dead, and only reading tells w
 | `install` | 6 | `admin_credentials` `courier_rules` `stores` | ✓ | `/api/install` |
 | `json-ld` | 14 | — | ✓ | — |
 | `json-script` | 1 | — | ✓ | — |
-| `landing-pages` | 33 | `landing_pages` `landing_sections` `products` | ✓ | `/aussie-buah-landak` `/aussie-sawit-ganoderma` `/bensu-jagung` `/produk/[slug]` `/saratoga-anggrek` `/saratoga-anthurium` `/saratoga-padi` `/sitemap` `/[slug]` `/landing-page` `/sitemap.xml` `/api/admin/landing-pages` `/api/admin/landing-pages/[id]` |
+| `landing-pages` | 34 | `landing_pages` `landing_sections` `products` | ✓ | `/aussie-buah-landak` `/aussie-sawit-ganoderma` `/bensu-jagung` `/produk/[slug]` `/saratoga-anggrek` `/saratoga-anthurium` `/saratoga-padi` `/sitemap` `/[slug]` `/landing-page` `/sitemap.xml` `/api/admin/landing-pages` `/api/admin/landing-pages/[id]` |
 | `landing-product-jsonld` | 1 | — | ✓ | `/aussie-buah-landak` `/aussie-sawit-ganoderma` `/bensu-jagung` `/saratoga-anggrek` `/saratoga-anthurium` `/saratoga-padi` |
 | `location-cache` | 5 | — | ✓ | `/api/locations` |
 | `location-search` | 14 | — | ✓ | `/api/locations` `/api/v1/geo/districts` |
@@ -275,7 +275,7 @@ is either transitive (imported by another lib) or dead, and only reading tells w
 | `payment-dispatch-policy` | 5 | — | ✓ | `/api/admin/orders` `/api/admin/orders/[id]` `/api/admin/shipping` |
 | `payment-fee-policy` | 11 | — | ✓ | `/api/payment-methods` `/admin/payments` `/api/admin/orders/[id]` |
 | `product-mutation` | 9 | `order_items` `product_variants` `products` `storefront_content` | ✓ | `/api/admin/products` |
-| `provider-config` | 5 | `stores` | ✓ | `/api/locations` `/api/payment-methods` `/api/submit-order` `/api/v1/checkout` `/api/admin/ongkir` `/api/admin/settings` `/api/admin/shipping` |
+| `provider-config` | 6 | `stores` | ✓ | `/api/locations` `/api/payment-methods` `/api/submit-order` `/api/v1/checkout` `/api/admin/ongkir` `/api/admin/settings` `/api/admin/shipping` |
 | `province` | 12 | — | ✓ | `/api/submit-middle-order` `/api/v1/checkout` `/api/admin/expeditions` |
 | `public-store` | 2 | `stores` | ✓ | `/thanks` `/kontak` `/[slug]` |
 | `rate-check` | 10 | — | ✓ | — |
