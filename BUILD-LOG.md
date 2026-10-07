@@ -6685,3 +6685,35 @@ the drawer *transitioned* for 200 ms and stayed `hidden` while `focus()` ran —
 traced to the element, focusable 300 ms later. The header buttons now
 transition only background, border, shadow and transform (the hamburger's
 middle bar, width), and focus moves in as soon as the drawer is visible.
+
+### 2026-10-07 — QRIS/VA live, warehouse set, wrangler 4.148
+
+**Warehouse.** The Mengantar pickup id in secrets-env pointed at "Clavira.id"
+(Surabaya), another store on the owner's shared Mengantar account (15 pickup
+addresses: Permata Mall, Zvara Shop, Carukesi, Clavira…). Used as-is, this
+store's parcels would have shipped under that name. The owner chose "Gudang
+Aussie Saratoga Bensu" (Sukatani, Tapos, Depok). Its row was written to
+`warehouses` exactly as the admin save stores it — `origin_area_id` =
+the pickup's `PICKUP_AUTOFILL`, `pickup_address_id` = its `_id` — directly
+in D1, so no pickup address was created or edited at Mengantar. The
+`MENGANTAR_PICKUP_ADDRESS_ID`/`MENGANTAR_ORIGIN_AREA_ID` secrets, the dispatch
+and quote fallbacks, were repointed from Clavira to the same warehouse.
+
+**AutoLaris.** `AUTOLARIS_ORDER_ORIGIN_ID`/`AUTOLARIS_ORDER_DESTINATION_ID`
+take the `3517100`/`3518010` pair the sibling installs (permatamall,
+zvarashop) use on the same account for `courir_id: 1`. Locally, against the
+provider stand-ins, a QRIS and a VA BCA checkout each created an order with a
+payment instruction and no error, so the payload clears `/submit`'s
+validation (area ids, shipper from the warehouse). `is_autolaris_enabled` goes
+back to 1 after this deploy.
+
+**Wrangler 4.148** (AdsBookCMS `515e81b`). `@astrojs/cloudflare` 14.2 requires
+wrangler ^4.125; the tree installed 4.120. With 4.148 the browser sweep that
+killed `dev:local` in four of five runs passed twice, 64 page loads, with the
+server still up — the open item of 2026-10-06 is closed.
+
+**Also.** The four superseded R2 photos were deleted after a reference check
+across products, content, landing sections and the logo (all zero); live
+requests for them return 404, current images 200. The product page's
+"Pilihan unggul" badge is gone: it named every product the pick with nothing
+behind it.
