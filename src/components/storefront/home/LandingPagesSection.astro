@@ -6,6 +6,7 @@
  * The first four show; the rest are one tap away on /landing-page.
  */
 import Icon from '../shared/Icon.astro';
+import { cardImageSrc } from '../../../lib/image-derivative';
 
 interface LandingPage {
   title: string;
@@ -59,7 +60,7 @@ const productOf = (href = '') => href.replace(/^\//, '').split('-')[0] ?? '';
                 {page.image && (
                   <div class="relative aspect-[3/2] overflow-hidden rounded-t-[16px] bg-zinc-100">
                     <img
-                      src={page.image}
+                      src={cardImageSrc(page.image)}
                       alt={`Solusi ${page.title}`}
                       width="600"
                       height="400"

@@ -6764,3 +6764,15 @@ the admin list shows each page's own picture; the themed `/landing-page` keeps
 the home solution card's photo first and falls back to the product's
 thumbnail. Merge conflicts were the BUILD-LOG (both sides kept), the generated
 route map (regenerated) and `/landing-page` (the themed page kept).
+
+### 2026-10-07 — Home landing cards carry their thumbnail
+
+The landing-thumbnail change reached the admin list and `/landing-page` but
+not the home page: `getTenantHomeContent` built every CMS landing card with
+the AdsBook mark hard-coded, and `/landing-page` takes the home card's image
+first, so both public lists showed the mark for those cards. The card now
+uses the page's `landingThumbnail` (the mark only when a page has no picture),
+and both public lists render it through `cardImageSrc`, as the admin list
+already did. Verified on the local store: the four home cards and the six
+`/landing-page` cards load each page's own hero. `tenant-content.ts` is a
+product file; the same one-line fix belongs upstream.

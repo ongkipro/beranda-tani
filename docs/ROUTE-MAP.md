@@ -52,7 +52,7 @@ The [Modules](#modules) section is the same book read from the other side.
 | Route | Methods | Auth | Roles | File | Libs | Tables | Tests |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `/[slug]` | GET | public | — | `src/pages/[slug].astro` | `admin-session` `auth-secret` `catalog` `catalog-feed` `env` `landing-pages` `native-landing-pages` `public-store` `social-proof` | `admin_credentials` `admin_sessions` `install_secrets` `landing_pages` `landing_sections` `orders` `product_variants` `products` `stores` | `admin-session.test.ts` `auth-secret.test.ts` `catalog.test.ts` `catalog-feed.test.ts` `env.test.ts` `landing-pages.test.ts` `native-landing-pages.test.ts` `public-store.test.ts` |
-| `/landing-page` | GET | public | — | `src/pages/landing-page/index.astro` | `landing-pages` `tenant-content` | `landing_pages` `landing_sections` `products` | `landing-pages.test.ts` `tenant-content.test.ts` |
+| `/landing-page` | GET | public | — | `src/pages/landing-page/index.astro` | `image-derivative` `landing-pages` `tenant-content` | `landing_pages` `landing_sections` `products` | `image-derivative.test.ts` `landing-pages.test.ts` `tenant-content.test.ts` |
 | `/solusi-terbaru` | GET | public | — | `src/pages/solusi-terbaru.astro` | — | — | — |
 
 ## Checkout form (8)
@@ -243,7 +243,7 @@ is either transitive (imported by another lib) or dead, and only reading tells w
 | `headless-client` | 14 | — | ✓ | — |
 | `headless-openapi` | 1 | — | ✓ | `/api/v1/openapi.json` |
 | `html-escape` | 1 | — | ✓ | — |
-| `image-derivative` | 1 | — | ✓ | `/404` `/testimoni` |
+| `image-derivative` | 1 | — | ✓ | `/404` `/testimoni` `/landing-page` |
 | `install` | 6 | `admin_credentials` `courier_rules` `stores` | ✓ | `/api/install` |
 | `json-ld` | 14 | — | ✓ | — |
 | `json-script` | 1 | — | ✓ | — |
