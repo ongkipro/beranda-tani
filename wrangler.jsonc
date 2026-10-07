@@ -145,6 +145,12 @@
 
     // Provinces excluded from cash on delivery, comma separated, lowercase.
     // This is the shipped Indonesian default; adjust per store.
+    // AutoLaris Create Order (/submit) runs as the QRIS/VA payment rail under the
+    // account's `courir_id: 1` profile, which takes a fixed origin/destination
+    // area pair. Same account and same pair as the sibling installs
+    // (permatamall, zvarashop), which take QRIS/VA this way.
+    "AUTOLARIS_ORDER_ORIGIN_ID": "3517100",
+    "AUTOLARIS_ORDER_DESTINATION_ID": "3518010",
     "PUBLIC_COD_DISABLED_PROVINCES": "papua,papua barat,papua barat daya,papua tengah,papua pegunungan,papua selatan,maluku,maluku utara,nusa tenggara timur,kalimantan utara,sulawesi barat,gorontalo,kepulauan riau,aceh,bengkulu"
   }
 }
