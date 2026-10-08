@@ -6776,3 +6776,33 @@ and both public lists render it through `cardImageSrc`, as the admin list
 already did. Verified on the local store: the four home cards and the six
 `/landing-page` cards load each page's own hero. `tenant-content.ts` is a
 product file; the same one-line fix belongs upstream.
+
+### 2026-10-07 — Home CMS landing cards carry their thumbnail
+
+`getTenantHomeContent` built every CMS landing card with the AdsBook mark
+hard-coded, though `listPublicLandingPages` already returns each page's
+`landingThumbnail`. The product's home section renders these cards as text,
+so nothing here changes on screen; an install theme that renders the card's
+picture (beranda-tani) showed the mark on every card, and its `/landing-page`,
+which reads the home card's image first, did too. The card now carries the
+page's thumbnail, the mark only when a page has no picture.
+
+### 2026-10-08 — Catalog categories from the official taxonomies
+
+A leather-goods install (Reven Leather) exposed the taxonomy table: 66 bags and
+wallets went to Merchant Center as women's handbags, four leather card holders
+as Skin Care ("kulit" means leather as often as skin), and every belt with no
+category. Checking the ids against Google's official file showed the table was
+wrong for every store: skin care `2547` is Placemats, herbal `642` Bread Pans,
+gardening `2849` a laundry combo unit, and `2863`/`1630` do not exist. Meta was
+sent Google's paths as `fb_product_category`.
+
+- Every rule now carries an id/path copied from Google's taxonomy file
+  (2021-09-21) and a path from Meta's own (`en_US.txt`); a side with no faithful
+  match is omitted.
+- Leather-goods rules: wallets and card holders, ID holders, belts, sling,
+  waist, backpack, tote, laptop, leather care. The generic bag parent is a
+  fallback scored only when no specific rule matches.
+- `/admin/ads/google` renders its table from `TAXONOMY_RULES`;
+  `docs/GOOGLE_ADS_SETUP.md` no longer copies it.
+- Tests pin the corrected pairs and the Reven catalogue's cases. 805 passing.
