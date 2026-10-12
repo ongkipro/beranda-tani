@@ -1,6 +1,6 @@
 # BUILD LOG: AdsBookCMS
 
-> Verified against disk: 2026-09-30 @ `f3be2b1` + working tree
+> Verified against disk: 2026-10-12 @ `88f0b78` + 1.5.2 working tree
 
 Author & Curator: **[ongki.pro](https://ongki.pro)**
 
@@ -6829,3 +6829,135 @@ an unsupported format.
 On Reven Leather the notice read "4 orang memesan dalam 24 jam terakhir" while
 one of the four was an abandoned lead. Abandoned rows are now excluded; the test
 pins the status list. 806 passing.
+
+### 2026-10-09 — GTM ecommerce payload: unit price, quantity, one owner
+
+The dataLayer item carried `quantity: 1` and no `price` on every event, so a
+multi-unit `purchase` described one unit against the whole order's `value`, and
+GA4 or Google Ads dynamic remarketing had no item price to read. `page_view`
+also carried an `ecommerce` object with the path as `item_id` and a placeholder
+`value: 1`. The same push function existed in five copies.
+
+- `buildGtmEcomEvent` in `src/lib/gtm.ts` owns the shape; items carry a unit
+  `price` and the order `quantity` (`price` defaults to `value / quantity`).
+- `GtmBase.astro` keeps the one inline copy; `gtm.test.ts` runs it in a VM and
+  fails if it drifts. The three trackers' private copies are gone.
+- `page_view` is a plain event. `purchase` passes the order quantity.
+- The `<noscript>` iframe moved from `<head>` to right after `<body>`.
+- Proven on `npm run dev:local`: page_view, view_item, add_to_cart,
+  begin_checkout and purchase in the browser, and no second purchase on a
+  thanks reload. 811 passing.
+
+### 2026-10-09 — An order's variant id always wins over a SKU
+
+`persistOrder` resolved the submitted key with `CAST(pv.id AS TEXT) = ? OR
+pv.sku = ?` and `LIMIT 1`. On taniniaga a later product was given the SKUs `1`
+and `2` — the ids of Saratoga's variants — so every Saratoga order from
+2026-09-30 on was stored as that product, at its price (130,000 / 215,000
+instead of 135,000 / 268,000). The browser, the abandoned lead and the Meta
+AddToCart all carried Saratoga; only the persisted order did not.
+
+- `findOrderVariant` matches the id first and reads the SKU only when no
+  variant has that id at all, so an inactive product's id cannot fall through
+  to another product's SKU either.
+- Tests run the real SQL on `node:sqlite` with taniniaga's rows; restoring the
+  old WHERE fails them. 814 passing.
+- Orders already saved under the wrong variant are not rewritten here; that is
+  install data.
+
+### 2026-10-09 — Mobile: the order button always answers a tap
+
+Buyers reported the order button "sometimes" not responding on phones. Two
+causes, both reproduced at 390 px with touch emulation:
+
+- The submit button was natively `disabled` until the form was complete, and
+  its state was recomputed only on `input`/`blur`. Autofill that sets a value
+  and fires only `change` left a complete-looking form behind a dead button,
+  and a tap on a disabled button does not even move focus. The button is now
+  natively disabled only while an order is in flight; an incomplete form is
+  `aria-disabled` with the same grey `data-state`, so the tap reaches the
+  submit handler, which names and focuses the missing field. A form-level
+  `change` listener resyncs the label.
+- An autofilled `08…` number skipped the `input` handler that rewrites it to
+  `62…`, and submit validated the raw field first, so a correct number was
+  refused. Submit now normalises the phone before validating.
+
+Both apply to `form-middle.ts` and `form-hybrid.ts`; a source test pins them.
+With the button tappable, the submit handler is the only gate, so the full
+form's last unguarded state got its check: no submit before the payment
+choices load (it would otherwise have left on the default `cod`).
+Breadcrumb and footer links grow from 15–17 px to a 24 px target (WCAG 2.5.8)
+with the surrounding spacing reduced to match, so the layout does not move.
+Hit-testing at 390 px found no control covered by an overlay. 815 passing.
+
+### 2026-10-09 — `npm run deploy` builds before it uploads
+
+`predeploy` ran only the preflight, so `wrangler deploy` uploaded whatever
+`dist/` was on disk. Three install deploys that day shipped a stale bundle;
+the live asset hash matching the old local `dist/` gave it away, and each was
+rebuilt and redeployed. `predeploy` and `precf:deploy` are now
+`npm run preflight:deploy && npm run build`, pinned by `deploy-preflight.test.ts`.
+
+### 2026-10-11 — Release 1.5.0 / `2026.10-checkout-tracking`
+
+1.4.0 (2026-08-27) was the last bump; since then the tree gained migrations
+`0056`–`0061` and the fixes above. 1.5.0 names that line: GA4 ecommerce items
+with unit price and quantity plus the GTM noscript, the variant id winning over
+an equal SKU, the mobile order button, and deploy building before upload.
+`schemaVersion` stays 62 — no migration since. `version.ts`, `package.json`,
+`RELEASE.md` §4 and `STATUS.md` moved together; the `STATUS.md` schema row,
+still at 59, now reads 62.
+
+### 2026-10-12 — Release 1.5.1: browser Meta events wait for the pixel init
+
+Found on the permatamall install, which had fixed it on 2026-09-08 (`d56115d`)
+and lost the fix when it adopted 1.5.0 wholesale. Two defects, one cause each:
+
+- `MetaPixelBase` awaited the external-ID digest before creating the `fbq`
+  stub. A body script that runs in that gap — `MetaLandingTracker` fires during
+  parse, and `inlineStylesheets: 'always'` puts no stylesheet in between — finds
+  no `fbq` and skips its browser ViewContent; CAPI still sends, so nothing looks
+  wrong. The bootstrap is now synchronous: the digest is a promise and the
+  stub, `__PS_META_INIT__`, `__PS_META_TRACK__` and `__PS_LOAD_META_PIXEL__`
+  exist before it returns.
+- With the init behind that promise, a `track` could reach the stub before the
+  `init`, and fbevents discards a track it replays ahead of the init. Every
+  browser track — landing, `/thanks`, form-middle, form-hybrid — now goes
+  through `__PS_META_TRACK__`, which waits for the init to be issued.
+
+`meta-pixel-ordering.test.ts` (ported, extended to both form scripts) failed on
+the old bootstrap with no stub after the synchronous run, and passes now;
+`meta-identity.test.ts` asserts the hooks exist synchronously. In Chrome the old
+bootstrap did not drop ViewContent on a product page even at 20x CPU throttling,
+so this closes an ordering that held by timing rather than one observed losing
+events here. Locally with a test pixel: init → PageView → ViewContent →
+AddToCart on the product page, and on `/thanks` one init carrying
+ph/fn/ln/country/external_id ahead of the Purchase. 817 passing.
+
+### 2026-10-12 — Release 1.5.2: toast, fleet status, a test race
+
+- **Social-proof toast.** Same rules — hidden while the hero or the order form
+  is on screen or a form field has focus, once per page view, real orders only
+  — in a clearer card: a solid surface with a lifted shadow instead of a
+  translucent pill that blurred into the copy behind it, the count set bold on
+  the first line and "dalam 24 jam terakhir" beneath it, and the bag icon in
+  the accent with a small live marker that stops pulsing under
+  `prefers-reduced-motion`. Checked at 390 px on a native landing page:
+  hidden over the hero, shown after it, hidden over the form, shown again
+  between the two — the same rhythm as the sticky order bar.
+- **`npm run fleet:status`** (A-51). One table per run over the install
+  checkouts passed in: version, HEAD, origin sync, dirty files, commits behind
+  `product/main`, last Worker deployment, applied/expected migrations.
+  Read-only; `--offline` skips Cloudflare.
+- **`admin-islands-render.test.ts` race.** Every run bundled into one shared
+  `node_modules/.admin-islands-render-test/` and removed it in `after`, so two
+  `npm test` runs in one checkout could delete or overwrite a bundle another
+  was requiring: six concurrent runs of the old file failed three with
+  `ENOENT`, and a full-suite run under load showed the
+  "SyntaxError: Invalid or unexpected token" an install had reported as a
+  flake. Each process now uses its own subdirectory; six concurrent runs pass.
+- **Follow-up, same day.** 1.5.1's `meta-identity.test.ts` waited for the
+  digest-gated init with 50 `setImmediate` ticks. WebCrypto runs the digest on
+  the libuv pool, so a tick count is no bound: it passed locally and failed
+  once on a permatamall CI runner (`0 !== 1` inits). It waits on a 2 s
+  deadline now; eight concurrent runs pass. Test-only, no runtime change.

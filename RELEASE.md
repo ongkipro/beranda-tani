@@ -1,6 +1,6 @@
 # Release and Deployment — AdsBookCMS
 
-> Verified against disk: 2026-10-07 @ `515e81b` + autolaris-readiness/landing-thumbnail working tree
+> Verified against disk: 2026-10-09 @ `8213409` + deploy-builds-first working tree
 
 This document is the single owner of how a change reaches production. It replaces the previous `VERSION.md` runbook and the deleted `AUTO_UPDATE_DEPLOY.md`, which between them described three mutually exclusive release models, none of which matched the one workflow that exists.
 
@@ -31,8 +31,13 @@ lines are the whole trigger block in `ci.yml`.
 
 ### Manual deploy
 
-`npx wrangler deploy` (or `npm run deploy`) deploys the working tree to whatever
-Worker `wrangler.jsonc` names. In **this** repository that file is the one-click
+`npm run deploy` runs the deploy preflight, then `astro build`, then
+`wrangler deploy` to whatever Worker `wrangler.jsonc` names. Bare
+`npx wrangler deploy` skips both: it uploads whatever `dist/` already holds,
+so after a merge it ships the *previous* build while every check passes. On
+2026-10-09 that put two installs live on yesterday's bundle; the live
+`_astro/*.js` hash matching a stale local `dist/` was the tell. Use the npm
+script. In **this** repository that file is the one-click
 template (all-zero ids, which the deploy preflight refuses), so there is no
 production Worker to reach; the command belongs in an install, run against that
 install's own resources.
@@ -151,17 +156,16 @@ Two registries, currently in step:
 
 | Source | Field | Value |
 | --- | --- | --- |
-| `src/lib/version.ts` | `version` | `1.4.0` |
-| `src/lib/version.ts` | `releaseTag` | `2026.08-stock-unlimited` |
+| `src/lib/version.ts` | `version` | `1.5.2` |
+| `src/lib/version.ts` | `releaseTag` | `2026.10-fleet-status` |
 | `src/lib/version.ts` | `schemaVersion` | `62` |
-| `package.json` | `version` | `1.4.0` |
+| `package.json` | `version` | `1.5.1` |
 
 `src/lib/version.ts` is what the admin sidebar renders and is the value users
 see. Keep it and `package.json` in step when bumping.
 
 `schemaVersion` counts migration files, and the tree holds 62 (`0000`–`0061`).
-`releaseTag` still names the 1.4.0 release; the next release bump must move it,
-because the tree now carries `0056`–`0061` that 1.4.0 did not.
+`1.5.0` (2026-10-11) is the first release that carries `0056`–`0061`.
 `schema-version.test.ts` fails CI on drift; middleware enforces the same chain at
 runtime; `operational-health.ts` and the dashboard expose applied version.
 
@@ -237,6 +241,17 @@ git check-attr merge -- wrangler.jsonc     # expect: merge: keepours
 ```
 
 The merge driver is what stops the product's placeholder `wrangler.jsonc` from replacing the install's real one. Git cannot ship a driver inside a repository, so this configuration lives in each clone and must be repeated on every machine. If it is missing, those files conflict instead — noisy, but safe.
+
+### Where every install stands
+
+```bash
+npm run fleet:status -- ~/Projects/toko-a ~/Projects/toko-b   # add --offline for git only
+```
+
+Read-only: per install checkout it prints the `CMS_VERSION`, HEAD, sync with
+its own `origin`, uncommitted files, commits behind `product/main`, the last
+Worker deployment and applied/expected D1 migrations. The product keeps no list
+of installs (ADR-012), so the checkouts are passed in.
 
 ### The procedure, in this order
 

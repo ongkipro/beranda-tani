@@ -1,6 +1,6 @@
 # AdsBookCMS Meta Pixel, CAPI, GTM, and Google Ads Specification
 
-> Verified against disk: 2026-09-29 @ `5c03fce` + thanks-whatsapp-redirect working tree
+> Verified against disk: 2026-10-12 @ `4f7d723` + meta-track-order working tree
 
 This document owns the technical tracking contract for AdsBookCMS-rendered and headless storefronts. It covers event semantics, identity, browser/server boundaries, deduplication, durable delivery, store configuration, and verification. It does not claim attribution certainty, legal compliance, consent applicability, or live provider acceptance.
 
@@ -159,6 +159,19 @@ The contract that replaces it:
   bootstrap and fails unless both hooks exist, an awaiting page is not init'd
   early, and a second `__PS_META_INIT__` is refused. Loading sooner is a change
   to the deferral inside this contract, never a replacement of it.
+- **Every `track` goes through `window.__PS_META_TRACK__`, never `fbq`.** The
+  init waits on the external-ID digest, so it is issued a tick after
+  `__PS_META_INIT__` returns, and fbevents replays its queue in arrival order:
+  a `track` queued ahead of the `init` is discarded (live library, isolated
+  frame: track-then-init sent zero beacons, init-then-track one). The hook
+  holds each call until the init is out. The bootstrap is synchronous — the
+  digest is a promise, not an `await` — so the stub and all three hooks exist
+  before any body script runs; an `await` ahead of them once let
+  `MetaLandingTracker` find no `fbq` and skip its browser ViewContent.
+  `meta-pixel-ordering.test.ts` runs the bootstrap and the landing tracker in
+  one tick and fails unless `init` precedes `ViewContent`, and fails if the
+  landing, thanks or form scripts call `fbq('track')` themselves. Ported from
+  the permatamall install (`d56115d`), which found it.
 - **A form page cannot upgrade its matching.** The pixel has already initialised
   by the time a buyer types anything, so `AddToCart` and `InitiateCheckout`
   carry `external_id` on the browser leg and the full identity on the CAPI leg,
@@ -438,7 +451,7 @@ An embed pasted before 2026-08-16 must be re-copied from `/admin/products`. The 
 ### Tag integration
 
 1. **Google Tag (`gtag.js`)**: loaded by `GoogleAdsBase.astro` only when the effective `google_ads_conversion_id` (`AW-XXXXXXXXX`) and `google_ads_conversion_label` are both valid. Dashboard and environment values use the same atomic validation; a half-filled or malformed fallback disables the direct tag rather than emitting a broken `send_to`. The library download is deferred to first interaction or 2500 ms, whichever comes first. `window.gtag` is a `dataLayer.push` shim declared inline, so the consent, `js` and `config` calls queue in their original order. A conversion never waits on the timer: `__PS_PUSH_GOOGLE_CONVERSION__` calls `window.__PS_LOAD_GOOGLE_TAG__()` before pushing.
-2. **Google Tag Manager**: loaded by `GtmBase.astro` when `google_tag_manager_id` (`GTM-XXXXXXX`) is defined. It may consume `page_view`, `view_item`, `add_to_cart`, `begin_checkout`, and `purchase` through the GA4/GTM ecommerce schema. It must not map `purchase` to the same Google Ads conversion action as the direct Google Tag pair—one Ads action has one emitting owner.
+2. **Google Tag Manager**: loaded by `GtmBase.astro` when `google_tag_manager_id` (`GTM-XXXXXXX`) is defined. It may consume `page_view`, `view_item`, `add_to_cart`, `begin_checkout`, and `purchase` through the GA4/GTM ecommerce schema. `buildGtmEcomEvent` (`src/lib/gtm.ts`) owns that shape and `GtmBase.astro` carries the one inline copy, which `gtm.test.ts` runs against it: `ecommerce.value` is the event total (the server's goods value on `purchase`), and the single item carries the catalogue `item_id`, the variant id as `item_variant`, a unit `price` and the order `quantity`, so `price × quantity` adds back up to `value`. `page_view` carries no `ecommerce` object at all. The `<noscript>` iframe renders right after `<body>`, not in `<head>`. It must not map `purchase` to the same Google Ads conversion action as the direct Google Tag pair—one Ads action has one emitting owner.
 3. **Global execution helper**: `window.__PS_PUSH_GOOGLE_CONVERSION__(value, transactionId, userData)` builds `{ send_to: id + '/' + label, value, currency: 'IDR' }`, appends `transaction_id` **only when truthy** (an empty string would make every order collide instead of dedupe), attaches `user_data` through `gtag('set', 'user_data', ...)` before the conversion event, then calls `gtag('event', 'conversion', payload)`.
 
 ### Enhanced Conversions for Web
