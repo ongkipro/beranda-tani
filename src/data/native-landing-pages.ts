@@ -82,6 +82,50 @@ export const nativeLandingPages: NativeLandingPage[] = [
     description: 'Anthurium hanya berdaun dan bunga kusam.',
     image: '/images/landing/saratoga-anthurium/hero-anthurium.webp',
   },
+  // Ported from petanisawit.com with their slugs unchanged, for the ads that
+  // already point at them.
+  {
+    slug: 'aussie-formulabaru',
+    title: 'Aussie Formula Baru',
+    productSlug: 'aussie',
+    description: 'Formula baru lawan jamur Ganoderma (dari petanisawit.com).',
+    image: '/images/landing/aussie-formulabaru/01.webp',
+  },
+  {
+    slug: 'aussie-formulabaru-evrpro',
+    title: 'Aussie Formula Baru (Everpro)',
+    productSlug: 'aussie',
+    description: 'Sama dengan aussie-formulabaru, slug iklan Everpro (dari petanisawit.com).',
+    image: '/images/landing/aussie-formulabaru/01.webp',
+  },
+  {
+    slug: 'aussie-edukasi1',
+    title: 'Aussie Edukasi Jamur Sawit',
+    productSlug: 'aussie',
+    description: 'Pucuk busuk, Ganoderma, bercak daun, dan cara pakai (dari petanisawit.com).',
+    image: '/images/landing/aussie-edukasi1/01.webp',
+  },
+  {
+    slug: 'busukpucuk-simple',
+    title: 'Aussie Busuk Pucuk (Simple)',
+    productSlug: 'aussie',
+    description: 'Busuk pucuk kelapa sawit, versi teks (dari petanisawit.com).',
+    image: '/images/landing/busukpucuk-simple/01.webp',
+  },
+  {
+    slug: 'aussie-busukpucuk',
+    title: 'Aussie Busuk Pucuk',
+    productSlug: 'aussie',
+    description: 'Obat pucuk busuk kelapa sawit, versi gambar (dari petanisawit.com).',
+    image: '/images/landing/aussie-busukpucuk/01.webp',
+  },
+  {
+    slug: 'aussie-buahlandak',
+    title: 'Aussie Buahlandak',
+    productSlug: 'aussie',
+    description: 'Buah landak sawit, versi gambar (dari petanisawit.com).',
+    image: '/images/landing/aussie-buahlandak/01.webp',
+  },
 ];
 
 /**

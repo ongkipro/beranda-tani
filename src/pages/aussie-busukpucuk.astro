@@ -1,0 +1,61 @@
+---
+/*
+ * Native Astro landing page — aussie-busukpucuk.
+ * Ported on 2026-10-19 from https://petanisawit.com/aussie-busukpucuk (Berdu), keeping
+ * its slug, so ads already pointing at the old address land on the same page.
+ * Sections, copy and imagery are the merchant's own, in their order; the
+ * OrderOnline/Everpro embed became the store's order form.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+import { defaultCatalogContentId } from '../lib/catalog-feed';
+import { nativeLandingCanonicalPath } from '../lib/landing-pages';
+import { landingProductJsonLd } from '../lib/landing-product-jsonld';
+import '../styles/form-hybrid.css';
+import '../styles/landing-pages/petanisawit.css';
+
+export const prerender = false;
+
+const SLUG = "aussie-busukpucuk";
+
+const product = await getStorefrontProduct(Astro.locals, 'aussie');
+if (!product) return Astro.rewrite('/404');
+
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
+---
+
+<BaseLayout
+  product={landingProductJsonLd(product, canonical)}
+  title="AUSSIE Obat Pucuk Busuk Kelapa Sawit"
+  description="Atasi pucuk busuk pada kelapa sawit dengan AUSSIE, pupuk cair organik. Botol 1 liter dan 500 ml, bisa COD."
+  image="/images/landing/aussie-busukpucuk/01.webp"
+  preloadImages="/images/landing/aussie-busukpucuk/01.webp"
+  canonical={canonical}
+  hideHeader={true}
+  hideFooter={true}
+>
+  <main class="ps-page">
+    <MetaLandingTracker slug={SLUG} contentId={defaultCatalogContentId(product)} contentName={product.productName} price={product.price} />
+    <h1 class="sr-only">AUSSIE Obat Pucuk Busuk Kelapa Sawit</h1>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/01.webp" width="960" height="1406" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 1" fetchpriority="high" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/02.webp" width="960" height="1612" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 2" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/03.webp" width="960" height="2539" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 3" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/04.webp" width="960" height="1445" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 4" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/05.webp" width="960" height="1292" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 5" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/06.webp" width="960" height="1629" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 6" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/07.webp" width="960" height="1827" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 7" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/08.webp" width="960" height="1630" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 8" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/09.webp" width="960" height="2536" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 9" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/10.webp" width="960" height="2243" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 10" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/11.webp" width="960" height="1549" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 11" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/12.webp" width="960" height="1672" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 12" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/13.webp" width="960" height="1955" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 13" loading="lazy" decoding="async" /></div>
+    <section id="checkout" class="ps-form">
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+    </section>
+    <div class="ps-image" style="padding-bottom:35px"><img src="/images/landing/aussie-formulabaru/12.webp" width="960" height="291" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 14" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/14.webp" width="960" height="116" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 15" loading="lazy" decoding="async" /></div>
+  </main>
+</BaseLayout>

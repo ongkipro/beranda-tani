@@ -1,0 +1,150 @@
+---
+/*
+ * Native Astro landing page — busukpucuk-simple.
+ * Ported on 2026-10-19 from https://petanisawit.com/busukpucuk-simple (Berdu), keeping
+ * its slug, so ads already pointing at the old address land on the same page.
+ * Sections, copy and imagery are the merchant's own, in their order; the
+ * OrderOnline/Everpro embed became the store's order form.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+import { defaultCatalogContentId } from '../lib/catalog-feed';
+import { nativeLandingCanonicalPath } from '../lib/landing-pages';
+import { landingProductJsonLd } from '../lib/landing-product-jsonld';
+import '../styles/form-hybrid.css';
+import '../styles/landing-pages/petanisawit.css';
+
+export const prerender = false;
+
+const SLUG = "busukpucuk-simple";
+
+const product = await getStorefrontProduct(Astro.locals, 'aussie');
+if (!product) return Astro.rewrite('/404');
+
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
+---
+
+<BaseLayout
+  product={landingProductJsonLd(product, canonical)}
+  title="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie"
+  description="Busuk pucuk menyerang sawit dari bibit hingga dewasa. Aussie menggabungkan stimulator, aktivator, dan pengendali patogen dalam satu produk."
+  image="/images/landing/busukpucuk-simple/01.webp"
+  preloadImages="/images/landing/busukpucuk-simple/01.webp"
+  canonical={canonical}
+  hideHeader={true}
+  hideFooter={true}
+>
+  <main class="ps-page">
+    <MetaLandingTracker slug={SLUG} contentId={defaultCatalogContentId(product)} contentName={product.productName} price={product.price} />
+    <section class="ps-text ps-large" style="padding-top:25px;padding-bottom:25px">
+      <div>
+        <h1 class="ps-h1">Atasi <span style="color:#B71C1C">Busuk Pucuk</span> pada Kelapa Sawit Anda dengan <strong>Aussie</strong></h1>
+        <p>Jangan biarkan busuk pucuk merusak panen dan masa depan kelapa sawit Anda.</p>
+      </div>
+    </section>
+    <div class="ps-image"><img src="/images/landing/busukpucuk-simple/01.webp" width="720" height="1000" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 1" fetchpriority="high" /></div>
+    <section class="ps-text ps-medium" style="padding-top:20px;padding-bottom:20px">
+      <div>
+        <h2 class="ps-h2"><strong>Busuk Pucuk, Ancaman Senyap yang Merusak Lahan Anda</strong></h2>
+        <p>Busuk pucuk bukan sekadar penyakit, tetapi ancaman serius yang mengintai kelapa sawit di segala usia. Dari bibit hingga pohon dewasa, penyakit ini bisa <strong>menghambat pertumbuhan</strong>, <strong>menurunkan produksi</strong>, bahkan menyebabkan <strong>kematian pohon</strong>.</p>
+      </div>
+    </section>
+    <section class="ps-text ps-medium" style="background-color:rgb(246,242,205);padding-top:35px;padding-bottom:35px">
+      <div>
+        <h2 class="ps-h2"><strong>Penyebab Busuk Pucuk</strong></h2>
+        <p><em>Serangan jamur dan bakteri yang diperparah oleh kekurangan nutrisi, terutama Zinc.</em></p>
+        <p class="ps-gap"></p>
+        <h2 class="ps-h2"><strong>Akibat</strong></h2>
+        <p><em>Daun membusuk dari ujung, batang layu, hingga akhirnya pohon tidak lagi produktif.</em></p>
+      </div>
+    </section>
+    <section class="ps-text ps-medium" style="padding-top:35px;padding-bottom:35px">
+      <div>
+        <h2 class="ps-h2"><strong>Solusi Revolusioner</strong></h2>
+        <p><strong>Aussie</strong> hadir sebagai solusi lengkap untuk mengatasi busuk pucuk. Dengan formula 3-in-1, <strong>Aussie</strong> tidak hanya mengobati, tetapi juga menstimulasi dan mengaktivasi pertumbuhan kelapa sawit Anda.</p>
+      </div>
+    </section>
+    <section class="ps-text ps-medium" style="background-color:rgb(246,242,205);padding-top:20px">
+      <div>
+        <h2 class="ps-h2"><strong>3 Kekuatan Utama Aussie</strong></h2>
+      </div>
+    </section>
+    <section class="ps-features" style="background-color:rgb(246,242,205)">
+      <div class="ps-feature"><svg viewBox="0 0 444.237 444.237" width="24" height="24" aria-hidden="true"><path d="M376.471 439.859H45.176C20.262 439.859 0 419.597 0 394.682V93.506C0 68.591 20.262 48.33 45.176 48.33H376.47c24.915 0 45.176 20.262 45.176 45.176v301.176c.001 24.915-20.261 45.177-45.175 45.177zM60.235 379.623h301.176V108.565H60.235v271.058z" fill="#fff"/><path d="M218.353 349.506a37.665 37.665 0 0 1-28.589-13.146L99.411 230.948c-13.53-15.789-11.701-39.552 4.088-53.082 15.782-13.545 39.544-11.716 53.09 4.081l59.068 68.909L402.342 25.741c28.898-40.478 59.144-18.063 30.118 22.588l-183.477 285.41a37.661 37.661 0 0 1-30.63 15.767z" fill="#00a344"/></svg><div><p><strong>Stimulator (Zat Pengatur Tumbuh)</strong></p><p>Merangsang pertumbuhan akar dan tunas baru, mempercepat pemulihan pohon yang sakit, dan membuat kelapa sawit tumbuh lebih sehat dan kokoh. </p></div></div>
+      <div class="ps-feature" style="margin-top:20px"><svg viewBox="0 0 444.237 444.237" width="24" height="24" aria-hidden="true"><path d="M376.471 439.859H45.176C20.262 439.859 0 419.597 0 394.682V93.506C0 68.591 20.262 48.33 45.176 48.33H376.47c24.915 0 45.176 20.262 45.176 45.176v301.176c.001 24.915-20.261 45.177-45.175 45.177zM60.235 379.623h301.176V108.565H60.235v271.058z" fill="#fff"/><path d="M218.353 349.506a37.665 37.665 0 0 1-28.589-13.146L99.411 230.948c-13.53-15.789-11.701-39.552 4.088-53.082 15.782-13.545 39.544-11.716 53.09 4.081l59.068 68.909L402.342 25.741c28.898-40.478 59.144-18.063 30.118 22.588l-183.477 285.41a37.661 37.661 0 0 1-30.63 15.767z" fill="#00a344"/></svg><div><p><strong>Aktivator (Microba Fungsional)</strong></p><p>Mengaktifkan mikroba baik dalam tanah untuk meningkatkan penyerapan nutrisi, menyehatkan media tanam, dan membangun kekebalan alami pohon terhadap penyakit.</p></div></div>
+      <div class="ps-feature" style="margin-top:20px"><svg viewBox="0 0 444.237 444.237" width="24" height="24" aria-hidden="true"><path d="M376.471 439.859H45.176C20.262 439.859 0 419.597 0 394.682V93.506C0 68.591 20.262 48.33 45.176 48.33H376.47c24.915 0 45.176 20.262 45.176 45.176v301.176c.001 24.915-20.261 45.177-45.175 45.177zM60.235 379.623h301.176V108.565H60.235v271.058z" fill="#fff"/><path d="M218.353 349.506a37.665 37.665 0 0 1-28.589-13.146L99.411 230.948c-13.53-15.789-11.701-39.552 4.088-53.082 15.782-13.545 39.544-11.716 53.09 4.081l59.068 68.909L402.342 25.741c28.898-40.478 59.144-18.063 30.118 22.588l-183.477 285.41a37.661 37.661 0 0 1-30.63 15.767z" fill="#00a344"/></svg><div><p><strong>Obat (Pengendali Patogen)</strong></p><p>Mengandung senyawa aktif yang efektif melawan jamur dan bakteri penyebab busuk pucuk. Langsung mengobati pohon yang terinfeksi dan mencegah penyebarannya.</p></div></div>
+    </section>
+    <section class="ps-text ps-medium" style="padding-top:35px">
+      <div>
+        <h2 class="ps-h2"><strong>Manfaat Nyata untuk Kebun Kelapa Sawit Anda</strong></h2>
+      </div>
+    </section>
+    <section class="ps-features">
+      <div class="ps-feature"><svg viewBox="-38 0 511 512" width="24" height="24" aria-hidden="true"><path d="M413.477 341.91c-13.762 37.297-34.575 69.727-61.868 96.38-31.066 30.335-71.746 54.44-120.91 71.636a37.914 37.914 0 0 1-4.988 1.363c-2.234.441-4.508.68-6.762.711h-.441c-2.403 0-4.817-.242-7.211-.71a38.904 38.904 0 0 1-4.957-1.353c-49.223-17.167-89.953-41.261-121.05-71.597-27.306-26.652-48.114-59.063-61.856-96.36C-1.555 274.168-.133 199.465 1.012 139.434l.02-.922c.23-4.957.378-10.164.46-15.914.418-28.23 22.863-51.586 51.098-53.16 58.867-3.286 104.406-22.485 143.316-60.41l.34-.313c6.461-5.926 14.602-8.832 22.703-8.711 7.813.101 15.594 3.004 21.824 8.71l.332.313c38.918 37.926 84.458 57.125 143.325 60.41 28.234 1.575 50.68 24.93 51.097 53.16.082 5.79.23 10.989.461 15.915l.012.39c1.14 60.145 2.555 134.996-22.523 203.008zm0 0" fill="#00dd80"/><path d="M413.477 341.91c-13.762 37.297-34.575 69.727-61.868 96.38-31.066 30.335-71.746 54.44-120.91 71.636a37.914 37.914 0 0 1-4.988 1.363c-2.234.441-4.508.68-6.762.711V.004c7.813.101 15.594 3.004 21.824 8.71l.332.313c38.918 37.926 84.458 57.125 143.325 60.41 28.234 1.575 50.68 24.93 51.097 53.16.082 5.79.23 10.989.461 15.915l.012.39c1.14 60.145 2.555 134.996-22.523 203.008zm0 0" fill="#00aa63"/><path d="M346.102 256c0 70.207-57.004 127.355-127.153 127.605h-.449c-70.355 0-127.605-57.246-127.605-127.605 0-70.355 57.25-127.602 127.605-127.602h.45c70.148.25 127.152 57.399 127.152 127.602zm0 0" fill="#fff"/><path d="M346.102 256c0 70.207-57.004 127.355-127.153 127.605V128.398c70.149.25 127.153 57.399 127.153 127.602zm0 0" fill="#e1ebf0"/><path d="M276.418 237.625l-57.469 57.477-12.418 12.418a14.98 14.98 0 0 1-10.625 4.398 14.99 14.99 0 0 1-10.629-4.398l-26.699-26.711c-5.867-5.868-5.867-15.372 0-21.243 5.86-5.867 15.375-5.867 21.242 0l16.086 16.086 59.27-59.27c5.867-5.87 15.383-5.87 21.242 0 5.867 5.868 5.867 15.384 0 21.243zm0 0" fill="#b4d2d7"/><path d="M276.418 237.625l-57.469 57.477v-42.497l36.227-36.222c5.867-5.871 15.383-5.871 21.242 0 5.867 5.867 5.867 15.383 0 21.242zm0 0" fill="#6fa5aa"/></svg><div><p><strong>Pemulihan Cepat:</strong> Pohon yang sakit pulih lebih cepat, kembali hijau, dan berbuah lebat.</p></div></div>
+      <div class="ps-feature" style="margin-top:20px"><svg viewBox="-38 0 511 512" width="24" height="24" aria-hidden="true"><path d="M413.477 341.91c-13.762 37.297-34.575 69.727-61.868 96.38-31.066 30.335-71.746 54.44-120.91 71.636a37.914 37.914 0 0 1-4.988 1.363c-2.234.441-4.508.68-6.762.711h-.441c-2.403 0-4.817-.242-7.211-.71a38.904 38.904 0 0 1-4.957-1.353c-49.223-17.167-89.953-41.261-121.05-71.597-27.306-26.652-48.114-59.063-61.856-96.36C-1.555 274.168-.133 199.465 1.012 139.434l.02-.922c.23-4.957.378-10.164.46-15.914.418-28.23 22.863-51.586 51.098-53.16 58.867-3.286 104.406-22.485 143.316-60.41l.34-.313c6.461-5.926 14.602-8.832 22.703-8.711 7.813.101 15.594 3.004 21.824 8.71l.332.313c38.918 37.926 84.458 57.125 143.325 60.41 28.234 1.575 50.68 24.93 51.097 53.16.082 5.79.23 10.989.461 15.915l.012.39c1.14 60.145 2.555 134.996-22.523 203.008zm0 0" fill="#00dd80"/><path d="M413.477 341.91c-13.762 37.297-34.575 69.727-61.868 96.38-31.066 30.335-71.746 54.44-120.91 71.636a37.914 37.914 0 0 1-4.988 1.363c-2.234.441-4.508.68-6.762.711V.004c7.813.101 15.594 3.004 21.824 8.71l.332.313c38.918 37.926 84.458 57.125 143.325 60.41 28.234 1.575 50.68 24.93 51.097 53.16.082 5.79.23 10.989.461 15.915l.012.39c1.14 60.145 2.555 134.996-22.523 203.008zm0 0" fill="#00aa63"/><path d="M346.102 256c0 70.207-57.004 127.355-127.153 127.605h-.449c-70.355 0-127.605-57.246-127.605-127.605 0-70.355 57.25-127.602 127.605-127.602h.45c70.148.25 127.152 57.399 127.152 127.602zm0 0" fill="#fff"/><path d="M346.102 256c0 70.207-57.004 127.355-127.153 127.605V128.398c70.149.25 127.153 57.399 127.153 127.602zm0 0" fill="#e1ebf0"/><path d="M276.418 237.625l-57.469 57.477-12.418 12.418a14.98 14.98 0 0 1-10.625 4.398 14.99 14.99 0 0 1-10.629-4.398l-26.699-26.711c-5.867-5.868-5.867-15.372 0-21.243 5.86-5.867 15.375-5.867 21.242 0l16.086 16.086 59.27-59.27c5.867-5.87 15.383-5.87 21.242 0 5.867 5.868 5.867 15.384 0 21.243zm0 0" fill="#b4d2d7"/><path d="M276.418 237.625l-57.469 57.477v-42.497l36.227-36.222c5.867-5.871 15.383-5.871 21.242 0 5.867 5.867 5.867 15.383 0 21.242zm0 0" fill="#6fa5aa"/></svg><div><p><strong>Pencegahan Total:</strong> Membentuk "tameng" alami yang melindungi pohon dari serangan penyakit di masa depan.</p></div></div>
+      <div class="ps-feature" style="margin-top:20px"><svg viewBox="-38 0 511 512" width="24" height="24" aria-hidden="true"><path d="M413.477 341.91c-13.762 37.297-34.575 69.727-61.868 96.38-31.066 30.335-71.746 54.44-120.91 71.636a37.914 37.914 0 0 1-4.988 1.363c-2.234.441-4.508.68-6.762.711h-.441c-2.403 0-4.817-.242-7.211-.71a38.904 38.904 0 0 1-4.957-1.353c-49.223-17.167-89.953-41.261-121.05-71.597-27.306-26.652-48.114-59.063-61.856-96.36C-1.555 274.168-.133 199.465 1.012 139.434l.02-.922c.23-4.957.378-10.164.46-15.914.418-28.23 22.863-51.586 51.098-53.16 58.867-3.286 104.406-22.485 143.316-60.41l.34-.313c6.461-5.926 14.602-8.832 22.703-8.711 7.813.101 15.594 3.004 21.824 8.71l.332.313c38.918 37.926 84.458 57.125 143.325 60.41 28.234 1.575 50.68 24.93 51.097 53.16.082 5.79.23 10.989.461 15.915l.012.39c1.14 60.145 2.555 134.996-22.523 203.008zm0 0" fill="#00dd80"/><path d="M413.477 341.91c-13.762 37.297-34.575 69.727-61.868 96.38-31.066 30.335-71.746 54.44-120.91 71.636a37.914 37.914 0 0 1-4.988 1.363c-2.234.441-4.508.68-6.762.711V.004c7.813.101 15.594 3.004 21.824 8.71l.332.313c38.918 37.926 84.458 57.125 143.325 60.41 28.234 1.575 50.68 24.93 51.097 53.16.082 5.79.23 10.989.461 15.915l.012.39c1.14 60.145 2.555 134.996-22.523 203.008zm0 0" fill="#00aa63"/><path d="M346.102 256c0 70.207-57.004 127.355-127.153 127.605h-.449c-70.355 0-127.605-57.246-127.605-127.605 0-70.355 57.25-127.602 127.605-127.602h.45c70.148.25 127.152 57.399 127.152 127.602zm0 0" fill="#fff"/><path d="M346.102 256c0 70.207-57.004 127.355-127.153 127.605V128.398c70.149.25 127.153 57.399 127.153 127.602zm0 0" fill="#e1ebf0"/><path d="M276.418 237.625l-57.469 57.477-12.418 12.418a14.98 14.98 0 0 1-10.625 4.398 14.99 14.99 0 0 1-10.629-4.398l-26.699-26.711c-5.867-5.868-5.867-15.372 0-21.243 5.86-5.867 15.375-5.867 21.242 0l16.086 16.086 59.27-59.27c5.867-5.87 15.383-5.87 21.242 0 5.867 5.868 5.867 15.384 0 21.243zm0 0" fill="#b4d2d7"/><path d="M276.418 237.625l-57.469 57.477v-42.497l36.227-36.222c5.867-5.871 15.383-5.871 21.242 0 5.867 5.867 5.867 15.383 0 21.242zm0 0" fill="#6fa5aa"/></svg><div><p><strong>Produktivitas Meningkat:</strong> Pertumbuhan optimal menghasilkan panen yang lebih banyak dan berkualitas.</p></div></div>
+      <div class="ps-feature" style="margin-top:20px"><svg viewBox="-38 0 511 512" width="24" height="24" aria-hidden="true"><path d="M413.477 341.91c-13.762 37.297-34.575 69.727-61.868 96.38-31.066 30.335-71.746 54.44-120.91 71.636a37.914 37.914 0 0 1-4.988 1.363c-2.234.441-4.508.68-6.762.711h-.441c-2.403 0-4.817-.242-7.211-.71a38.904 38.904 0 0 1-4.957-1.353c-49.223-17.167-89.953-41.261-121.05-71.597-27.306-26.652-48.114-59.063-61.856-96.36C-1.555 274.168-.133 199.465 1.012 139.434l.02-.922c.23-4.957.378-10.164.46-15.914.418-28.23 22.863-51.586 51.098-53.16 58.867-3.286 104.406-22.485 143.316-60.41l.34-.313c6.461-5.926 14.602-8.832 22.703-8.711 7.813.101 15.594 3.004 21.824 8.71l.332.313c38.918 37.926 84.458 57.125 143.325 60.41 28.234 1.575 50.68 24.93 51.097 53.16.082 5.79.23 10.989.461 15.915l.012.39c1.14 60.145 2.555 134.996-22.523 203.008zm0 0" fill="#00dd80"/><path d="M413.477 341.91c-13.762 37.297-34.575 69.727-61.868 96.38-31.066 30.335-71.746 54.44-120.91 71.636a37.914 37.914 0 0 1-4.988 1.363c-2.234.441-4.508.68-6.762.711V.004c7.813.101 15.594 3.004 21.824 8.71l.332.313c38.918 37.926 84.458 57.125 143.325 60.41 28.234 1.575 50.68 24.93 51.097 53.16.082 5.79.23 10.989.461 15.915l.012.39c1.14 60.145 2.555 134.996-22.523 203.008zm0 0" fill="#00aa63"/><path d="M346.102 256c0 70.207-57.004 127.355-127.153 127.605h-.449c-70.355 0-127.605-57.246-127.605-127.605 0-70.355 57.25-127.602 127.605-127.602h.45c70.148.25 127.152 57.399 127.152 127.602zm0 0" fill="#fff"/><path d="M346.102 256c0 70.207-57.004 127.355-127.153 127.605V128.398c70.149.25 127.153 57.399 127.153 127.602zm0 0" fill="#e1ebf0"/><path d="M276.418 237.625l-57.469 57.477-12.418 12.418a14.98 14.98 0 0 1-10.625 4.398 14.99 14.99 0 0 1-10.629-4.398l-26.699-26.711c-5.867-5.868-5.867-15.372 0-21.243 5.86-5.867 15.375-5.867 21.242 0l16.086 16.086 59.27-59.27c5.867-5.87 15.383-5.87 21.242 0 5.867 5.868 5.867 15.384 0 21.243zm0 0" fill="#b4d2d7"/><path d="M276.418 237.625l-57.469 57.477v-42.497l36.227-36.222c5.867-5.871 15.383-5.871 21.242 0 5.867 5.867 5.867 15.383 0 21.242zm0 0" fill="#6fa5aa"/></svg><div><p><strong>Hemat dan Efisien:</strong> Satu produk untuk tiga fungsi berbeda, menghemat biaya dan waktu aplikasi.</p></div></div>
+    </section>
+    <div class="ps-image"><img src="/images/landing/busukpucuk-simple/02.webp" width="720" height="1000" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 2" loading="lazy" decoding="async" /></div>
+    <section class="ps-text ps-medium">
+      <div>
+        <h2 class="ps-h2"><strong>Cara Penggunaan yang Praktis dan Mudah</strong></h2>
+        <p>Aussie dirancang agar mudah digunakan oleh petani. Cukup ikuti petunjuk dosis yang tertera pada kemasan, dan saksikan sendiri perubahannya. <strong>Aussie aman bagi tanaman, lingkungan, dan manusia karena 100% organik.</strong></p>
+      </div>
+    </section>
+    <section class="ps-text ps-medium" style="padding-top:35px">
+      <div>
+        <h2 class="ps-h2"><strong>Jangan Tunda Lagi, Dapatkan Aussie Sekarang dan Selamatkan Kebun Anda!</strong></h2>
+      </div>
+    </section>
+    <section class="ps-text ps-larger" style="background-color:#B71C1C;padding-top:20px;padding-bottom:20px">
+      <div style="color:#ffffff">
+        <h2 class="ps-h1"><strong>Spesial Promo Tahun Baru</strong></h2>
+      </div>
+    </section>
+    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/busukpucuk-simple/03.webp" width="720" height="600" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 3" loading="lazy" decoding="async" /></div>
+    <section class="ps-text ps-large" style="background-color:#BF360C;padding-top:30px;padding-bottom:30px">
+      <div style="color:#ffffff">
+        <h2 class="ps-h1">Promo Segera Berakhir</h2>
+      </div>
+    </section>
+    <section class="ps-countdown" style="padding-top:24px;padding-bottom:24px" data-countdown="480" role="timer" aria-label="Sisa waktu promo">
+      <div class="ps-ring" style="--ring:#4CAF50">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" class="ps-ring-track" /><circle cx="50" cy="50" r="44" class="ps-ring-bar" pathLength="100" data-ring="h" /></svg>
+        <span class="ps-ring-face"><span class="ps-ring-value" data-value="h">0</span><span class="ps-ring-label">JAM</span></span>
+      </div>
+      <div class="ps-ring" style="--ring:#FF9800">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" class="ps-ring-track" /><circle cx="50" cy="50" r="44" class="ps-ring-bar" pathLength="100" data-ring="m" /></svg>
+        <span class="ps-ring-face"><span class="ps-ring-value" data-value="m">0</span><span class="ps-ring-label">MENIT</span></span>
+      </div>
+      <div class="ps-ring" style="--ring:#F44336">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" class="ps-ring-track" /><circle cx="50" cy="50" r="44" class="ps-ring-bar" pathLength="100" data-ring="s" /></svg>
+        <span class="ps-ring-face"><span class="ps-ring-value" data-value="s">0</span><span class="ps-ring-label">DETIK</span></span>
+      </div>
+    </section>
+    <section class="ps-text ps-large" style="background-color:rgb(246,242,205);padding-top:30px;padding-bottom:30px">
+      <div>
+        <p>Jangan biarkan busuk pucuk <span style="color:#B71C1C">menghancurkan hasil kerja keras Anda.</span></p>
+        <p>Ambil langkah proaktif dengan Aussie.</p>
+        <p class="ps-gap"></p>
+        <h3 class="ps-h3"><strong>Pesan sekarang dan raih panen yang melimpah.</strong></h3>
+      </div>
+    </section>
+    <section id="checkout" class="ps-form">
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+    </section>
+    <section class="ps-text ps-larger" style="background-color:#B71C1C">
+      <div style="color:#ffffff">
+        <h2 class="ps-h2"><strong>Kata Petani Yang Sudah Pakai Aussie</strong></h2>
+      </div>
+    </section>
+    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/busukpucuk-simple/04.webp" width="562" height="946" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 4" loading="lazy" decoding="async" /></div>
+    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/busukpucuk-simple/05.webp" width="562" height="909" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 5" loading="lazy" decoding="async" /></div>
+    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/busukpucuk-simple/06.webp" width="286" height="694" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 6" loading="lazy" decoding="async" /></div>
+  </main>
+  <script>
+    import '../scripts/petanisawit-countdown.ts';
+  </script>
+</BaseLayout>

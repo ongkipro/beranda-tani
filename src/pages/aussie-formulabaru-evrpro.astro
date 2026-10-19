@@ -1,0 +1,60 @@
+---
+/*
+ * Native Astro landing page — aussie-formulabaru-evrpro.
+ * Ported on 2026-10-19 from https://petanisawit.com/aussie-formulabaru-evrpro (Berdu), keeping
+ * its slug, so ads already pointing at the old address land on the same page.
+ * Sections, copy and imagery are the merchant's own, in their order; the
+ * OrderOnline/Everpro embed became the store's order form.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+import { defaultCatalogContentId } from '../lib/catalog-feed';
+import { nativeLandingCanonicalPath } from '../lib/landing-pages';
+import { landingProductJsonLd } from '../lib/landing-product-jsonld';
+import '../styles/form-hybrid.css';
+import '../styles/landing-pages/petanisawit.css';
+
+export const prerender = false;
+
+const SLUG = "aussie-formulabaru-evrpro";
+
+const product = await getStorefrontProduct(Astro.locals, 'aussie');
+if (!product) return Astro.rewrite('/404');
+
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
+---
+
+<BaseLayout
+  product={landingProductJsonLd(product, canonical)}
+  title="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma"
+  description="AUSSIE, pupuk cair organik formula baru untuk membantu membasmi jamur Ganoderma dan melindungi sawit. Botol 1 liter dan 500 ml, bisa COD."
+  image="/images/landing/aussie-formulabaru/01.webp"
+  preloadImages="/images/landing/aussie-formulabaru/01.webp"
+  canonical={canonical}
+  noindex={true}
+  hideHeader={true}
+  hideFooter={true}
+>
+  <main class="ps-page">
+    <MetaLandingTracker slug={SLUG} contentId={defaultCatalogContentId(product)} contentName={product.productName} price={product.price} />
+    <h1 class="sr-only">AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma</h1>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/01.webp" width="900" height="1298" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 1" fetchpriority="high" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/02.webp" width="900" height="1217" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 2" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/03.webp" width="900" height="996" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 3" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/04.webp" width="900" height="1021" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 4" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/05.webp" width="900" height="947" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 5" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/06.webp" width="900" height="1020" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 6" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/07.webp" width="900" height="1442" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 7" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/08.webp" width="900" height="1200" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 8" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/09.webp" width="900" height="2119" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 9" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/10.webp" width="900" height="3846" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 10" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/11.webp" width="900" height="1772" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 11" loading="lazy" decoding="async" /></div>
+    <section id="checkout" class="ps-form">
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+    </section>
+    <div class="ps-image" style="padding-bottom:35px"><img src="/images/landing/aussie-formulabaru/12.webp" width="960" height="291" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 12" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/13.webp" width="900" height="109" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 13" loading="lazy" decoding="async" /></div>
+  </main>
+</BaseLayout>

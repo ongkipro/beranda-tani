@@ -1,0 +1,141 @@
+---
+/*
+ * Native Astro landing page — aussie-edukasi1.
+ * Ported on 2026-10-19 from https://petanisawit.com/aussie-edukasi1 (Berdu), keeping
+ * its slug, so ads already pointing at the old address land on the same page.
+ * Sections, copy and imagery are the merchant's own, in their order; the
+ * OrderOnline/Everpro embed became the store's order form.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+import { defaultCatalogContentId } from '../lib/catalog-feed';
+import { nativeLandingCanonicalPath } from '../lib/landing-pages';
+import { landingProductJsonLd } from '../lib/landing-product-jsonld';
+import '../styles/form-hybrid.css';
+import '../styles/landing-pages/petanisawit.css';
+
+export const prerender = false;
+
+const SLUG = "aussie-edukasi1";
+
+const product = await getStorefrontProduct(Astro.locals, 'aussie');
+if (!product) return Astro.rewrite('/404');
+
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
+---
+
+<BaseLayout
+  product={landingProductJsonLd(product, canonical)}
+  title="Kenali Penyakit Sawit karena Jamur - Aussie"
+  description="Pucuk busuk, Ganoderma, dan bercak daun: kenali tanda serangan jamur pada sawit dan cara pakai Aussie yang benar."
+  image="/images/landing/aussie-edukasi1/01.webp"
+  preloadImages="/images/landing/aussie-edukasi1/01.webp"
+  canonical={canonical}
+  hideHeader={true}
+  hideFooter={true}
+>
+  <main class="ps-page">
+    <MetaLandingTracker slug={SLUG} contentId={defaultCatalogContentId(product)} contentName={product.productName} price={product.price} />
+    <div class="ps-image"><img src="/images/landing/aussie-edukasi1/01.webp" width="720" height="1000" alt="Kenali Penyakit Sawit karena Jamur - Aussie — gambar 1" fetchpriority="high" /></div>
+    <section class="ps-text ps-large ps-open-sans">
+      <div>
+        <h1 class="ps-h1">Kenali Penyakit Sawit Karena Jamur</h1>
+      </div>
+    </section>
+    <section class="ps-text ps-medium ps-open-sans" style="padding-top:5px;padding-bottom:23px">
+      <div>
+        <p>Banyak petani sering menyalahkan pupuk atau cuaca saat sawit bermasalah.<br />Padahal, <strong>penyebab utamanya sering kali jamur</strong> yang menyerang batang, daun, atau pucuk sawit.</p>
+      </div>
+    </section>
+    <section class="ps-text ps-small ps-open-sans" style="background-color:rgb(9,112,17);padding-top:10px;padding-bottom:10px">
+      <div style="color:#ffffff">
+        <h2 class="ps-h1"><strong>Pucuk Busuk</strong></h2>
+      </div>
+    </section>
+    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/aussie-edukasi1/02.webp" width="960" height="640" alt="Kenali Penyakit Sawit karena Jamur - Aussie — gambar 2" loading="lazy" decoding="async" /></div>
+    <section class="ps-text ps-medium ps-left" style="padding-bottom:23px">
+      <div>
+        <ul><li><strong>Terjadi karena</strong> jamur menyerang bagian pucuk muda. </li><li><strong>Tanda-tanda:</strong> pucuk membusuk, daun muda menguning lalu mati. </li><li><strong>Akibatnya:</strong> sawit muda bisa mati sebelum berbuah. </li></ul>
+        <p>👉 Ini mirip “sakit di jantung sawit” – kalau tidak segera diobati,<strong> tanaman tidak bisa tumbuh lag</strong>i. </p>
+      </div>
+    </section>
+    <section class="ps-text ps-small ps-open-sans" style="background-color:rgb(9,112,17);padding-top:10px;padding-bottom:10px">
+      <div style="color:#ffffff">
+        <h2 class="ps-h1"><strong>Ganoderma</strong></h2>
+      </div>
+    </section>
+    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/aussie-edukasi1/03.webp" width="735" height="400" alt="Kenali Penyakit Sawit karena Jamur - Aussie — gambar 3" loading="lazy" decoding="async" /></div>
+    <section class="ps-text ps-medium ps-left" style="padding-bottom:23px">
+      <div>
+        <ul><li><strong>Disebabkan</strong> jamur yang menyerang batang. </li><li><strong>Tanda-tanda:</strong> pangkal batang membusuk, keluar jamur berbentuk kipas/cendawan di batang. </li><li><strong>Akibatnya:</strong> batang lemah, sawit roboh, tidak bisa dipanen lagi. </li></ul>
+        <p>👉 Ganoderma disebut “penyakit mematikan sawit” karena<strong> sulit diatasi jika dibiarkan terlalu lama.</strong> </p>
+      </div>
+    </section>
+    <section class="ps-text ps-small ps-open-sans" style="background-color:rgb(9,112,17);padding-top:10px;padding-bottom:10px">
+      <div style="color:#ffffff">
+        <h2 class="ps-h1"><strong>Bercak Daun</strong></h2>
+      </div>
+    </section>
+    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/aussie-edukasi1/04.webp" width="735" height="400" alt="Kenali Penyakit Sawit karena Jamur - Aussie — gambar 4" loading="lazy" decoding="async" /></div>
+    <section class="ps-text ps-medium ps-left" style="padding-bottom:23px">
+      <div>
+        <ul><li><strong>Disebabkan</strong> jamur kecil yang menyerang daun. </li><li><strong>Tanda-tanda:</strong> muncul bercak coklat atau hitam di daun. </li><li><strong>Akibatnya:</strong> fotosintesis terganggu → hasil panen berkurang. </li></ul>
+        <p>👉 Kalau daun rusak, sawit<strong> tidak bisa menghasilkan buah maksimal</strong>.</p>
+      </div>
+    </section>
+    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/aussie-edukasi1/05.webp" width="720" height="1000" alt="Kenali Penyakit Sawit karena Jamur - Aussie — gambar 5" loading="lazy" decoding="async" /></div>
+    <section class="ps-text ps-small ps-open-sans" style="background-color:rgb(9,112,17);padding-top:10px;padding-bottom:10px">
+      <div style="color:#ffffff">
+        <h2 class="ps-h1">Terbukti Di Lapangan</h2>
+      </div>
+    </section>
+    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/aussie-edukasi1/06.webp" width="960" height="640" alt="Kenali Penyakit Sawit karena Jamur - Aussie — gambar 6" loading="lazy" decoding="async" /></div>
+    <section class="ps-text ps-large ps-open-sans" style="padding-bottom:23px">
+      <div>
+        <h3 class="ps-h3"><strong>8 dari 10</strong> petani berhasil, 2 gagal karena salah cara pakai.</h3>
+      </div>
+    </section>
+    <section class="ps-text ps-small ps-open-sans" style="background-color:rgb(9,112,17);padding-top:10px;padding-bottom:10px">
+      <div style="color:#ffffff">
+        <h2 class="ps-h1">Cara Pakai Aussie Yang Benar</h2>
+      </div>
+    </section>
+    <section class="ps-text ps-medium ps-open-sans ps-left" style="padding-bottom:23px">
+      <div>
+        <ol><li>Kocok botol sebelum dilarutkan</li><li>Semprot daun &amp; batang yang terserang. </li><li>Kocor di sekitar pangkal batang. </li><li>Ulangi sesuai petunjuk.</li></ol>
+        <p class="ps-gap"></p>
+        <p><strong>Jangan ragu</strong> untuk bertanya dan konsultasikan kondisi sawit anda, supaya tim ahli <strong>kami bisa memandu dengan benar</strong></p>
+      </div>
+    </section>
+    <section class="ps-text ps-small ps-open-sans" style="background-color:rgb(9,112,17);padding-top:10px;padding-bottom:10px">
+      <div style="color:#ffffff">
+        <h2 class="ps-h1">Beli Aussie</h2>
+        <p>Dapatkan Pendampingan &amp; Garansi</p>
+      </div>
+    </section>
+    <section class="ps-text ps-medium ps-open-sans ps-left" style="padding-bottom:23px">
+      <div>
+        <ul><li><strong>Pendampingan Grup WA Eksklusif</strong> bersama ahli &amp; petani lain. </li><li><strong>Garansi Uang Kembali 100%</strong> jika sawit tidak membaik setelah 30 hari (dengan cara pakai sesuai petunjuk ahli).</li></ul>
+      </div>
+    </section>
+    <section class="ps-text ps-large ps-open-sans" style="background-color:rgb(255,235,59);padding-top:10px;padding-bottom:10px">
+      <div>
+        <h2 class="ps-h2"><strong>Jangan Tunggu Sawit Anda Rusak Karena Jamur</strong></h2>
+        <p class="ps-gap"></p>
+        <p class="ps-gap"></p>
+        <h3 class="ps-h3">Pesan Aussie sekarang, dapat pendampingan langsung, plus garansi uang kembali 100%.</h3>
+      </div>
+    </section>
+    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/aussie-edukasi1/07.webp" width="750" height="2000" alt="Kenali Penyakit Sawit karena Jamur - Aussie — gambar 7" loading="lazy" decoding="async" /></div>
+    <section id="checkout" class="ps-form">
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+    </section>
+    <section class="ps-text ps-larger ps-open-sans" style="background-color:rgb(211,0,0);padding-top:10px;padding-bottom:10px">
+      <div style="color:#ffffff">
+        <h2 class="ps-h2"><strong>Hati-Hati Banyak Produk Aussie Palsu, Beli Yang Asli Hanya Disini, 100% Original</strong></h2>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

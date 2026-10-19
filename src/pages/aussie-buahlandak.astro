@@ -1,0 +1,58 @@
+---
+/*
+ * Native Astro landing page — aussie-buahlandak.
+ * Ported on 2026-10-19 from https://petanisawit.com/aussie-buahlandak (Berdu), keeping
+ * its slug, so ads already pointing at the old address land on the same page.
+ * Sections, copy and imagery are the merchant's own, in their order; the
+ * OrderOnline/Everpro embed became the store's order form.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+import { defaultCatalogContentId } from '../lib/catalog-feed';
+import { nativeLandingCanonicalPath } from '../lib/landing-pages';
+import { landingProductJsonLd } from '../lib/landing-product-jsonld';
+import '../styles/form-hybrid.css';
+import '../styles/landing-pages/petanisawit.css';
+
+export const prerender = false;
+
+const SLUG = "aussie-buahlandak";
+
+const product = await getStorefrontProduct(Astro.locals, 'aussie');
+if (!product) return Astro.rewrite('/404');
+
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
+---
+
+<BaseLayout
+  product={landingProductJsonLd(product, canonical)}
+  title="Aussie untuk Buah Landak Sawit"
+  description="Atasi tandan sawit landak dan buah jarang dengan Aussie. Botol 1 liter dan 500 ml, bisa COD."
+  image="/images/landing/aussie-buahlandak/01.webp"
+  preloadImages="/images/landing/aussie-buahlandak/01.webp"
+  canonical={canonical}
+  hideHeader={true}
+  hideFooter={true}
+>
+  <main class="ps-page">
+    <MetaLandingTracker slug={SLUG} contentId={defaultCatalogContentId(product)} contentName={product.productName} price={product.price} />
+    <div class="ps-image"><a href="#checkout"><img src="/images/landing/aussie-buahlandak/01.webp" width="720" height="768" alt="Aussie untuk Buah Landak Sawit — gambar 1" fetchpriority="high" /></a></div>
+    <div class="ps-image"><img src="/images/landing/aussie-buahlandak/02.webp" width="720" height="768" alt="Aussie untuk Buah Landak Sawit — gambar 2" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-buahlandak/03.webp" width="720" height="768" alt="Aussie untuk Buah Landak Sawit — gambar 3" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-buahlandak/04.webp" width="720" height="768" alt="Aussie untuk Buah Landak Sawit — gambar 4" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-buahlandak/05.webp" width="720" height="768" alt="Aussie untuk Buah Landak Sawit — gambar 5" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-buahlandak/06.webp" width="720" height="768" alt="Aussie untuk Buah Landak Sawit — gambar 6" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-buahlandak/07.webp" width="750" height="2000" alt="Aussie untuk Buah Landak Sawit — gambar 7" loading="lazy" decoding="async" /></div>
+    <section id="checkout" class="ps-form">
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+    </section>
+    <section class="ps-text ps-small" style="background-color:#B71C1C;padding-top:8px;padding-bottom:8px">
+      <div style="color:#ffffff">
+        <h1 class="ps-h2"><em>Hati - hati ! Banyak beredar produk Aussie </em><em><strong>PALSU</strong></em><em> dengan harga lebih murah</em></h1>
+        <p><em><strong>Produk Asli Hanya Ada Disini, 100% Original</strong></em></p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

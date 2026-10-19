@@ -1,0 +1,201 @@
+/*
+ * The landing pages ported from petanisawit.com (Berdu): aussie-formulabaru,
+ * aussie-formulabaru-evrpro, aussie-edukasi1, busukpucuk-simple,
+ * aussie-busukpucuk, aussie-buahlandak. Sizes, spacing and the countdown are
+ * Berdu's, measured from its render at 390 px, so the pages read as they did.
+ */
+
+/* The one face Berdu loaded for these pages; its bold is synthesized, as there. */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/open-sans-latin-400-normal.woff2') format('woff2');
+}
+
+.ps-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  background: #fff;
+  color: #000;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.ps-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ps-text > div {
+  padding-inline: 18px;
+  text-align: center;
+  overflow-wrap: break-word;
+}
+.ps-text.ps-left > div {
+  text-align: left;
+}
+.ps-open-sans {
+  font-family: 'Open Sans', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.ps-text :is(h1, h2, h3, p, ul, ol) {
+  margin: 0;
+  font-size: inherit;
+  line-height: 1.4;
+}
+.ps-text .ps-h1 {
+  font-weight: 700;
+}
+.ps-text :is(.ps-h2, .ps-h3) {
+  font-weight: 500;
+}
+.ps-text :is(ul, ol) {
+  margin-block: 8px;
+  padding-left: 16px;
+  text-align: left;
+}
+/* An empty Draft block renders half a line, not a whole one. */
+.ps-text .ps-gap {
+  height: 0.5em;
+}
+.ps-text ul {
+  list-style: disc;
+}
+.ps-text ol {
+  list-style: decimal;
+}
+
+/* Berdu's text sizes: body copy, then h1 / h2 / h3. */
+.ps-small {
+  font-size: 15px;
+}
+.ps-small .ps-h1 {
+  font-size: 21px;
+}
+.ps-small .ps-h2 {
+  font-size: 19px;
+}
+.ps-small .ps-h3 {
+  font-size: 17px;
+}
+.ps-medium {
+  font-size: 16px;
+}
+.ps-medium .ps-h1 {
+  font-size: 23px;
+}
+.ps-medium .ps-h2 {
+  font-size: 20px;
+}
+.ps-medium .ps-h3 {
+  font-size: 18px;
+}
+.ps-large {
+  font-size: 18px;
+}
+.ps-large .ps-h1 {
+  font-size: 25px;
+}
+.ps-large .ps-h2 {
+  font-size: 22px;
+}
+.ps-large .ps-h3 {
+  font-size: 20px;
+}
+.ps-larger {
+  font-size: 20px;
+}
+.ps-larger .ps-h1 {
+  font-size: 27px;
+}
+.ps-larger .ps-h2 {
+  font-size: 25px;
+}
+.ps-larger .ps-h3 {
+  font-size: 22px;
+}
+
+.ps-features {
+  padding-inline: 18px;
+  font-size: 19px;
+  line-height: 1.4;
+}
+.ps-features::before,
+.ps-features::after {
+  content: '';
+  display: block;
+  height: 12px;
+}
+.ps-feature {
+  display: flex;
+  align-items: flex-start;
+}
+.ps-feature > svg {
+  flex: none;
+  margin-right: 14px;
+}
+.ps-feature p {
+  margin: 0;
+}
+
+.ps-countdown {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  padding-inline: 18px;
+}
+.ps-ring {
+  position: relative;
+  width: 99px;
+  height: 99px;
+  border-radius: 50%;
+  box-shadow:
+    0 2px 10px rgb(0 0 0 / 0.05),
+    0 1px 4px rgb(0 0 0 / 0.1);
+}
+.ps-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.ps-ring circle {
+  fill: none;
+  stroke-width: 12;
+}
+.ps-ring-track {
+  stroke: #e0e0e0;
+}
+.ps-ring-bar {
+  stroke: var(--ring);
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+.ps-ring-face {
+  position: absolute;
+  inset: 12.5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ring);
+  font-weight: 700;
+  box-shadow:
+    0 2px 10px rgb(0 0 0 / 0.05),
+    0 1px 4px rgb(0 0 0 / 0.1);
+}
+.ps-ring-value {
+  font-size: 30px;
+  line-height: 1.2;
+}
+.ps-ring-label {
+  margin-top: -6px;
+  font-size: 10px;
+}
