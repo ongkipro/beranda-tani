@@ -24,6 +24,9 @@ const SLUG = "busukpucuk-simple";
 
 const product = await getStorefrontProduct(Astro.locals, 'aussie');
 if (!product) return Astro.rewrite('/404');
+// petanisawit's form opened on the 1 litre bottle; without that SKU the form
+// falls back to its own default.
+const liter = product.variants.find((variant) => variant.sku === 'AUSSIE1LITER');
 
 const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
 
@@ -230,7 +233,7 @@ const chats = {
     </section>
     <section class="ps-text ps-larger" style="background-color:#B71C1C;padding-top:20px;padding-bottom:20px">
       <div style="color:#ffffff">
-        <h2 class="ps-h1"><strong>Spesial Promo Tahun Baru</strong></h2>
+        <h2 class="ps-h1"><strong>Spesial Promo</strong></h2>
       </div>
     </section>
     <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/busukpucuk-simple/03.webp" width="720" height="600" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 3" loading="lazy" decoding="async" /></div>
@@ -243,7 +246,7 @@ const chats = {
       </div>
     </section>
     <section id="checkout" class="ps-form">
-      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} selectedVariantId={liter?.id} embedded={true} />
     </section>
     <section class="ps-text ps-larger" style="background-color:#B71C1C">
       <div style="color:#ffffff">

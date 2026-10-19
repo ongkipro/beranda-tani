@@ -22,6 +22,9 @@ const SLUG = "aussie-buahlandak";
 
 const product = await getStorefrontProduct(Astro.locals, 'aussie');
 if (!product) return Astro.rewrite('/404');
+// petanisawit's form opened on the 1 litre bottle; without that SKU the form
+// falls back to its own default.
+const liter = product.variants.find((variant) => variant.sku === 'AUSSIE1LITER');
 
 const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
 ---
@@ -46,7 +49,7 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
     <div class="ps-image"><img src="/images/landing/aussie-buahlandak/06.webp" width="720" height="768" alt="Aussie untuk Buah Landak Sawit — gambar 6" loading="lazy" decoding="async" /></div>
     <div class="ps-image"><img src="/images/landing/aussie-buahlandak/07.webp" width="750" height="2000" alt="Aussie untuk Buah Landak Sawit — gambar 7" loading="lazy" decoding="async" /></div>
     <section id="checkout" class="ps-form">
-      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} selectedVariantId={liter?.id} embedded={true} />
     </section>
     <section class="ps-text ps-small" style="background-color:#B71C1C;padding-top:8px;padding-bottom:8px">
       <div style="color:#ffffff">
