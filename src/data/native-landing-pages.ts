@@ -93,9 +93,9 @@ export const nativeLandingPages: NativeLandingPage[] = [
   },
   {
     slug: 'aussie-formulabaru-evrpro',
-    title: 'Aussie Formula Baru (Everpro)',
+    title: 'Aussie Formula Baru (2)',
     productSlug: 'aussie',
-    description: 'Sama dengan aussie-formulabaru, slug iklan Everpro (dari petanisawit.com).',
+    description: 'Sama dengan aussie-formulabaru, slug iklan kedua (dari petanisawit.com).',
     image: '/images/landing/aussie-formulabaru/01.webp',
   },
   {

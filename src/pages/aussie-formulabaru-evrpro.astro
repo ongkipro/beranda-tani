@@ -4,7 +4,7 @@
  * Ported on 2026-10-19 from https://petanisawit.com/aussie-formulabaru-evrpro (Berdu), keeping
  * its slug, so ads already pointing at the old address land on the same page.
  * Sections, copy and imagery are the merchant's own, in their order; the
- * OrderOnline/Everpro embed became the store's order form.
+ * embedded order form became the store's own.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
@@ -28,7 +28,7 @@ if (!product) return Astro.rewrite('/404');
 // falls back to its own default.
 const liter = product.variants.find((variant) => variant.sku === 'AUSSIE1LITER');
 
-const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, "aussie-formulabaru")}`;
 
 // WhatsApp testimonials, transcribed from the merchant's screenshots.
 const chats = {
@@ -138,7 +138,6 @@ const chats = {
   image="/images/landing/aussie-formulabaru/01.webp"
   preloadImages="/images/landing/aussie-formulabaru/01.webp"
   canonical={canonical}
-  noindex={true}
   hideHeader={true}
   hideFooter={true}
 >
