@@ -9,10 +9,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
 import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import WhatsAppChat from '../components/storefront/landing-pages/WhatsAppChat.astro';
 import { getStorefrontProduct } from '../lib/catalog';
 import { defaultCatalogContentId } from '../lib/catalog-feed';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
 import { landingProductJsonLd } from '../lib/landing-product-jsonld';
+import type { ComponentProps } from 'astro/types';
 import '../styles/form-hybrid.css';
 import '../styles/landing-pages/petanisawit.css';
 
@@ -24,6 +26,106 @@ const product = await getStorefrontProduct(Astro.locals, 'aussie');
 if (!product) return Astro.rewrite('/404');
 
 const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
+
+// WhatsApp testimonials, transcribed from the merchant's screenshots.
+const chats = {
+  "fbKarni": {
+    "name": "Pak Karni Kalbar",
+    "avatar": {
+      "src": "/images/landing/aussie-formulabaru/wa-karni-av.webp",
+      "width": 96,
+      "height": 96
+    },
+    "messages": [
+      {
+        "from": "me",
+        "text": "Halo Pak, Bagaimana hasil penggunaan AUSSIE sejauh ini ?",
+        "time": "09:43 am",
+        "read": true
+      },
+      {
+        "from": "them",
+        "photo": {
+          "src": "/images/landing/aussie-formulabaru/wa-karni-ph.webp",
+          "width": 546,
+          "height": 295
+        },
+        "text": "Mantab Bos ini, dalam 2 bulan Daun kembali Hijau dan sudah tidak ada bercak, makin lebat josss 👍👍👍",
+        "time": "10:12 am"
+      },
+      {
+        "from": "me",
+        "text": "Mantab pak, semoga panenya melimpah 😁👌",
+        "time": "10:15 am",
+        "read": false
+      }
+    ]
+  },
+  "fbSuroso": {
+    "name": "Pak Suroso",
+    "avatar": {
+      "src": "/images/landing/aussie-formulabaru/wa-suroso-av.webp",
+      "width": 96,
+      "height": 96
+    },
+    "messages": [
+      {
+        "from": "me",
+        "text": "Halo Pak, Bagaimana hasil penggunaan AUSSIE sejauh ini ?",
+        "time": "09:43 am",
+        "read": true
+      },
+      {
+        "from": "them",
+        "photo": {
+          "src": "/images/landing/aussie-formulabaru/wa-suroso-ph.webp",
+          "width": 546,
+          "height": 311
+        },
+        "text": "Memuaskan, Jamur sudah pada mati, pohon makin subur, mantab hasilnya setelah 3 bulan 👍👍🤪",
+        "time": "10:22 am"
+      },
+      {
+        "from": "me",
+        "text": "Mantab pak, semoga panenya melimpah 😁👌",
+        "time": "10:25 am",
+        "read": false
+      }
+    ]
+  },
+  "fbAndi": {
+    "name": "Pak Andi",
+    "avatar": {
+      "src": "/images/landing/aussie-formulabaru/wa-andi-av.webp",
+      "width": 96,
+      "height": 96
+    },
+    "messages": [
+      {
+        "from": "me",
+        "text": "Halo Pak, Bagaimana hasil penggunaan AUSSIE sejauh ini ?",
+        "time": "09:43 am",
+        "read": true
+      },
+      {
+        "from": "them",
+        "photo": {
+          "src": "/images/landing/aussie-formulabaru/wa-andi-ph.webp",
+          "width": 546,
+          "height": 293
+        },
+        "text": "Sangat Josss, sudah panen bos, mantab hasil panen meningkat setelah 5 bulan pakai AUSSIE 👍👍👌",
+        "time": "12:31 pm"
+      },
+      {
+        "from": "me",
+        "text": "Mantab pak, panenya melimpah 😁👌",
+        "time": "12:33 pm",
+        "read": false
+      }
+    ]
+  }
+} satisfies Record<string, ComponentProps<typeof WhatsAppChat>>;
 ---
 
 <BaseLayout
@@ -49,12 +151,18 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
     <div class="ps-image"><img src="/images/landing/aussie-formulabaru/07.webp" width="900" height="1442" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 7" loading="lazy" decoding="async" /></div>
     <div class="ps-image"><img src="/images/landing/aussie-formulabaru/08.webp" width="900" height="1200" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 8" loading="lazy" decoding="async" /></div>
     <div class="ps-image"><img src="/images/landing/aussie-formulabaru/09.webp" width="900" height="2119" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 9" loading="lazy" decoding="async" /></div>
-    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/10.webp" width="900" height="3846" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 10" loading="lazy" decoding="async" /></div>
-    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/11.webp" width="900" height="1772" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 11" loading="lazy" decoding="async" /></div>
+    <section class="ps-wa ps-wa-dark" style="background-color:#014c8d">
+      <h2 class="ps-wa-title">Testimoni Para Petani Sawit</h2>
+      <p class="ps-wa-subtitle">Kata mereka yang sudah memakai AUSSIE</p>
+      <WhatsAppChat {...chats.fbKarni} />
+      <WhatsAppChat {...chats.fbSuroso} />
+      <WhatsAppChat {...chats.fbAndi} />
+    </section>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/11.webp" width="900" height="1772" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 10" loading="lazy" decoding="async" /></div>
     <section id="checkout" class="ps-form">
       <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
     </section>
-    <div class="ps-image" style="padding-bottom:35px"><img src="/images/landing/aussie-formulabaru/12.webp" width="960" height="291" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 12" loading="lazy" decoding="async" /></div>
-    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/13.webp" width="900" height="109" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 13" loading="lazy" decoding="async" /></div>
+    <div class="ps-image" style="padding-bottom:35px"><img src="/images/landing/aussie-formulabaru/12.webp" width="960" height="291" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 11" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-formulabaru/13.webp" width="900" height="109" alt="AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma — gambar 12" loading="lazy" decoding="async" /></div>
   </main>
 </BaseLayout>

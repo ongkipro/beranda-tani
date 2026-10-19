@@ -9,10 +9,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
 import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import WhatsAppChat from '../components/storefront/landing-pages/WhatsAppChat.astro';
 import { getStorefrontProduct } from '../lib/catalog';
 import { defaultCatalogContentId } from '../lib/catalog-feed';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
 import { landingProductJsonLd } from '../lib/landing-product-jsonld';
+import type { ComponentProps } from 'astro/types';
 import '../styles/form-hybrid.css';
 import '../styles/landing-pages/petanisawit.css';
 
@@ -24,6 +26,133 @@ const product = await getStorefrontProduct(Astro.locals, 'aussie');
 if (!product) return Astro.rewrite('/404');
 
 const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
+
+// WhatsApp testimonials, transcribed from the merchant's screenshots.
+const chats = {
+  "bpKarni": {
+    "name": "Pak Karni Kalbar",
+    "avatar": {
+      "src": "/images/landing/aussie-busukpucuk/wa-karni-av.webp",
+      "width": 96,
+      "height": 96
+    },
+    "messages": [
+      {
+        "from": "me",
+        "text": "Bagaimana hasil penggunaan AUSSIE sejauh ini pak ?",
+        "time": "09:40",
+        "read": true
+      },
+      {
+        "from": "them",
+        "text": "Mantab Bos, pohon sudah mulai sehat setelah pengaplikasian 3 kali, sudah tidak terlihat busuk pucuk dan mulai tumbuh tunas baru yang sehat 👍👍👍",
+        "time": "09:41"
+      },
+      {
+        "from": "them",
+        "photo": {
+          "src": "/images/landing/aussie-busukpucuk/wa-karni-ph.webp",
+          "width": 640,
+          "height": 960
+        },
+        "time": "09:43"
+      },
+      {
+        "from": "them",
+        "text": "Daun menghijau lagi, joss 👍👍",
+        "time": "09:43"
+      },
+      {
+        "from": "me",
+        "text": "Wah trimakasih pak, semoga panenya melimpah 🤑🤑",
+        "time": "09:44",
+        "read": true
+      }
+    ]
+  },
+  "bpAndi": {
+    "name": "Pak Andi",
+    "avatar": {
+      "src": "/images/landing/aussie-busukpucuk/wa-andi-av.webp",
+      "width": 96,
+      "height": 96
+    },
+    "messages": [
+      {
+        "from": "me",
+        "text": "Bagaimana hasil penggunaan AUSSIE sejauh ini pak ?",
+        "time": "10:12",
+        "read": true
+      },
+      {
+        "from": "them",
+        "text": "Manjur bos, busuk pucuk sudah mulai sembuh, 2 kali aplikasi, pelepah kering dan menguning sudah ga nampak lagi 👌",
+        "time": "10:14"
+      },
+      {
+        "from": "them",
+        "photo": {
+          "src": "/images/landing/aussie-busukpucuk/wa-andi-ph.webp",
+          "width": 640,
+          "height": 395
+        },
+        "time": "10:15"
+      },
+      {
+        "from": "them",
+        "text": "Formulanya bekerja cepat, mantab",
+        "time": "10:16"
+      },
+      {
+        "from": "me",
+        "text": "Wah trimakasih pak, semoga panenya melimpah ruah 😍",
+        "time": "10:16",
+        "read": true
+      }
+    ]
+  },
+  "bpSuroso": {
+    "name": "Pak Suroso",
+    "avatar": {
+      "src": "/images/landing/aussie-busukpucuk/wa-suroso-av.webp",
+      "width": 96,
+      "height": 96
+    },
+    "messages": [
+      {
+        "from": "me",
+        "text": "Bagaimana hasil penggunaan AUSSIE sejauh ini pak ?",
+        "time": "09:45",
+        "read": true
+      },
+      {
+        "from": "them",
+        "text": "Aussie top, manjur dan bekerja dengan cepat, baru 2 kali aplikasi sudah hilang busuk pucuknya, daun kembali hijau dan segar 😍👍👌",
+        "time": "09:49"
+      },
+      {
+        "from": "them",
+        "photo": {
+          "src": "/images/landing/aussie-busukpucuk/wa-suroso-ph.webp",
+          "width": 640,
+          "height": 457
+        },
+        "time": "09:50"
+      },
+      {
+        "from": "them",
+        "text": "mantab pokok e",
+        "time": "09:50"
+      },
+      {
+        "from": "me",
+        "text": "Wah trimakasih pak 😍",
+        "time": "09:51",
+        "read": true
+      }
+    ]
+  }
+} satisfies Record<string, ComponentProps<typeof WhatsAppChat>>;
 ---
 
 <BaseLayout
@@ -48,14 +177,20 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
     <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/07.webp" width="960" height="1827" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 7" loading="lazy" decoding="async" /></div>
     <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/08.webp" width="960" height="1630" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 8" loading="lazy" decoding="async" /></div>
     <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/09.webp" width="960" height="2536" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 9" loading="lazy" decoding="async" /></div>
-    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/10.webp" width="960" height="2243" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 10" loading="lazy" decoding="async" /></div>
-    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/11.webp" width="960" height="1549" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 11" loading="lazy" decoding="async" /></div>
-    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/12.webp" width="960" height="1672" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 12" loading="lazy" decoding="async" /></div>
-    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/13.webp" width="960" height="1955" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 13" loading="lazy" decoding="async" /></div>
+    <section class="ps-wa" style="background-color:#6acb6a">
+      <WhatsAppChat {...chats.bpKarni} />
+    </section>
+    <section class="ps-wa" style="background-color:#6acb6a">
+      <WhatsAppChat {...chats.bpAndi} />
+    </section>
+    <section class="ps-wa" style="background-color:#6acb6a">
+      <WhatsAppChat {...chats.bpSuroso} />
+    </section>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/13.webp" width="960" height="1955" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 10" loading="lazy" decoding="async" /></div>
     <section id="checkout" class="ps-form">
       <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
     </section>
-    <div class="ps-image" style="padding-bottom:35px"><img src="/images/landing/aussie-formulabaru/12.webp" width="960" height="291" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 14" loading="lazy" decoding="async" /></div>
-    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/14.webp" width="960" height="116" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 15" loading="lazy" decoding="async" /></div>
+    <div class="ps-image" style="padding-bottom:35px"><img src="/images/landing/aussie-formulabaru/12.webp" width="960" height="291" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 11" loading="lazy" decoding="async" /></div>
+    <div class="ps-image"><img src="/images/landing/aussie-busukpucuk/14.webp" width="960" height="116" alt="AUSSIE Obat Pucuk Busuk Kelapa Sawit — gambar 12" loading="lazy" decoding="async" /></div>
   </main>
 </BaseLayout>

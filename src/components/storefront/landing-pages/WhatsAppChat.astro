@@ -1,0 +1,245 @@
+---
+/**
+ * A customer's WhatsApp conversation, drawn as WhatsApp draws it, from the
+ * merchant's own screenshots: the text is transcribed, the photos are the
+ * ones the customer sent. Static — no input bar, nothing to tap — so it reads
+ * as the record it is, and scales with the column instead of blurring.
+ */
+interface Photo {
+  src: string;
+  width: number;
+  height: number;
+}
+
+interface Message {
+  /** `me` is the store, `them` the customer. */
+  from: 'me' | 'them';
+  text?: string;
+  photo?: Photo;
+  time: string;
+  /** Store messages only: two blue ticks when read, one grey tick when sent. */
+  read?: boolean;
+}
+
+interface Props {
+  name: string;
+  avatar: Photo;
+  messages: Message[];
+}
+
+const { name, avatar, messages } = Astro.props;
+---
+
+<figure class="wa-chat" aria-label={`Percakapan WhatsApp dengan ${name}`}>
+  <header class="wa-head">
+    <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"
+      ><path d="M12 4l1.4 1.4L7.8 11H20v2H7.8l5.6 5.6L12 20l-8-8z" fill="currentColor"></path></svg
+    >
+    <img class="wa-avatar" src={avatar.src} width="40" height="40" alt="" loading="lazy" decoding="async" />
+    <figcaption class="wa-name">
+      <strong>{name}</strong>
+      <span>Online</span>
+    </figcaption>
+    <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"
+      ><path
+        d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11z"
+        fill="currentColor"></path></svg
+    >
+    <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"
+      ><path
+        d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"
+        fill="currentColor"></path></svg
+    >
+    <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"
+      ><circle cx="12" cy="5" r="2" fill="currentColor"></circle><circle cx="12" cy="12" r="2" fill="currentColor"
+      ></circle><circle cx="12" cy="19" r="2" fill="currentColor"></circle></svg
+    >
+  </header>
+  <ol class="wa-body">
+    {
+      messages.map((message, index) => {
+        const first = index === 0 || messages[index - 1].from !== message.from;
+        return (
+          <li class:list={['wa-msg', `wa-${message.from}`, { 'wa-first': first, 'wa-photo-only': message.photo && !message.text }]}>
+            <span class="sr-only">{message.from === 'me' ? 'Toko:' : `${name}:`}</span>
+            {message.photo && (
+              <img
+                class="wa-photo"
+                src={message.photo.src}
+                width={message.photo.width}
+                height={message.photo.height}
+                alt={`Foto kebun dari ${name}`}
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+            {message.text && <span class="wa-text">{message.text}</span>}
+            <span class="wa-meta">
+              <time>{message.time}</time>
+              {message.from === 'me' && (
+                <svg class:list={['wa-tick', { 'wa-read': message.read }]} viewBox="0 0 18 11" aria-hidden="true">
+                  {message.read && <path d="M11.1 1 5.4 7.6 3 5.4" fill="none" stroke="currentColor" stroke-width="1.6" />}
+                  <path
+                    d={message.read ? 'M16.5 1 10.8 7.6 8.6 5.6' : 'M14 1 8.3 7.6 5.9 5.4'}
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  />
+                </svg>
+              )}
+            </span>
+          </li>
+        );
+      })
+    }
+  </ol>
+</figure>
+
+<style>
+  .wa-chat {
+    margin: 0 auto;
+    max-width: 400px;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #efeae2;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+    font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
+    text-align: left;
+  }
+  .wa-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #fff;
+    color: #54656f;
+  }
+  .wa-icon {
+    flex: none;
+    width: 22px;
+    height: 22px;
+  }
+  .wa-avatar {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .wa-name {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+  .wa-name strong {
+    overflow: hidden;
+    color: #111b21;
+    font-size: 16px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .wa-name span {
+    color: #667781;
+    font-size: 13px;
+  }
+  .wa-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 12px 12px 16px;
+    list-style: none;
+  }
+  .wa-msg {
+    position: relative;
+    max-width: 85%;
+    padding: 6px 8px 8px;
+    border-radius: 8px;
+    color: #111b21;
+    font-size: 15px;
+    line-height: 1.35;
+    box-shadow: 0 1px 0.5px rgb(11 20 26 / 0.13);
+  }
+  .wa-msg.wa-first {
+    margin-top: 8px;
+  }
+  .wa-msg.wa-first:first-child {
+    margin-top: 0;
+  }
+  .wa-them {
+    align-self: flex-start;
+    background: #fff;
+  }
+  .wa-me {
+    align-self: flex-end;
+    background: #d9fdd3;
+  }
+  .wa-them.wa-first {
+    border-top-left-radius: 0;
+  }
+  .wa-me.wa-first {
+    border-top-right-radius: 0;
+  }
+  .wa-text {
+    overflow-wrap: break-word;
+  }
+  /* Room at the end of the last line for the time, as WhatsApp leaves it. */
+  .wa-text::after {
+    content: '';
+    display: inline-block;
+    width: 64px;
+  }
+  .wa-me .wa-text::after {
+    width: 82px;
+  }
+  .wa-meta {
+    position: absolute;
+    right: 8px;
+    bottom: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: #667781;
+    font-size: 11px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .wa-photo {
+    display: block;
+    height: auto;
+    /* WhatsApp crops a tall photo in the thread rather than filling the screen. */
+    max-height: 340px;
+    object-fit: cover;
+    margin: -3px -5px 6px;
+    width: calc(100% + 10px);
+    max-width: none;
+    border-radius: 6px;
+  }
+  .wa-msg:has(.wa-photo) {
+    width: 85%;
+  }
+  .wa-photo-only {
+    padding: 3px;
+  }
+  .wa-photo-only .wa-photo {
+    margin: 0;
+    width: 100%;
+  }
+  .wa-photo-only .wa-meta {
+    right: 10px;
+    bottom: 9px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.6);
+  }
+  .wa-tick {
+    width: 16px;
+    height: 11px;
+    color: #8696a0;
+  }
+  .wa-tick.wa-read {
+    color: #53bdeb;
+  }
+</style>

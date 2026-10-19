@@ -9,10 +9,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
 import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import WhatsAppChat from '../components/storefront/landing-pages/WhatsAppChat.astro';
 import { getStorefrontProduct } from '../lib/catalog';
 import { defaultCatalogContentId } from '../lib/catalog-feed';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
 import { landingProductJsonLd } from '../lib/landing-product-jsonld';
+import type { ComponentProps } from 'astro/types';
 import '../styles/form-hybrid.css';
 import '../styles/landing-pages/petanisawit.css';
 
@@ -24,6 +26,133 @@ const product = await getStorefrontProduct(Astro.locals, 'aussie');
 if (!product) return Astro.rewrite('/404');
 
 const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, SLUG)}`;
+
+// WhatsApp testimonials, transcribed from the merchant's screenshots.
+const chats = {
+  "bpSuroso": {
+    "name": "Pak Suroso",
+    "avatar": {
+      "src": "/images/landing/aussie-busukpucuk/wa-suroso-av.webp",
+      "width": 96,
+      "height": 96
+    },
+    "messages": [
+      {
+        "from": "me",
+        "text": "Bagaimana hasil penggunaan AUSSIE sejauh ini pak ?",
+        "time": "09:45",
+        "read": true
+      },
+      {
+        "from": "them",
+        "text": "Aussie top, manjur dan bekerja dengan cepat, baru 2 kali aplikasi sudah hilang busuk pucuknya, daun kembali hijau dan segar 😍👍👌",
+        "time": "09:49"
+      },
+      {
+        "from": "them",
+        "photo": {
+          "src": "/images/landing/aussie-busukpucuk/wa-suroso-ph.webp",
+          "width": 640,
+          "height": 457
+        },
+        "time": "09:50"
+      },
+      {
+        "from": "them",
+        "text": "mantab pokok e",
+        "time": "09:50"
+      },
+      {
+        "from": "me",
+        "text": "Wah trimakasih pak 😍",
+        "time": "09:51",
+        "read": true
+      }
+    ]
+  },
+  "bpAndi": {
+    "name": "Pak Andi",
+    "avatar": {
+      "src": "/images/landing/aussie-busukpucuk/wa-andi-av.webp",
+      "width": 96,
+      "height": 96
+    },
+    "messages": [
+      {
+        "from": "me",
+        "text": "Bagaimana hasil penggunaan AUSSIE sejauh ini pak ?",
+        "time": "10:12",
+        "read": true
+      },
+      {
+        "from": "them",
+        "text": "Manjur bos, busuk pucuk sudah mulai sembuh, 2 kali aplikasi, pelepah kering dan menguning sudah ga nampak lagi 👌",
+        "time": "10:14"
+      },
+      {
+        "from": "them",
+        "photo": {
+          "src": "/images/landing/aussie-busukpucuk/wa-andi-ph.webp",
+          "width": 640,
+          "height": 395
+        },
+        "time": "10:15"
+      },
+      {
+        "from": "them",
+        "text": "Formulanya bekerja cepat, mantab",
+        "time": "10:16"
+      },
+      {
+        "from": "me",
+        "text": "Wah trimakasih pak, semoga panenya melimpah ruah 😍",
+        "time": "10:16",
+        "read": true
+      }
+    ]
+  },
+  "bpKarni": {
+    "name": "Pak Karni Kalbar",
+    "avatar": {
+      "src": "/images/landing/aussie-busukpucuk/wa-karni-av.webp",
+      "width": 96,
+      "height": 96
+    },
+    "messages": [
+      {
+        "from": "me",
+        "text": "Bagaimana hasil penggunaan AUSSIE sejauh ini pak ?",
+        "time": "09:40",
+        "read": true
+      },
+      {
+        "from": "them",
+        "text": "Mantab Bos, pohon sudah mulai sehat setelah pengaplikasian 3 kali, sudah tidak terlihat busuk pucuk dan mulai tumbuh tunas baru yang sehat 👍👍👍",
+        "time": "09:41"
+      },
+      {
+        "from": "them",
+        "photo": {
+          "src": "/images/landing/aussie-busukpucuk/wa-karni-ph.webp",
+          "width": 640,
+          "height": 960
+        },
+        "time": "09:43"
+      },
+      {
+        "from": "them",
+        "text": "Daun menghijau lagi, joss 👍👍",
+        "time": "09:43"
+      },
+      {
+        "from": "me",
+        "text": "Wah trimakasih pak, semoga panenya melimpah 🤑🤑",
+        "time": "09:44",
+        "read": true
+      }
+    ]
+  }
+} satisfies Record<string, ComponentProps<typeof WhatsAppChat>>;
 ---
 
 <BaseLayout
@@ -105,25 +234,6 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
       </div>
     </section>
     <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/busukpucuk-simple/03.webp" width="720" height="600" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 3" loading="lazy" decoding="async" /></div>
-    <section class="ps-text ps-large" style="background-color:#BF360C;padding-top:30px;padding-bottom:30px">
-      <div style="color:#ffffff">
-        <h2 class="ps-h1">Promo Segera Berakhir</h2>
-      </div>
-    </section>
-    <section class="ps-countdown" style="padding-top:24px;padding-bottom:24px" data-countdown="480" role="timer" aria-label="Sisa waktu promo">
-      <div class="ps-ring" style="--ring:#4CAF50">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" class="ps-ring-track" /><circle cx="50" cy="50" r="44" class="ps-ring-bar" pathLength="100" data-ring="h" /></svg>
-        <span class="ps-ring-face"><span class="ps-ring-value" data-value="h">0</span><span class="ps-ring-label">JAM</span></span>
-      </div>
-      <div class="ps-ring" style="--ring:#FF9800">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" class="ps-ring-track" /><circle cx="50" cy="50" r="44" class="ps-ring-bar" pathLength="100" data-ring="m" /></svg>
-        <span class="ps-ring-face"><span class="ps-ring-value" data-value="m">0</span><span class="ps-ring-label">MENIT</span></span>
-      </div>
-      <div class="ps-ring" style="--ring:#F44336">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" class="ps-ring-track" /><circle cx="50" cy="50" r="44" class="ps-ring-bar" pathLength="100" data-ring="s" /></svg>
-        <span class="ps-ring-face"><span class="ps-ring-value" data-value="s">0</span><span class="ps-ring-label">DETIK</span></span>
-      </div>
-    </section>
     <section class="ps-text ps-large" style="background-color:rgb(246,242,205);padding-top:30px;padding-bottom:30px">
       <div>
         <p>Jangan biarkan busuk pucuk <span style="color:#B71C1C">menghancurkan hasil kerja keras Anda.</span></p>
@@ -140,11 +250,14 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
         <h2 class="ps-h2"><strong>Kata Petani Yang Sudah Pakai Aussie</strong></h2>
       </div>
     </section>
-    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/busukpucuk-simple/04.webp" width="562" height="946" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 4" loading="lazy" decoding="async" /></div>
-    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/busukpucuk-simple/05.webp" width="562" height="909" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 5" loading="lazy" decoding="async" /></div>
-    <div class="ps-image" style="padding-top:6px;padding-bottom:6px"><img src="/images/landing/busukpucuk-simple/06.webp" width="286" height="694" alt="Atasi Busuk Pucuk Kelapa Sawit dengan Aussie — gambar 6" loading="lazy" decoding="async" /></div>
+    <section class="ps-wa">
+      <WhatsAppChat {...chats.bpSuroso} />
+    </section>
+    <section class="ps-wa">
+      <WhatsAppChat {...chats.bpAndi} />
+    </section>
+    <section class="ps-wa">
+      <WhatsAppChat {...chats.bpKarni} />
+    </section>
   </main>
-  <script>
-    import '../scripts/petanisawit-countdown.ts';
-  </script>
 </BaseLayout>
