@@ -27,6 +27,9 @@ interface SharedEnvVars {
   INSTALL_TOKEN?: string;
   /** Optional per-install HTTPS endpoint for redacted operational alerts. */
   OPS_ALERT_WEBHOOK_URL?: string;
+  /** Kelola plugin fallback webhook pair; used only while the plugin is active (ADR-028). */
+  KELOLA_ORDER_WEBHOOK_URL?: string;
+  KELOLA_ORDER_WEBHOOK_SECRET?: string;
   BOOTSTRAP_ADMIN_PASSWORD?: string;
   MENGANTAR_ORIGIN_AREA_ID?: string;
   MENGANTAR_PICKUP_ADDRESS_ID?: string;
