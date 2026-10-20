@@ -45,7 +45,7 @@
     ]
   },
 
-  // Off: this install's domain (beranda.click) is live, so it needs no
+  // Off: this install's domains (petanisejahtera.com canonical) are live, so it needs no
   // *.workers.dev address. The product defaults this to true for a fresh
   // Deploy-button install; an install with a domain sets it back to false.
   "workers_dev": false,
@@ -101,15 +101,17 @@
     "head_sampling_rate": 1
   },
 
+  // petanisejahtera.com is canonical (2026-10-20). petanisawit.com and
+  // beranda.click stay attached so old ad and link URLs keep working; the
+  // Worker 301s them, and every www and http, to https://petanisejahtera.com
+  // with path and query kept (PUBLIC_ALIAS_HOSTS, src/lib/host-redirect.ts).
   "routes": [
-    {
-      "pattern": "beranda.click",
-      "custom_domain": true
-    },
-    {
-      "pattern": "www.beranda.click",
-      "custom_domain": true
-    }
+    { "pattern": "petanisejahtera.com", "custom_domain": true },
+    { "pattern": "www.petanisejahtera.com", "custom_domain": true },
+    { "pattern": "petanisawit.com", "custom_domain": true },
+    { "pattern": "www.petanisawit.com", "custom_domain": true },
+    { "pattern": "beranda.click", "custom_domain": true },
+    { "pattern": "www.beranda.click", "custom_domain": true }
   ],
 
   // These are read at BUILD time through import.meta.env, not at runtime, so a
@@ -117,7 +119,8 @@
   // built bundle with new vars changes nothing. See ARCHITECTURE.md §5.
   "vars": {
     "PUBLIC_SITE_NAME": "Petani Sejahtera",
-    "PUBLIC_SITE_URL": "https://beranda.click",
+    "PUBLIC_SITE_URL": "https://petanisejahtera.com",
+    "PUBLIC_ALIAS_HOSTS": "petanisawit.com,beranda.click",
     // The product leaves this empty so a placeholder never becomes a store's
     // meta description; this install has a real one. `stores.description`
     // carries the same text and wins at runtime.
@@ -127,7 +130,7 @@
     // announce itself as "Toko Anda — Belum Dikonfigurasi".
     "PUBLIC_SITE_TAGLINE": "",
     "PUBLIC_ADMIN_NAME": "Petani Sejahtera Admin",
-    "PUBLIC_EMBED_ALLOWED_ORIGINS": "https://beranda.click",
+    "PUBLIC_EMBED_ALLOWED_ORIGINS": "https://petanisejahtera.com,https://beranda.click,https://petanisawit.com",
 
     // Root-relative or absolute. Replace the placeholder wordmark in
     // public/images/ with the store's own brand assets.
