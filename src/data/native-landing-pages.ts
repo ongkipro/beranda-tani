@@ -36,6 +36,11 @@ export type NativeLandingPage = {
   image?: string;
   /** A page can be registered before it is ready to be linked. */
   isActive?: boolean;
+  /** A second ad slug that renders another page's content declares that page
+   *  here, and its route points `canonical` at it. The sitemap then lists only
+   *  the canonical one: Google reports a submitted URL whose canonical is
+   *  elsewhere as a duplicate. */
+  canonicalSlug?: string;
 };
 
 // Ported from petanisejahtera.com (2026-10-06), the brand this install becomes.
@@ -97,6 +102,7 @@ export const nativeLandingPages: NativeLandingPage[] = [
     productSlug: 'aussie',
     description: 'Sama dengan aussie-formulabaru, slug iklan kedua (dari petanisawit.com).',
     image: '/images/landing/aussie-formulabaru/01.webp',
+    canonicalSlug: 'aussie-formulabaru',
   },
   {
     slug: 'aussie-edukasi1',
