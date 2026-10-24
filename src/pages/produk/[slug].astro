@@ -191,7 +191,7 @@ const productSchemaJson = JSON.stringify(productSchema).replace(/</g, '\\u003c')
             Rp{Math.round(displayPrice).toLocaleString('id-ID')}
           </span>
           {displayComparePrice > displayPrice && (
-            <span class="pb-[2px] text-[15px] leading-none text-slate-400 line-through decoration-1">
+            <span class="pb-[2px] text-[15px] leading-none text-slate-500 line-through decoration-1">
               Rp{Math.round(displayComparePrice).toLocaleString('id-ID')}
             </span>
           )}
@@ -267,7 +267,7 @@ const productSchemaJson = JSON.stringify(productSchema).replace(/</g, '\\u003c')
               <div class="shrink-0 text-right">
                 <p class="text-[16px] font-bold leading-none" style={`color: ${productAccent}`}>Rp{Math.round(v.price).toLocaleString('id-ID')}</p>
                 {v.comparePrice && v.comparePrice > v.price && (
-                  <p class="mt-1 text-[12px] leading-none text-slate-400 line-through">Rp{Math.round(v.comparePrice).toLocaleString('id-ID')}</p>
+                  <p class="mt-1 text-[12px] leading-none text-slate-500 line-through">Rp{Math.round(v.comparePrice).toLocaleString('id-ID')}</p>
                 )}
               </div>
             </div>
@@ -374,7 +374,7 @@ const productSchemaJson = JSON.stringify(productSchema).replace(/</g, '\\u003c')
                       </svg>
                     )}
                   </div>
-                  <p class="text-[11px] text-slate-400">{review.location} • {review.date}</p>
+                  <p class="text-[11px] text-slate-500">{review.location} • {review.date}</p>
                 </div>
               </div>
               <RatingStars rating={review.rating} class="mt-2" starClass="h-2.5 w-2.5" />

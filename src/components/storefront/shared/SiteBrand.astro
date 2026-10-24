@@ -6,6 +6,9 @@
  *
  * Name and logo still resolve from the tenant, so the D1 store row stays the
  * one place a rename happens; only the visual treatment is this install's.
+ *
+ * No aria-label: the link's name is its visible text (WCAG 2.5.3), and the
+ * screen-reader-only space reads the joined wordmark as the store's two words.
  */
 import '../../../styles/petani-sejahtera.css';
 
@@ -26,7 +29,6 @@ const subline = 'Solusi Nyata untuk Petani Indonesia';
 <a
   href={href}
   class={`group flex min-w-0 items-center gap-[8px] ${className}`}
-  aria-label={tenant.name}
   title={`${tenant.name} - ${subline}`}
 >
   <img
@@ -40,7 +42,7 @@ const subline = 'Solusi Nyata untuk Petani Indonesia';
   />
   <span class="flex min-w-0 flex-col justify-center">
     <span class="ps-display min-w-0 whitespace-nowrap text-[19px] font-bold leading-none tracking-[-0.02em]">
-      <span class={isLight ? 'text-white' : 'text-[#1B5E20]'}>{leadWord}</span><span
+      <span class={isLight ? 'text-white' : 'text-[#1B5E20]'}>{leadWord}</span><span class="sr-only"> </span><span
         class={isLight ? 'text-white/90' : 'text-[#2E7D32]'}>{trailingWords}</span
       >
     </span>
