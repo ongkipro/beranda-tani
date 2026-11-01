@@ -34,6 +34,12 @@
 /* Checkout forms in the store's green rather than the product's blue. Raised
    specificity (:root + the root attribute) so this wins over form-hybrid.css
    whatever order the two bundles load in. */
+/* The product's 1.9.x default is orange; pages outside the form root (thanks,
+   standalone buttons) read these two from :root, so they stay green too. */
+:root {
+  --sf-accent: #1b5e20;
+  --sf-accent-strong: #134417;
+}
 :root [data-hybrid-form-root],
 :root [data-middle-form-root] {
   --sf-accent: #1b5e20;
