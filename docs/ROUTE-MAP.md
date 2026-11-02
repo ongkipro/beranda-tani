@@ -260,7 +260,7 @@ is either transitive (imported by another lib) or dead, and only reading tells w
 | `catalog` | 2 | `product_variants` `products` | ✓ | `/` `/404` `/aussie-buah-landak` `/aussie-buahlandak` `/aussie-busukpucuk` `/aussie-edukasi1` `/aussie-formulabaru` `/aussie-formulabaru-evrpro` `/aussie-sawit-ganoderma` `/bensu-jagung` `/busukpucuk-simple` `/llms.txt` `/produk` `/produk/[slug]` `/saratoga-anggrek` `/saratoga-anthurium` `/saratoga-padi` `/thanks` `/sitemap` `/testimoni` `/[slug]` `/embed/form` `/full-form` `/geoipform` `/hybrid-form` `/middle-form` `/feed/google-catalog.xml` `/feed/meta-catalog.xml` `/sitemap.xml` `/api/form-config` `/api/v1/products` `/api/v1/products/[slug]` `/admin/ads/utm` |
 | `checkout-navigation` | 2 | — | ✓ | — |
 | `click-ids` | 17 | — | ✓ | `/api/meta-event` `/api/submit-middle-order` `/api/submit-order` `/api/v1/checkout` `/api/v1/tracking/events` |
-| `client-image` | 8 | — | ✓ | — |
+| `client-image` | 9 | — | ✓ | — |
 | `cn` | 1 | — | ✓ | — |
 | `courier-names` | 2 | — | ✓ | — |
 | `courier-rules` | 3 | — | ✓ | `/api/submit-order` `/api/admin/abandoned-orders` `/api/admin/orders/[id]` |
