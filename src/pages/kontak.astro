@@ -12,7 +12,10 @@ import { getStoreSupportWhatsapp } from '../lib/public-store';
 const storeName = Astro.locals.tenant.name;
 const whatsapp = (await getStoreSupportWhatsapp(Astro.locals)).replace(/^0/, '62');
 const whatsappLabel = whatsapp ? `+62 ${whatsapp.slice(2, 5)}-${whatsapp.slice(5, 9)}-${whatsapp.slice(9)}` : '';
-const email = 'halo@petanisejahtera.id';
+// Empty until a mailbox that receives mail exists: halo@petanisejahtera.id is on a
+// domain with no DNS (NXDOMAIN, 2026-11-03), so every message to it bounced. Both
+// the footer and /kontak hide the email while this is empty.
+const email = '';
 
 const sections = [
   {
@@ -58,10 +61,12 @@ const sections = [
             </span>
           </p>
         )}
-        <p class="flex items-center gap-2">
-          <Icon name="lucide:mail" class="size-4 shrink-0 text-[#1B5E20]" />
-          <span><span class="font-semibold text-[#263238]">Email:</span> <a href={`mailto:${email}`} class="text-[#1B5E20] underline-offset-4 hover:underline">{email}</a></span>
-        </p>
+        {email && (
+          <p class="flex items-center gap-2">
+            <Icon name="lucide:mail" class="size-4 shrink-0 text-[#1B5E20]" />
+            <span><span class="font-semibold text-[#263238]">Email:</span> <a href={`mailto:${email}`} class="text-[#1B5E20] underline-offset-4 hover:underline">{email}</a></span>
+          </p>
+        )}
       </div>
     </div>
   </LegalPage>

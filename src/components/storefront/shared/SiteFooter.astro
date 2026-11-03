@@ -38,7 +38,10 @@ const legal = [
   { label: 'Disclaimer', href: '/disclaimer' },
   { label: 'Sitemap Halaman', href: '/sitemap' },
 ];
-const email = 'halo@petanisejahtera.id';
+// Empty until a mailbox that receives mail exists: halo@petanisejahtera.id is on a
+// domain with no DNS (NXDOMAIN, 2026-11-03), so every message to it bounced. Both
+// the footer and /kontak hide the email while this is empty.
+const email = '';
 const office = ['Jl. Raya Darmo Permai No. 88', 'Surabaya Barat, Surabaya 60226', 'Jawa Timur, Indonesia'];
 
 const titleClass = 'text-[11px] font-bold uppercase tracking-[0.16em] text-[#263238]';
@@ -95,10 +98,12 @@ const linkClass = 'transition-colors hover:text-[#1B5E20] focus-visible:text-[#1
           <a href={`https://wa.me/${whatsapp}`} class={`mt-1 block ${bodyClass} ${linkClass}`} target="_blank" rel="nofollow noopener noreferrer">{whatsappLabel}</a>
         </div>
       )}
-      <div>
-        <p class="text-[12px] font-semibold leading-5 text-[#263238]">Email</p>
-        <a href={`mailto:${email}`} class={`mt-1 block break-all ${bodyClass} ${linkClass}`}>{email}</a>
-      </div>
+      {email && (
+        <div>
+          <p class="text-[12px] font-semibold leading-5 text-[#263238]">Email</p>
+          <a href={`mailto:${email}`} class={`mt-1 block break-all ${bodyClass} ${linkClass}`}>{email}</a>
+        </div>
+      )}
       <div class="col-span-2 border-t border-[#E5E7EB] pt-4">
         <p class="text-[12px] font-semibold leading-5 text-[#263238]">Kantor Operasional</p>
         <div class="mt-1 space-y-0.5">{office.map((line) => <p class={bodyClass}>{line}</p>)}</div>
