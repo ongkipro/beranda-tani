@@ -1,6 +1,6 @@
 # BUILD LOG: AdsBookCMS
 
-> Verified against disk: 2026-11-06 @ `2cf79d0` (Entry 267; earlier entries retain their historical evidence)
+> Verified against disk: 2026-11-06 @ `700bc21` + fix/image-guard-parser working tree (Entry 268 appended; earlier entries retain their historical evidence)
 
 Author & Curator: **[ongki.pro](https://ongki.pro)**
 
@@ -8846,3 +8846,70 @@ rules. In that pass its radius was corrected from Tailwind's stock 6/12/16 px to
 (`--radius: 0.625rem`), and its re-brand contract now lists all thirteen `--sf-*` tokens, not nine. Baseline 1188.
 Not verified: the payment brand logo at its new declared size in a browser (CSS sizes it to its box). Nothing deploys from
 this repository; installs pick it up with their next product merge.
+
+### Entry 268: image guard reads comments without hiding tags; page-wide media rules move into `@layer base`; payment logo URL no longer reaches `innerHTML` (2026-11-06, Paduka: "perbaiki bagian masih error dan bug, rapikan, kemudian review")
+
+**Guard.** The Entry 267 guard had a known limit: a comment such as `// an <img that won't` in code could open a quote
+and throw. The guard still scans every `<img` in the raw file, each one on its own, so odd text before a tag cannot
+hide it. A tag is now skipped only when it starts in a comment the TypeScript parser reports: anywhere in a `.ts` file,
+and in `.astro` frontmatter when the TS and TSX parses agree. Any span that is JSX text is never treated as a comment.
+A commented-out tag in markup or in a `<script>` is still read; no file has one.
+
+Four review passes ran before commit, and each found a way a draft could hide a real tag:
+
+- The first draft parsed `.astro` with `@astrojs/compiler`. That package is a transitive dependency of `@astrojs/check`,
+  not the compiler the build uses, and the draft stopped seeing tags in frontmatter JSX, in markup expression strings
+  and in `set:html`.
+- The second draft blanked comment-like text by pattern.
+- The third trusted guessed markup and `<script>` regions.
+- The last read JSX text that starts with `//` as a comment when it sits right after an opening tag.
+
+Every one of these is now a test case. The test's `// lazy:` note names the remaining ceiling.
+
+**Cascade.** Browser proof found a bug the guard could not see. `BaseLayout`'s global
+`:where(img, video) { height: auto }` was unlayered, and an unlayered rule beats every layered one whatever its
+specificity, so it overrode Tailwind's `h-full` (in `@layer utilities`) on every public image. On `/payment` the QRIS
+logo rendered 102x51 in a 102x46 box.
+
+- The rules now sit in `@layer base`, the `img, video` defaults that repeat preflight are dropped, and Tailwind's layer
+  order is declared in the same block so bundle order cannot change it. The logo is now 102x46.
+- Five pages of the local dummy store were measured: home, catalogue, product, 404 and payment. No other image changed
+  size.
+- Every public `<img>` that carries a size or aspect class (`aspect-square`, `size-14`, `w-[58px]`, `h-full`) declares
+  attributes of the same shape, so a class winning cannot change its box.
+- A test now refuses an unlayered page-wide media rule in any public stylesheet or component `<style>`. It was
+  mutation-checked in `form-hybrid.css` and in a second BaseLayout block.
+
+**Payment logo.** `buildPaymentRow` interpolated `opt.logoUrl` (store data) into `label.innerHTML`. The logo `src` is
+now set as a DOM property, like the label and description on the same row. The tag declares 37x22, its measured
+content box.
+
+Baseline 1193.
+
+**Browser proof (local only).** The proof ran Chromium via Playwright against an isolated copy of this working tree,
+built from the patch and served by `dev:local --no-build` on `:8797`. The copy reused the existing local store's state,
+so there was no new seed and no order. The run held the `adsbookcms-env` and `browser-e2e` locks.
+
+- POSTs to `record-abandoned-order`, `meta-event`, submit and payment routes were aborted, as were all non-local hosts.
+- Only the district field was typed (`Gambir`), which is enough to reveal the full form's payment block. Name, phone and
+  address stayed empty.
+- On `/full-form`, all seven payment logos (QRIS, five VA banks, COD) load. Each paints at 37.2x22 inside its 45.6x30.4
+  mark with `object-fit: contain`, at 390 px and at 1280 px.
+- Selecting QRIS, then VA BRI, then COD moves the checked radio each time.
+- On `/payment`, the QRIS logo is 102x46 inside its 112x56 box at both widths. Before the patch it was 102x51.
+
+**XSS check.** This is an actual browser check against the real `buildPaymentRow`, not a DOM unit test.
+`/api/payment-methods` was rewritten in the browser so that two `logo_url` values carried quote-breaking payloads, still
+using local URLs: `…bca.svg" onerror=…` and `x"><img … onerror=…><b id="injected">`.
+
+- Neither handler ran, no node was injected, the block holds no `on*` attribute, and each row keeps one `img` and eight
+  elements.
+- A normal logo (BNI) still loads, and the poisoned Mandiri row still selects.
+- The pre-fix template, given the same payloads on the same page, ran the second handler, injected the node and added
+  two `onerror` attributes.
+- The pre-fix build itself could not be driven, because the long-running `:3575` server serves stale script hashes.
+- No durable suite test was added: `node --test` has no DOM, and adding a DOM dependency for one check is out of scope.
+
+Renders: `proof-{390,1280}-payment.png`, `proof-xss-390-payment.png`, `proof-{390,1280}-payment-logo.png` in the session
+scratchpad. Thirteen `meta-event` POSTs reached the local `:3575` dummy store, from layout measurements taken earlier in
+the session before the blocks were set. No live store was contacted.

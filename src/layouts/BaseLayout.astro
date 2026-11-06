@@ -222,16 +222,22 @@ const preloadImageUrls =
         font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       }
 
-      :where(img, video, iframe) {
-        max-width: 100%;
-      }
+      /* Media defaults go in Tailwind's base layer, not unlayered: an unlayered
+         rule beats every layered one whatever its specificity, so `height: auto`
+         here once overrode `h-full` on every public image and pushed the QRIS
+         logo out of its box. `img, video { max-width; height: auto }` is
+         preflight's own and is not repeated. Layer order is fixed by first
+         mention, so Tailwind's own order is declared here too, whichever
+         stylesheet the bundle emits first. */
+      @layer theme, base, components, utilities;
+      @layer base {
+        :where(iframe) {
+          max-width: 100%;
+        }
 
-      :where(img[width][height], video[width][height], iframe[width][height]) {
-        aspect-ratio: attr(width type(<number>)) / attr(height type(<number>));
-      }
-
-      :where(img, video) {
-        height: auto;
+        :where(img[width][height], video[width][height], iframe[width][height]) {
+          aspect-ratio: attr(width type(<number>)) / attr(height type(<number>));
+        }
       }
     </style>
     <GtmBase gtmId={adsConfig.googleTagManagerId} />

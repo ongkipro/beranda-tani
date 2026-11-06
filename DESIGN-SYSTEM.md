@@ -1,6 +1,6 @@
 # AdsBookCMS — Design System
 
-> Verified against disk: 2026-11-06 @ `feb3c62` (§0 re-checked: the `--sf-*` tokens against `form-hybrid.css`, the radius against `foundation.css`, rule 5 against its guard; other sections retain their recorded evidence from `156a214`, 1.9.1). §0 is checked by `storefront-images.test.ts`, `admin-controls.test.ts` and `admin-page-width.test.ts`; the rest of §0 restates sections below.
+> Verified against disk: 2026-11-06 @ `700bc21` + fix/image-guard-parser working tree (§0 re-checked: rule 5 and its `@layer base` sentence against `storefront-images.test.ts` and `BaseLayout.astro` on that tree; the `--sf-*` tokens against `form-hybrid.css`, the radius against `foundation.css`, rule 5 against its guard; other sections retain their recorded evidence from `156a214`, 1.9.1). §0 is checked by `storefront-images.test.ts`, `admin-controls.test.ts` and `admin-page-width.test.ts`; the rest of §0 restates sections below.
 >
 > **The public palette is neutral plus one overridable accent (ADR-019, as
 > amended 2026-08-23).** Colour tokens below that describe the retired gold
@@ -48,7 +48,10 @@ page on an install, starts and mostly ends here.
    one that excuses nothing, or a further tag that matches it, fails. `loading` counts
    only as a literal or a ternary of literals, since `loading={props.loading}` can
    render nothing. An image built through the DOM, or a file type the scan cannot
-   read, fails too.
+   read, fails too. Only a tag in a code comment (a `.ts` file or frontmatter) is
+   skipped; a commented-out tag in markup or a `<script>` is still read, so delete it
+   rather than comment it. A page-wide media rule (`img`, `:where(img, video)`) sits in `@layer base`: unlayered,
+   it beats every Tailwind size class on every image (same test file).
    Convention, not guarded: the one image that is the page's first paint is `eager` with
    `fetchpriority="high"`, the rest `lazy`; a product card asks `cardImageSrc()` for its
    `-sm` derivative; CMS landing HTML gets `lazy` and `decoding="async"` from
