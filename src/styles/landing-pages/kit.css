@@ -15,6 +15,9 @@
 .lk-root {
   --lk-accent: #c5a880;
   --lk-accent-soft: #f8f7f4;
+  /* The accent on a dark section. A page whose accent is dark sets this too,
+     or its eyebrow and active step vanish into the background. */
+  --lk-accent-on-dark: #e7d3b0;
   --lk-ink: #111111;
   --lk-muted: #52525b;
   --lk-line: #e4e4e7;
@@ -68,6 +71,10 @@
 
 .lk-dark .lk-intro {
   color: #a1a1aa;
+}
+
+.lk-dark .lk-eyebrow {
+  color: var(--lk-accent-on-dark);
 }
 
 .lk-section > * + :not(.lk-eyebrow):not(.lk-title):not(.lk-intro) {
@@ -169,7 +176,7 @@
 }
 
 .lk-step.is-active .lk-step-dot {
-  background: var(--lk-accent);
+  background: var(--lk-accent-on-dark);
   color: #111111;
 }
 
@@ -181,7 +188,7 @@
 }
 
 .lk-step.is-active .lk-step-title {
-  color: var(--lk-accent);
+  color: var(--lk-accent-on-dark);
 }
 
 .lk-step-text {
