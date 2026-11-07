@@ -21,11 +21,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
 import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
 import RatingStars from '../components/storefront/shared/RatingStars.astro';
+import LkSection from '../components/storefront/landing-pages/LkSection.astro';
+import LkTimeline from '../components/storefront/landing-pages/LkTimeline.astro';
 import { getStorefrontProducts } from '../lib/catalog';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
 import { defaultCatalogContentId } from '../lib/catalog-feed';
 import '../styles/form-hybrid.css';
 import '../styles/landing-pages/landing.css';
+import '../styles/landing-pages/kit.css';
 import '../styles/landing-pages/contoh-landing.css';
 
 export const prerender = false;
@@ -199,14 +202,18 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
     )
   }
 
-  <section class="cl-block">
-    <h2 class="cl-h2">Cara pesan</h2>
-    <ol class="cl-steps">
-      <li><strong>Isi data</strong> nama, nomor WhatsApp dan alamat di form di bawah.</li>
-      <li><strong>Pilih pengiriman</strong> dan cara bayar yang tersedia untuk wilayah Anda.</li>
-      <li><strong>Pesanan dicek admin</strong>, lalu dikirim setelah dikonfirmasi.</li>
-    </ol>
-  </section>
+  <div class="lk-root">
+    <LkSection eyebrow="Mudah" title="Cara pesan" tone="dark">
+      <LkTimeline
+        active={2}
+        steps={[
+          { title: 'Isi data', text: 'Nama, nomor WhatsApp dan alamat di form di bawah.' },
+          { title: 'Pilih pengiriman', text: 'Dan cara bayar yang tersedia untuk wilayah Anda.' },
+          { title: 'Pesanan dicek admin', text: 'Lalu dikirim setelah dikonfirmasi.' },
+        ]}
+      />
+    </LkSection>
+  </div>
 
   <section class="cl-block cl-block--tint">
     <h2 class="cl-h2">Lengkapi data pengiriman</h2>

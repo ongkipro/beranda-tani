@@ -1,0 +1,26 @@
+---
+/**
+ * One landing-page section: an optional eyebrow, a title and an intro above a
+ * slot. Every other `Lk*` block sits inside one, so a page reads as the same
+ * rhythm top to bottom and the route owns only its copy.
+ *
+ * Neutral on purpose: the colours, type ramp and spacing live in
+ * `src/styles/landing-pages/kit.css`, never in a page.
+ */
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+  tone?: 'plain' | 'tint' | 'dark';
+  id?: string;
+}
+
+const { eyebrow, title, intro, tone = 'plain', id } = Astro.props;
+---
+
+<section class={`lk-section lk-${tone}`} id={id}>
+  {eyebrow && <span class="lk-eyebrow">{eyebrow}</span>}
+  {title && <h2 class="lk-title">{title}</h2>}
+  {intro && <p class="lk-intro">{intro}</p>}
+  <slot />
+</section>

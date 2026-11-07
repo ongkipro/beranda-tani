@@ -1,0 +1,331 @@
+/*
+ * Landing kit: the styles for the `Lk*` components in
+ * `src/components/storefront/landing-pages/`.
+ *
+ * Imported by a native landing route next to `landing.css`. Neutral by design:
+ * it carries layout and rhythm, never a merchant's colours or copy. A page
+ * tunes the accent for its own product with two custom properties on its root
+ * (`--lk-accent`, `--lk-accent-soft`) and nothing else.
+ *
+ * Contract repeated from landing.css because it is load-bearing: type ramp
+ * 10 · 11 · 12 · 13 · 14 · 15 · 16 · 18 · 20 · 24 · 28 px only; weights
+ * 400 / 600 / 700 only; the 480 px column belongs to BaseLayout.
+ */
+
+.lk-root {
+  --lk-accent: #c5a880;
+  --lk-accent-soft: #f8f7f4;
+  --lk-ink: #111111;
+  --lk-muted: #52525b;
+  --lk-line: #e4e4e7;
+  --lk-bad: #b91c1c;
+  --lk-bad-soft: #fef2f2;
+  --lk-good: #047857;
+  --lk-good-soft: #ecfdf5;
+}
+
+.lk-section {
+  padding: 32px 20px;
+  border-top: 1px solid var(--lk-line);
+  background: #ffffff;
+  color: var(--lk-ink);
+}
+
+.lk-tint {
+  background: var(--lk-accent-soft);
+}
+
+.lk-dark {
+  background: #18181b;
+  color: #ffffff;
+}
+
+.lk-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--lk-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.lk-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.lk-intro {
+  margin: 12px 0 0;
+  color: var(--lk-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.lk-dark .lk-intro {
+  color: #a1a1aa;
+}
+
+.lk-section > * + :not(.lk-eyebrow):not(.lk-title):not(.lk-intro) {
+  margin-block-start: 24px;
+}
+
+/* ── Features ─────────────────────────────────────────────── */
+.lk-features {
+  display: grid;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lk-features--2 {
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.lk-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.lk-feature-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--lk-accent-soft);
+  color: var(--lk-accent);
+}
+
+.lk-tint .lk-feature-icon {
+  background: #ffffff;
+}
+
+.lk-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.lk-feature-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.lk-feature-text {
+  margin: 4px 0 0;
+  color: var(--lk-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.lk-features--2 .lk-feature-text {
+  font-size: 13px;
+}
+
+/* ── Timeline ─────────────────────────────────────────────── */
+.lk-timeline {
+  position: relative;
+  margin: 0 0 0 10px;
+  padding: 0 0 0 28px;
+  border-inline-start: 1px solid #3f3f46;
+  list-style: none;
+}
+
+.lk-step {
+  position: relative;
+  display: flex;
+  gap: 12px;
+}
+
+.lk-step + .lk-step {
+  margin-block-start: 22px;
+}
+
+.lk-step-dot {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: -40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: #3f3f46;
+  color: #e4e4e7;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 0 0 4px #18181b;
+}
+
+.lk-step.is-active .lk-step-dot {
+  background: var(--lk-accent);
+  color: #111111;
+}
+
+.lk-step-title {
+  margin: 0;
+  color: #e4e4e7;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.lk-step.is-active .lk-step-title {
+  color: var(--lk-accent);
+}
+
+.lk-step-text {
+  margin: 6px 0 0;
+  color: #a1a1aa;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── Compare ──────────────────────────────────────────────── */
+.lk-compare-label {
+  margin: 0 0 8px;
+  color: var(--lk-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lk-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.lk-compare-card {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--lk-line);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.lk-compare-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  background: #f4f4f5;
+}
+
+.lk-compare-badge {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-start: 8px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lk-compare-card--bad .lk-compare-badge {
+  background: var(--lk-bad);
+}
+
+.lk-compare-card--good .lk-compare-badge {
+  background: var(--lk-good);
+}
+
+.lk-compare-card figcaption {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.lk-compare-card figcaption strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lk-compare-card--good figcaption strong {
+  color: var(--lk-good);
+}
+
+.lk-compare-card figcaption span {
+  color: var(--lk-muted);
+}
+
+.lk-compare + .lk-compare {
+  margin-block-start: 24px;
+}
+
+/* ── Proof ────────────────────────────────────────────────── */
+.lk-proof {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--lk-line);
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.lk-proof + .lk-proof {
+  margin-block-start: 16px;
+}
+
+.lk-proof-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #f4f4f5;
+}
+
+.lk-proof-body {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px 16px;
+}
+
+.lk-proof-context {
+  margin: 0;
+  color: var(--lk-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.lk-proof-quote {
+  margin: 0;
+  color: #3f3f46;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.lk-proof-outcome {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--lk-good-soft);
+  color: var(--lk-good);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.lk-proof-who {
+  color: #71717a;
+  font-size: 12px;
+  font-weight: 600;
+}
