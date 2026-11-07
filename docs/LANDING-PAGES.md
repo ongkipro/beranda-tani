@@ -1,6 +1,6 @@
 # Building a landing page
 
-> Verified against disk: 2026-10-30 @ `5ef5f76` + docs/a45-ops-api working tree
+> Verified against disk: 2026-11-07 @ `564ca24` (kit and sample re-checked; the rest not re-audited)
 
 There are two kinds of landing page in this CMS and they are not
 interchangeable. Pick the right one before writing anything.
@@ -354,6 +354,53 @@ Copy it, then make it yours:
 It deliberately shows the conditional pattern: benefit, key-point and review
 sections render only when the product actually has that content, so a sparse
 product produces a shorter page instead of empty headings.
+
+## The section kit (`Lk*`)
+
+A native landing page is mostly the same few sections in a different order, so
+those sections are components, not copy-pasted markup. They live in
+`src/components/storefront/landing-pages/` and are styled by
+`src/styles/landing-pages/kit.css`. They are **neutral**: layout, rhythm and
+type, never a merchant's colours, copy or photos.
+
+| Component | Use it for |
+| --- | --- |
+| `LkSection` | The wrapper. Eyebrow, title and intro above a slot; `tone` is `plain`, `tint` or `dark` |
+| `LkFeatures` | Icon + title + sentence rows; `columns={2}` for short sentences |
+| `LkTimeline` | A numbered sequence with one highlighted step (a growth cycle, an order flow) |
+| `LkCompare` | A captioned before/after photo pair |
+| `LkProofCard` | One customer case: who, what they said, the outcome line, their own photo |
+
+```astro
+<div class="lk-root">
+  <LkSection eyebrow="Mudah" title="Cara pesan" tone="dark">
+    <LkTimeline active={2} steps={[{ title: 'Isi data' }, { title: 'Pilih pengiriman' }, { title: 'Dicek admin', text: '…' }]} />
+  </LkSection>
+</div>
+```
+
+Rules the kit relies on:
+
+- **Wrap the sections in `.lk-root`.** It defines the custom properties the kit reads.
+- **Tune the brand with custom properties only.** Set `--lk-accent`, `--lk-accent-soft`
+  and `--lk-accent-on-dark` on your own root class in `src/styles/landing-pages/<slug>.css`.
+  A dark brand colour needs its own `--lk-accent-on-dark`, or the eyebrow and the
+  active step vanish on a dark section (found on the first clone).
+- **Icons are literal strings** (`icon: 'lucide:clock'`). `scripts/generate-lucide-subset.mjs`
+  reads them from source; a name built at runtime renders the fallback icon. The set is
+  pruned: if you need an icon it lacks, add it and rerun the script.
+- **The kit never supplies evidence.** `LkCompare` and `LkProofCard` render what the
+  page passes; there is no placeholder photo or testimonial and none may be added
+  (§5). Omit the section when the merchant has no evidence.
+- **Keep the hero and the checkout in the route.** The hero is the one block that
+  differs most between offers; the order form stays `GeoIpResolvedForm`.
+
+**A local-only page makes the suite fail, by design.** A route file in
+`src/pages/` that is not registered in `src/data/native-landing-pages.ts` fails
+`landing-pages.test.ts` ("is not reserved") and the route-map drift check. That is
+the guard working. A page that only exists on your machine (a client demo) needs
+its registry entry and a regenerated route map on a local branch; keep both off any
+branch that is pushed.
 
 ## Writing one with an AI — the short version
 
