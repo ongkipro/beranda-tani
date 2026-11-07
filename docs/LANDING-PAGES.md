@@ -91,6 +91,7 @@ import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.
 import { getStorefrontProduct } from '../lib/catalog';
 import { defaultCatalogContentId } from '../lib/catalog-feed';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
+import '../styles/form-hybrid.css'; // the order form's own styles; without it the form renders unstyled
 import '../styles/landing-pages/landing.css';
 
 export const prerender = false;

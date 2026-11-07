@@ -24,6 +24,7 @@ import RatingStars from '../components/storefront/shared/RatingStars.astro';
 import { getStorefrontProducts } from '../lib/catalog';
 import { nativeLandingCanonicalPath } from '../lib/landing-pages';
 import { defaultCatalogContentId } from '../lib/catalog-feed';
+import '../styles/form-hybrid.css';
 import '../styles/landing-pages/landing.css';
 import '../styles/landing-pages/contoh-landing.css';
 
@@ -129,7 +130,29 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
       {product.ctaText || 'Pesan sekarang — bayar di tempat'}
     </a>
     <p class="cl-note">Gratis ongkir tersedia · Dikirim dari gudang resmi</p>
+
+    <ul class="cl-trust" aria-label="Keunggulan belanja">
+      <li>Bisa COD</li>
+      <li>Dikirim dari gudang</li>
+      <li>Dibantu admin via WhatsApp</li>
+    </ul>
   </section>
+
+  {
+    product.variants.length > 1 && (
+      <section class="cl-block" id="pilihan">
+        <h2 class="cl-h2">Pilihan {product.productName}</h2>
+        <ul class="cl-variants">
+          {product.variants.map((variant) => (
+            <li>
+              <span class="cl-variant-name">{variant.label}</span>
+              <span class="cl-variant-price">{rupiah(variant.price)}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
 
   {
     benefits.length > 0 && (
@@ -176,6 +199,15 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
     )
   }
 
+  <section class="cl-block">
+    <h2 class="cl-h2">Cara pesan</h2>
+    <ol class="cl-steps">
+      <li><strong>Isi data</strong> nama, nomor WhatsApp dan alamat di form di bawah.</li>
+      <li><strong>Pilih pengiriman</strong> dan cara bayar yang tersedia untuk wilayah Anda.</li>
+      <li><strong>Pesanan dicek admin</strong>, lalu dikirim setelah dikonfirmasi.</li>
+    </ol>
+  </section>
+
   <section class="cl-block cl-block--tint">
     <h2 class="cl-h2">Lengkapi data pengiriman</h2>
     <p class="cl-note">
@@ -186,6 +218,10 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
   <div id="checkout-form" class="scroll-mt-8">
     <GeoIpResolvedForm productSlug={product.slug} mode="hybrid" embedded={true} />
   </div>
+
+  <a class="cl-sticky" id="cl-sticky" href="#checkout-form" hidden>
+    {product.ctaText || 'Pesan sekarang'} · {rupiah(price)}
+  </a>
 
   <script slot="head" is:inline>
     document.addEventListener('click', (e) => {
@@ -199,5 +235,32 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
         .getElementById('checkout-form')
         ?.scrollIntoView({ behavior: 'smooth' });
     });
+  </script>
+  <script is:inline>
+    // Show the bar once the hero CTA has scrolled above the viewport and hide it
+    // while the form is on screen. A scroll listener, not IntersectionObserver:
+    // the observer's callbacks lag a fast jump, which left the bar showing at
+    // the top of the page.
+    (() => {
+      const bar = document.getElementById('cl-sticky');
+      const hero = document.querySelector('.cl-cta');
+      const form = document.getElementById('checkout-form');
+      if (!bar || !hero || !form) return;
+      let queued = false;
+      const sync = () => {
+        queued = false;
+        const heroGone = hero.getBoundingClientRect().bottom < 0;
+        const formSeen = form.getBoundingClientRect().top < window.innerHeight * 0.85;
+        bar.hidden = !(heroGone && !formSeen);
+      };
+      const queue = () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(sync);
+      };
+      addEventListener('scroll', queue, { passive: true });
+      addEventListener('resize', queue);
+      sync();
+    })();
   </script>
 </BaseLayout>
