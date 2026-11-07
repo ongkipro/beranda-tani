@@ -1250,7 +1250,7 @@ export function ProductCatalog({
             </DialogDescription>
           </DialogHeader>
           <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900">
-            <strong>Catatan:</strong> Bila produk ini sudah memiliki transaksi order, menghapus produk akan mempengaruhi riwayat katalog. Anda juga dapat mengubah status ke <strong>Draft</strong> untuk menonaktifkan penjualan.
+            <strong>Catatan:</strong> Produk yang sudah dipakai order tidak bisa dihapus; sistem akan menolaknya. Ubah status ke <strong>Draft</strong> untuk menghentikan penjualan.
           </p>
           <DialogFooter>
             <DialogClose asChild>

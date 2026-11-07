@@ -214,7 +214,10 @@ export function parseProductMutationPayload(
     !imageUrl.startsWith("/assets/uploads/") &&
     !imageUrl.startsWith("/images/")
   ) {
-    return { error: "URL gambar produk tidak valid." };
+    return {
+      error:
+        "Alamat gambar produk tidak dikenali. Unggah ulang foto produk lewat tombol Ganti foto.",
+    };
   }
   const isActive = typeof body.is_active === "boolean" ? body.is_active : true;
   const parsedProductId =
