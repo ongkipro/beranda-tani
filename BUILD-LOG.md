@@ -8914,7 +8914,7 @@ Renders: `proof-{390,1280}-payment.png`, `proof-xss-390-payment.png`, `proof-{39
 scratchpad. Thirteen `meta-event` POSTs reached the local `:3575` dummy store, from layout measurements taken earlier in
 the session before the blocks were set. No live store was contacted.
 
-### Entry 268: An edit no longer re-judges an unchanged image address
+### Entry 269: An edit no longer re-judges an unchanged image address
 
 Removing a variant in the product form failed with "URL gambar produk tidak valid." `PATCH /api/admin/products`
 re-validates the whole product, and `parseProductMutationPayload` accepts an `image_url` only under `/assets/uploads/`
