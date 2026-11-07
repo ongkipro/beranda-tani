@@ -154,14 +154,17 @@ function parseInteger(value: unknown) {
 export function parseProductMutationPayload(
   body: ProductMutationPayload | null,
   requireId: true,
+  storedImageUrl?: string | null,
 ): ParseResult<ParsedProduct & { id: number }>;
 export function parseProductMutationPayload(
   body: ProductMutationPayload | null,
   requireId: false,
+  storedImageUrl?: string | null,
 ): ParseResult<ParsedProduct>;
 export function parseProductMutationPayload(
   body: ProductMutationPayload | null,
   requireId: boolean,
+  storedImageUrl?: string | null,
 ): ParseResult<ParsedProduct> {
   if (!body || typeof body !== "object" || Array.isArray(body)) {
     return { error: "Payload tidak valid." };
@@ -203,8 +206,11 @@ export function parseProductMutationPayload(
     }
   }
   const imageUrl = clean(body.image_url, 500);
+  // A value the row already holds is never re-judged: saving an edit (removing
+  // a variant, say) must not fail on an image address it did not change.
   if (
     imageUrl &&
+    imageUrl !== (storedImageUrl ?? "").trim() &&
     !imageUrl.startsWith("/assets/uploads/") &&
     !imageUrl.startsWith("/images/")
   ) {

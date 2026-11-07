@@ -317,7 +317,15 @@ export const PATCH: APIRoute = async ({ request, locals }) => {
   }
 
   const body = rawBody as ProductMutationPayload | null;
-  const parsed = parseProductMutationPayload(body, true);
+  const bodyId = Number(body?.id);
+  const stored =
+    Number.isSafeInteger(bodyId) && bodyId > 0
+      ? ((await (database as D1Database)
+          .prepare("SELECT image_url FROM products WHERE id = ?")
+          .bind(bodyId)
+          .first()) as { image_url: string | null } | null)
+      : null;
+  const parsed = parseProductMutationPayload(body, true, stored?.image_url);
   if ("error" in parsed) return jsonError(parsed.error, parsed.status ?? 400);
   try {
     const db = database as D1Database;
