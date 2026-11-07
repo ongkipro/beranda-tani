@@ -8913,3 +8913,15 @@ using local URLs: `…bca.svg" onerror=…` and `x"><img … onerror=…><b id="
 Renders: `proof-{390,1280}-payment.png`, `proof-xss-390-payment.png`, `proof-{390,1280}-payment-logo.png` in the session
 scratchpad. Thirteen `meta-event` POSTs reached the local `:3575` dummy store, from layout measurements taken earlier in
 the session before the blocks were set. No live store was contacted.
+
+### Entry 268: An edit no longer re-judges an unchanged image address
+
+Removing a variant in the product form failed with "URL gambar produk tidak valid." `PATCH /api/admin/products`
+re-validates the whole product, and `parseProductMutationPayload` accepts an `image_url` only under `/assets/uploads/`
+or `/images/`. A row holding any other shape was sent back untouched and refused. The handler now reads the stored
+`image_url` and passes it as `storedImageUrl`; a value equal to it is accepted, a changed value stays allowlisted.
+
+- Unit test added (1194 passing). In a local `dev:local --reset` store, product 34466 was set to an `https://` image,
+  variant 3 removed in the browser and saved: variants S and M remain, `image_url` unchanged.
+- Not done: the same steps against the pre-fix code, and widening the allowlist (a decision, not made).
+- Report: `docs/REVIEW-2026-11-07.md`.
