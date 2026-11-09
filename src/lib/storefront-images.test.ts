@@ -176,7 +176,11 @@ test("every public <img> declares loading and reserves its box", () => {
     if (matches[i] > want) failures.push(`${e.file} ~ ${e.contains} matches ${matches[i]} tags; the exception covers ${want}`);
   });
   assert.deepEqual(failures, []);
-  const stale = EXCEPTIONS.filter((_, i) => !used.has(i)).map((e) => `${e.file} ~ ${e.contains}`);
+  // Stale means the tag is still there and no longer needs the excuse. A tag
+  // that is gone entirely is an install that replaced the product file with
+  // its own (numaskin's and beranda-tani's text SiteBrand): deleting the entry
+  // there turned every product merge into a conflict on this file.
+  const stale = EXCEPTIONS.filter((_, i) => matches[i] > 0 && !used.has(i)).map((e) => `${e.file} ~ ${e.contains}`);
   assert.deepEqual(stale, [], "an exception that excuses nothing must be deleted");
 });
 
