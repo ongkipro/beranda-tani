@@ -1,6 +1,6 @@
 # AdsBookCMS install fleet
 
-> Verified against disk: 2026-11-02 @ `d1fa64f` (revenleather screening and fixes 2026-11-02; versions, sync, distance, deploy time and schema read with `npm run fleet:status`, plus the live submit-button colour of nine stores, after the 1.9.2 rollout; "Version" is the working tree)
+> Verified against disk: 2026-11-10 @ `be4e7db` (1.10.0 rolled to ten installs; klikinaja and skincarebpom have no local clone on this machine and were not touched). Previously: 2026-11-02 @ `d1fa64f` (revenleather screening and fixes 2026-11-02; versions, sync, distance, deploy time and schema read with `npm run fleet:status`, plus the live submit-button colour of nine stores, after the 1.9.2 rollout; "Version" is the working tree)
 
 Every store that runs AdsBookCMS: one install = one repository = one Worker
 = one store (`AGENTS.md`). This file is the registry of which installs exist,
@@ -15,18 +15,18 @@ distance behind the product, last deploy and schema for each local clone.
 
 | # | Store (domain) | Repository | Branch | Version | Behind product | Schema (applied/expected) | Last deploy |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | zvara.shop | `ongkipro/zvarashop` | `install/zvarashop` | **1.9.2** | 0 | 93/93 | 2026-11-02 |
-| 2 | permatamall.shop | `ongkipro/permatamall` | `main` | **1.9.2** | 0 | 80/80 | 2026-11-02 |
-| 3 | agritani.shop | `ongkipro/agritani-shop` | `install/agritani-shop` | **1.9.2** | 0 | 80/80 | 2026-11-02 |
-| 4 | taniniaga.shop | `ongkipro/taniniaga` | `install/taniniaga` | **1.9.2** | 0 | 80/80 | 2026-11-02 |
-| 5 | halotani.shop | `ongkipro/halotanishop` | `install/halotanishop` | **1.9.2** | 0 | 80/80 | 2026-11-02 |
-| 6 | baven.shop | `ongkipro/bavenshop` | `install/bavenshop` | **1.9.2** | 0 | 80/80 | 2026-11-02 |
-| 7 | page.numaskin.id | `ongkipro/numaskin-adbook` | `main` | **1.9.2** | 0 | 80/80 | 2026-11-02 |
-| 8 | page.revenleather.com | `ongkipro/revenleather` | `main` | **1.9.2** | 0 | 80/80 | 2026-11-02 |
-| 9 | petanisejahtera.com (+ petanisawit.com, beranda.click) | `ongkipro/beranda-tani` | `install/beranda-tani` | **1.9.2** | 0 | 80/80 | 2026-11-02 |
+| 1 | zvara.shop | `ongkipro/zvarashop` | `install/zvarashop` | **1.10.0** | 0 | 93/93 | 2026-11-10 |
+| 2 | permatamall.shop | `ongkipro/permatamall` | `main` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
+| 3 | agritani.shop | `ongkipro/agritani-shop` | `install/agritani-shop` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
+| 4 | taniniaga.shop | `ongkipro/taniniaga` | `install/taniniaga` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
+| 5 | halotani.shop | `ongkipro/halotanishop` | `install/halotanishop` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
+| 6 | baven.shop | `ongkipro/bavenshop` | `install/bavenshop` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
+| 7 | page.numaskin.id | `ongkipro/numaskin-adbook` | `main` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
+| 8 | page.revenleather.com | `ongkipro/revenleather` | `main` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
+| 9 | petanisejahtera.com (+ petanisawit.com, beranda.click) | `ongkipro/beranda-tani` | `install/beranda-tani` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
 | 10 | klikinaja.shop | `ongkipro/klikinaja` | `install/klikinaja` | **1.9.2** | 0 | 80/80 | 2026-11-02 |
 | 11 | skincarebpom.shop | `ongkipro/skincarebpom` | `install/skincarebpom` | 1.8.5 in tree, 371 uncommitted files | 201 | 62/80 | 2026-10-18 |
-| 12 | cekat.shop | `ongkipro/cekat-shop` | `main` (local clone) | **1.9.2** | 0 | 80/80 | 2026-11-02 |
+| 12 | cekat.shop | `ongkipro/cekat-shop` | `main` (local clone) | **1.10.0** | 0 | 80/80 | 2026-11-10 |
 
 All twelve repositories and the product (`ongkipro/adsbookcms`) are
 **public** since 2026-11-01, after a full-history scan found no secret or
@@ -221,6 +221,34 @@ account's five-trigger ceiling gave the slot to zanobyshop; it was restored
 redeploy) once eleven installs were already registering one each — the
 account no longer stops at five. A new install keeps the trigger; never
 comment it out to make room.
+
+### Rollout of 1.10.0 (2026-11-10)
+
+Ten installs run **1.10.0**, each merged, gated (`npm test`, `check`, `build`), pushed and deployed with
+`npm run deploy` (preflight, no override). The first hourly cron after (22:07 UTC) reported `v1.10.0`,
+schema `match`, and `meta-purchase-coverage` healthy with 0 missing on every store that had COD orders:
+agritani 69, taniniaga 72, zvara 33, revenleather 35, beranda-tani 55, numaskin 12, baven 5; `unknown`
+(no orders in 2-48 h) on halotani, permatamall and cekat. Remaining `degraded` signal everywhere is the
+old `receiver-score: not-whitelisted`.
+
+| Install | Worker version | Lighthouse mobile home / product (perf; a11y 100 on all) |
+| --- | --- | --- |
+| agritani | `7ad7581b` | 79 / 84 |
+| taniniaga | `867a065d` | 91 / 91 |
+| halotani | `1ce7a2ed` | 93 / 87 |
+| baven | `d765d0ea` | 71 / 80 (hero LCP 5.5 s lab; preloaded, immutable; IMG-1) |
+| zvara | `11dc230e` | 72 / 77 (TBT 710-860 ms; PERF-1) |
+| permatamall | `81ad6036` | 75 / 80 |
+| revenleather | `dc24a85c` | 86 / 82 |
+| numaskin | `ce986cee` | 93 / 86 |
+| beranda-tani | `5ad4c5c8` | 93 / 84 |
+| cekat | `6174cb3f` | 98 / - (no products, no Pixel) |
+
+Single lab runs, colo SIN; Best Practices 79 everywhere is the Facebook third-party cookie (PERF-2).
+Install fixes made during the merge: permatamall and beranda-tani gave width/height to their own landing
+images (the product's image guard, BUILD-LOG 267); numaskin, beranda-tani and revenleather deleted the
+SiteBrand guard exception, which #195 makes unnecessary from the next merge. permatamall still runs
+`placement.mode: smart` (its `wrangler.jsonc` is keepours); pinning it is a separate decision.
 
 ## Merge rules that differ per install
 

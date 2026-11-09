@@ -2,6 +2,20 @@
 
 > Verified against disk: 2026-11-02 @ `f333530` (product `main` has PRs #167-#171 not yet on any install; installs run 1.9.2 plus PRs #157-#164 on eleven of the twelve; fleet registry in `docs/FLEET.md`; the sections below retain their dated evidence)
 
+## 2026-11-10 — 1.10.0 on ten installs; COD Purchase coverage healthy everywhere
+
+1.10.0 (#191, #193; docs #192, #194; test #195) runs on zvara, permatamall, agritani, taniniaga, halotani,
+baven, numaskin, revenleather, beranda-tani and cekat (`docs/FLEET.md` "Rollout of 1.10.0" has Worker
+versions and Lighthouse). The 22:07 UTC cron confirmed `v1.10.0`, schema `match` and
+`meta-purchase-coverage` healthy, 0 missing, on every store with COD orders. Post-deploy orders on
+agritani, taniniaga and zvara had their Purchase `sent`. "Transfer Diterima" was proven on `dev:local`
+as admin: order `paid`, Purchase enqueued with the buyer's stored fbc, IP and value. Meta Dataset
+Quality per pixel and the attribution recommendation: audit F-10, F-11.
+
+**Not done:** klikinaja and skincarebpom (no local clone here). No live test order was placed on any
+store. **Owner's:** attribution setting in Ads Manager (7-day click + 1-day engage-through, audit
+F-11), the second sender on beranda-tani's pixel, `OPS_ALERT_WEBHOOK_URL`, confirming paid transfers.
+
 ## 2026-11-10 — PR #191 (COD Purchase at checkout) live on agritani.shop only
 
 **Done (verified):** PR #191 (`df35c5d`) merged; agritani-shop merged product/main and its own
