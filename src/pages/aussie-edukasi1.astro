@@ -41,7 +41,7 @@ const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalP
 >
   <main class="ps-page">
     <MetaLandingTracker slug={SLUG} contentId={defaultCatalogContentId(product)} contentName={product.productName} price={product.price} />
-    <div class="ps-image"><img src="/images/landing/aussie-edukasi1/01.webp" width="720" height="1000" alt="Kenali Penyakit Sawit karena Jamur - Aussie — gambar 1" fetchpriority="high" /></div>
+    <div class="ps-image"><img loading="eager" src="/images/landing/aussie-edukasi1/01.webp" width="720" height="1000" alt="Kenali Penyakit Sawit karena Jamur - Aussie — gambar 1" fetchpriority="high" /></div>
     <section class="ps-text ps-large ps-open-sans">
       <div>
         <h1 class="ps-h1">Kenali Penyakit Sawit Karena Jamur</h1>

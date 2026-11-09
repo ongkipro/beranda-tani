@@ -102,12 +102,9 @@ const EXCEPTIONS: { file: string; contains: string; skip: Skip[]; why: string; t
     skip: ["loading"],
     why: "1x1 pixel inside <noscript>; no layout, and a lazy beacon might never fire",
   },
-  {
-    file: "src/components/storefront/shared/SiteBrand.astro",
-    contains: "src={uploadedLogo}",
-    skip: ["dimensions"],
-    why: "uploaded logo of unknown aspect: height-bound inline, width auto, max 168px",
-  },
+  // beranda-tani: no SiteBrand `src={uploadedLogo}` exception. Its SiteBrand.astro is
+  // install-themed (Petani Sejahtera) with a fixed 34x34 logo, so the product's entry
+  // would excuse nothing. Expect a conflict here on a product edit; keep this side.
   {
     file: "src/components/storefront/forms/FormHybridContent.astro",
     contains: "src={bannerImage}",
