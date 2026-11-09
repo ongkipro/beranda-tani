@@ -178,6 +178,51 @@ on `/admin/status` as "N dari M order COD tanpa Purchase", and fires the
 `OPS_ALERT_WEBHOOK_URL` alert like the two outbox signals. A store without
 Meta configured reads `unknown`, not red. Tested on the real migration chain.
 
+### F-10 Meta's own view, read 2026-11-10 (Dataset Quality API, each store's stored token) [data]
+
+Read with each install's `stores.meta_capi_token` piped straight into the request; no token printed.
+
+| Pixel (stores) | Purchase EMQ | Dedupe `event_id` browser/server | Gaps |
+| --- | --- | --- | --- |
+| …57874 (agritani, taniniaga, halotani) | 7.8 | 100/100 | ct 1%, zip 1%; `order_id` on 49% of server events |
+| …35811 (permatamall) | 7.8 | 100/100 | `order_id` 50% |
+| …35811 (zvara, baven, numaskin) | API error `(#1) An unknown error occurred` | | same pixel id read from three stores; reported by Meta only through permatamall's token |
+| …04661 (revenleather) | 7.8 | 100/100 | ct/zip 19% |
+| …16064 (beranda-tani) | 7.0 | 100/100 | phone 49%, external_id 4%, country 4% on Meta's side while every outbox row carries phone and external_id: **another sender on the same pixel** (unverified) |
+| cekat | no pixel or token | | |
+
+Reading:
+
+- **City and postal code are missing because the middle form never asks for
+  them.** On agritani 297 of 320 placed orders in 7 days came from the middle
+  form (name, phone, address; province from the IP). `city`/`postal_code` stay
+  empty until CS completes the order. Sending the IP-guessed city would raise
+  the score but is a fabricated key (§16.3 rule): not done.
+- **`order_id` at ~50%** means another sender on the same pixel (the browser
+  Pixel does not carry it, and every outbox row does). Expected while the
+  browser leg is half of the events; not a defect.
+- **beranda-tani's low phone/external_id share** points at a second source
+  (another site or a Shopify/marketplace integration) on pixel …16064. Worth
+  confirming in Events Manager → Data sources.
+
+### F-11 Attribution setting recommendation (2026-11-10) [read]
+
+Facts, from Meta's own pages: since 2026-01-12 the 7-day and 28-day *view*
+windows are gone (Marketing API OCC 2025); click-through now counts only link
+clicks, and other clicks (share, save, like) moved to a 1-day
+*engage-through* window (Meta for Business, "Simplifying Ad Measurement").
+
+Recommendation for these COD stores (cheap, impulse, decided on WhatsApp the
+same day): **7-day click + 1-day engage-through, without 1-day view.** A view
+window credits people who scrolled past an ad and bought anyway, which in a
+store that also sells through WhatsApp and marketplaces inflates reported
+Purchases and teaches the algorithm to find viewers instead of clickers. Keep
+7-day click (not 1-day): COD buyers often order a day or two after the click,
+after asking on WhatsApp. If a campaign's Purchase count falls after the
+change, that is the view-through share leaving the report, not lost sales;
+compare Events Manager (unchanged) before judging. This is an Ads Manager
+setting for the owner, not code.
+
 ## 4. Status of each finding on branch `fix/meta-purchase-gap`
 
 | Finding | State |
@@ -191,6 +236,8 @@ Meta configured reads `unknown`, not red. Tested on the real migration chain.
 | F-7 | Root cause removed by F-1; `/thanks` also requests fbevents earlier and waits 1500 ms before WhatsApp |
 | F-8 | Reviewed; 1, 2a done, 2b partly, 3a/3b rejected with evidence, 4 is the owner's |
 | F-9 | Done: `meta-purchase-coverage` health signal and webhook alert |
+| F-10 | Read; city/zip gap is by form design (not fabricated); beranda-tani second sender to confirm in Events Manager; pixel …35811 API error to retry |
+| F-11 | Recommendation: 7-day click + 1-day engage-through, no view window; owner applies in Ads Manager |
 
 ## 5. Suggested order of work (as first written)
 
