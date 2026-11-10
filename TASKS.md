@@ -1,6 +1,6 @@
 # Tasks: AdsBookCMS
 
-> Verified against disk: 2026-11-02 @ `3f5027c` (A46 done; other sections retain their recorded evidence)
+> Verified against disk: 2026-11-10 @ `745de51` (A47 added: A-460..A-467 done, A-468 and A-469 open). Previously: 2026-11-02 @ `3f5027c` (A46 done; other sections retain their recorded evidence)
 
 ## A21 — A landing page may become the product page
 
@@ -4499,3 +4499,31 @@ entry unless Paduka asks (these are fixes); product changes go through a PR to
 `main`, then the per-install merge and `npm run deploy` (RELEASE.md §7, merge
 rules in docs/FLEET.md; revenleather, numaskin and beranda-tani keep their own
 files); every deploy and remote D1 write is Paduka's to approve.
+
+## A47 — Every Purchase-qualifying order reaches Meta from the server (2026-11-10)
+
+Source: `docs/AUDIT-2026-11-10-agritani-purchase-gap.md` (Paduka: "kenapa pixel tidak terkirim
+ke dashbord meta", then "jalankan juga sempurnakan"). ADR-035, ADR-036. Released as 1.10.0.
+
+- [x] **A-460** — COD Purchase enqueued by the server at checkout (`scheduleCodPurchase` in
+  `submit-order`, `submit-middle-order`, `/api/v1/checkout`). -> F-1 · Done when: a middle-form
+  COD order on `dev:local` has a Purchase row without `/thanks` being opened. Done (PR #191).
+- [x] **A-461** — Hourly sweep for COD orders 30 min-48 h old with no Purchase. -> F-1 · Done
+  when: a test on the real migration chain sends exactly the missed order, once. Done (PR #191).
+- [x] **A-462** — `meta-purchase-coverage` health signal and webhook alert. -> F-9 · Done when:
+  the 22:07 UTC cron on every install reports it. Done: healthy, 0 missing, on all seven stores
+  with COD orders.
+- [x] **A-463** — CS lead conversion reports a Purchase with the identity stored at capture. ->
+  F-5 · Done (PR #191).
+- [x] **A-464** — Leads kept 14 days (Paduka), never deletable by hand. -> F-4 · Done (PR #191).
+- [x] **A-465** — "Purchase ke Meta" metric, "Transfer belum dikonfirmasi", requeue button,
+  ad-fetch timeouts, no PageView without a Pixel, version 1.10.0. Done (PR #193).
+- [x] **A-466** — Roll 1.10.0 to every install on this machine and review live (HTTP, schema,
+  Pixel, Lighthouse, coverage). Done: ten installs (`docs/FLEET.md`); klikinaja and skincarebpom
+  are not on this machine and were left out by Paduka's decision.
+- [x] **A-467** — Validate the attribution recommendation against Meta's docs and order data.
+  -> F-11 · Done (PR #197); applying it is Paduka's, in Ads Manager.
+- [ ] **A-468** — Set `OPS_ALERT_WEBHOOK_URL` on each install. Deferred by Paduka ("webhook nanti
+  aja"). Done when: one alert test reaches the chosen channel from each store.
+- [ ] **A-469** — Deploy product `745de51` (PR #190: image guard parser, unchanged image URL on
+  edit, media CSS in `@layer base`, Lk* kit) to the installs. Not urgent; ride the next rollout.
