@@ -1,6 +1,6 @@
 # Observability — AdsBookCMS
 
-> Verified against disk: 2026-10-29 @ A-419 integration (`feat/a35-a40-analytics-fit`)
+> Verified against disk: 2026-11-10 @ `745de51` (1.10.0: `meta-purchase-coverage` signal and alert, COD sweep and lead purge labels; earlier sections retain their recorded evidence). Previously: 2026-10-29 @ A-419 integration
 
 This document describes what an operator can observe and what AdsBookCMS now alerts on for one running install. Cross-install aggregation and an external uptime probe remain separate decisions.
 
@@ -28,6 +28,7 @@ What exists:
 | Structured application errors | **Implemented** for labelled server and provider failures |
 | Per-install schema alert | **Implemented**; evaluated by the hourly cron (`7 * * * *`) and on the request that meets a schema failure |
 | Per-install CAPI and Google Ads outbox alerts | **Implemented**; fire when terminal failures exist or an overdue row is older than the one-hour maximum backoff |
+| Per-install Meta Purchase coverage alert (1.10.0) | **Implemented**; fires when a COD order 2-48 h old has no Purchase in the CAPI outbox (an event never enqueued is invisible to the queue alerts) |
 | Deduplication and recovery | **Implemented** through KV transition state |
 | Notification transport | **Implemented** for an operator-configured HTTPS URL |
 | External uptime check | **Absent** |
@@ -113,6 +114,7 @@ notification delivery.
 The scheduled handler evaluates:
 
 - `schema`: firing on schema-history mismatch or read failure; healthy on an exact match.
+- `meta-purchase-coverage` (1.10.0): firing when any COD order created 2-48 h ago, not abandoned or void, has no `Purchase` row in `capi_event_outbox` (`orders-without-purchase`); healthy at `all-orders-sent`; `unknown` when Meta is not configured or there is no COD order in the window. The checkout send and the hourly sweep should leave this at zero; firing means both missed.
 - `capi-outbox` and `google-ads-outbox`: firing when a row failed terminally **in the last 24 hours** or an overdue row is older than the one-hour maximum backoff (`stalled`); healthy otherwise. Older failures read `earlier-failures`: still counted on the panel, no longer holding the alert open — which used to deduplicate the next outage into silence for the 30 days failed rows are kept.
 
 A repeat of a still-pending firing state is not re-written to KV (it would be one write per request during a schema outage), and the webhook POST is bounded to 5 seconds.
@@ -130,7 +132,7 @@ Webhook JSON is bounded and payload-free (`alertWebhookBody` in
 | `version` | `1` |
 | `eventId` | `<signal>:<firing\|recovered>:<transitionAt>` — stable across retries, so a receiver can deduplicate |
 | `status` | `firing` or `recovered` |
-| `signal` | `schema`, `capi-outbox` or `google-ads-outbox` |
+| `signal` | `schema`, `capi-outbox`, `google-ads-outbox` or `meta-purchase-coverage` |
 | `reason` | the classifier's reason, e.g. `stalled`, `terminal-failures`, `recovered-from-stalled` |
 | `transitionAt` | ISO time of the transition |
 | `store` | the install's origin — the request's on a request path, `PUBLIC_SITE_URL` from the cron. Several installs can share one webhook; an alert that does not name its store cannot be acted on |
@@ -178,10 +180,12 @@ client address, username, or order payload:
 | `autolaris-fee-mismatch` | The provider billed a total other than the one computed from `payment-fee-policy.ts`; the fee table needs updating |
 | `autolaris-callback-recorded` / `autolaris-callback-store-failed` | A provider callback was stored in `autolaris_callbacks` (with the `reff_id`/`trx_id` it carried), or could not be. Read the table with `wrangler d1 execute`; nothing acts on it (ADR-022) |
 | `paid-order-purchase-failed` | A manual paid confirmation succeeded but the server Meta Purchase could not be enqueued; the confirmation stands |
-| `scheduled-*-failed` (`abandoned-order-purge`, `rate-limit-purge`, `payment-expiry`, `callback-purge`, `notification-purge`, `capi-outbox-purge`, `capi-drain`, `google-ads-reconcile`, `google-ads-drain`, `autolaris-advice`) | One step of the hourly cron threw; every later step still ran. `operational-health-scheduled` reports `-1` for that step |
+| `scheduled-*-failed` (`abandoned-order-purge`, `rate-limit-purge`, `payment-expiry`, `callback-purge`, `notification-purge`, `capi-outbox-purge`, `cod-purchase-sweep`, `capi-drain`, `google-ads-reconcile`, `google-ads-drain`, `autolaris-advice`) | One step of the hourly cron threw; every later step still ran. `operational-health-scheduled` reports `-1` for that step |
 | `scheduled-heartbeat-failed` | The cron could not stamp `ops_health_snapshot.scheduler_ran_at`; the run went on. Once the last stamp is more than 120 minutes old (two missed slots), the status icon reads the maintenance as stopped until a later stamp lands |
 | `scheduled-health-snapshot-failed` | The last cron step could not write the `ops_health_snapshot` row; the previous snapshot stays, and every earlier step already ran. Once that snapshot is more than 120 minutes old, the status icon turns red ("status tidak diperbarui") even though the heartbeat is fresh |
 | `health-snapshot-unreadable` / `operational-health-scheduler-unreadable` | The snapshot row or the heartbeat column could not be read; the icon reads neutral (unknown) and the `scheduler` signal `unreadable`, never healthy |
+| `cod-purchase-at-submit-failed` | 1.10.0: enqueueing the COD Purchase after checkout (or a CS lead conversion) threw; the order is saved, the hourly sweep retries it |
+| `cod-purchase-sweep-failed` | 1.10.0: the hourly sweep could not enqueue one missed COD Purchase; the next run tries again while the order is under 48 h |
 | `scheduled-google-ads-purge-failed` | The 30-day retention purge of settled/failed Google rows threw; nothing else was affected |
 | `google-ads-offline-access-denied` | The Ads API answered 401/403 for the account; the batch stopped with rows left pending for the next run |
 | `autolaris-callback-rate-limited` | A callback was refused by the per-address (30/min) or store-wide (600/h) ceiling; `global: true` names the latter |

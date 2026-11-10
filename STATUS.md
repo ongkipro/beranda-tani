@@ -1,6 +1,16 @@
 # STATUS — AdsBookCMS
 
-> Verified against disk: 2026-11-02 @ `f333530` (product `main` has PRs #167-#171 not yet on any install; installs run 1.9.2 plus PRs #157-#164 on eleven of the twelve; fleet registry in `docs/FLEET.md`; the sections below retain their dated evidence)
+> Verified against disk: 2026-11-10 @ `745de51` (ten installs run 1.10.0; product `main` also has #190, not yet deployed; klikinaja and skincarebpom are not on this machine). Previously: 2026-11-02 @ `f333530` (installs ran 1.9.2; fleet registry in `docs/FLEET.md`; the sections below retain their dated evidence)
+
+## 2026-11-10 — after the rollout
+
+- PR #190 (another session: image guard parser, unchanged image URL on edit, media CSS layer, Lk* kit) is merged
+  to `main` (`745de51`), CI green, verified on five live pages; **not yet deployed** to any install (TASKS A-469).
+- permatamall pinned to Singapore (Worker `34976adf`). halotani has never taken an order and permatamall's last
+  was 2026-10-23, so their `meta-purchase-coverage` reads `unknown`; no live test order by design.
+- Deferred by Paduka: `OPS_ALERT_WEBHOOK_URL` (A-468). Done by Paduka: paid transfers confirmed; the rest are
+  left unconfirmed by his choice. Owner's: attribution setting on new ad sets, the second sender on
+  beranda-tani's pixel.
 
 ## 2026-11-10 — 1.10.0 on ten installs; COD Purchase coverage healthy everywhere
 

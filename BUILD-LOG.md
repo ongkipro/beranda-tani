@@ -1,6 +1,6 @@
 # BUILD LOG: AdsBookCMS
 
-> Verified against disk: 2026-11-06 @ `700bc21` + fix/image-guard-parser working tree (Entry 268 appended; earlier entries retain their historical evidence)
+> Verified against disk: 2026-11-10 @ `745de51` (Entries 270-273 appended). Previously: 2026-11-06 @ `700bc21` + fix/image-guard-parser working tree (Entry 268 appended; earlier entries retain their historical evidence)
 
 Author & Curator: **[ongki.pro](https://ongki.pro)**
 
@@ -8925,3 +8925,55 @@ or `/images/`. A row holding any other shape was sent back untouched and refused
   variant 3 removed in the browser and saved: variants S and M remain, `image_url` unchanged.
 - Not done: the same steps against the pre-fix code, and widening the allowlist (a decision, not made).
 - Report: `docs/REVIEW-2026-11-07.md`.
+
+### Entry 270: Meta Purchase from the server, 14-day leads, coverage alert; 1.10.0 (2026-11-10, Paduka: "kenapa pixel tidak terkirim ke dashbord meta")
+
+Measured on agritani.shop production D1 before changing code (read-only): of 732 COD orders in 30 days, 727 had a
+`sent` Purchase and 5 had none; 55 manual transfers were never confirmed, so never reported; 98 leads were
+correctly unreported. The 5 never reached `/thanks` (4 from the Facebook in-app browser, store on WhatsApp
+auto-redirect), and both legs left only from that page. No signal noticed, because the queue alerts only see
+events that were enqueued. Audit: `docs/AUDIT-2026-11-10-agritani-purchase-gap.md` (F-1..F-11).
+
+- Checkout and a CS lead conversion enqueue the COD Purchase themselves; an hourly sweep catches 30 min-48 h
+  misses; `meta-purchase-coverage` alerts on any COD order 2-48 h old without one (ADR-036).
+- Leads kept 14 days (was 7) and refused by the order delete route (ADR-035); a lead stores its Meta identity.
+- Analitik "Purchase ke Meta", "Transfer belum dikonfirmasi", "Kirim ulang event gagal", Meta/Google fetch
+  timeouts (AUD-M5), no PageView post without a Pixel (L-5), version 1.10.0. PRs #191, #193.
+- Proved on `dev:local`: a middle-form COD order enqueued its Purchase (fbc, value) without `/thanks`;
+  "Transfer Diterima" as admin set the order `paid` and enqueued its Purchase with the stored fbc and IP.
+  Mutation checks on the sweep, the lead guard and the lead identity capture.
+- An outside recommendation list was reviewed (F-8): the 18-19 digit `_fbp` claim and the "double drain"
+  were rejected with evidence (live fbevents.js `SignalsFBEventsPixelCookie`, Meta's own example).
+
+### Entry 271: 1.10.0 on ten installs, reviewed live (2026-11-10, Paduka: "jalankan paralel ke seluruhan project")
+
+Three parallel worker agents per wave, one install each, then the parent re-read every store. Each install:
+fetch and fast-forward any other session's commits first (zvara, permatamall, taniniaga had landing pages
+ahead), merge product, gates, push, `npm run deploy` (preflight, no override). Install fixes made on the way:
+permatamall and beranda-tani gave width/height to their own landing images (the PR #189 guard); numaskin,
+beranda-tani and revenleather deleted a SiteBrand guard exception their own SiteBrand did not need, which #195
+makes unnecessary from the next merge; the `docs/FLEET.md` grafir rule belonged to revenleather, not baven.
+permatamall was pinned to Singapore after a sample ran `local-HKG`. The 22:07 UTC cron reported `v1.10.0`,
+schema `match` and `meta-purchase-coverage` healthy, 0 missing, on every store with COD orders. Worker versions
+and Lighthouse in `docs/FLEET.md`. Not done: klikinaja, skincarebpom (not on this machine); no live test order
+(it would send Meta a false Purchase); `OPS_ALERT_WEBHOOK_URL` deferred by Paduka.
+
+### Entry 272: Meta's own view and the attribution setting (2026-11-10)
+
+Dataset Quality API per pixel with each store's stored CAPI token, never printed: Purchase EMQ 7.8 and event_id
+dedupe 100/100 on most pixels; city and postal code near 0 on middle-form stores (the form does not ask; not
+filled from the IP, which would be a fabricated key); beranda-tani's pixel shows phone 49% and external_id 4%
+while all 205 of our server Purchases carry both, so a second sender is on that pixel (owner to check in Events
+Manager). Attribution: Meta's Help Centre read on the day (click-through 1 or 7 days after a link click,
+view-through 1 day, engage-through 1 day; the setting is not a significant edit) and 30 days of orders (>98%
+placed within an hour of a Meta click) support 7-day click + 1-day engage-through with view-through off for new
+ad sets. The first version's WhatsApp/marketplace argument was wrong and is corrected in F-11.
+
+### Entry 273: PR #190 reviewed and merged (2026-11-10)
+
+Another session's branch (image guard parser on the TypeScript AST, unchanged stored image URL accepted on edit,
+media rules in `@layer base`, Lk* landing kit). Merged cleanly over #191-#197 (#195's stale-exception rule kept);
+1207 tests, check 0, build ok, CI on `main` green. The CSS move touches every public image, so the old and new
+rules were swapped in the browser on five live pages (agritani home, product, landing; revenleather; baven) at 360
+and 1440 px: at most 1 px of rounding, no image stretched, overflowing or lost. On `main`, not yet on any install
+(TASKS A-469).
