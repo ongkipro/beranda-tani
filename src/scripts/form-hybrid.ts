@@ -1213,7 +1213,7 @@ function initHybridOrderFormInstance(formRoot: HTMLElement) {
     const brandCode = opt.bankCode || opt.channelCode || opt.code;
     const brandAsset = opt.logoUrl || paymentBrandAsset(brandCode);
     const badgeHtml = brandAsset
-      ? `<span class="payment-brand-mark" aria-hidden="true"><img src="${brandAsset}" alt="" width="36" height="24" loading="lazy" decoding="async" /></span>`
+      ? `<span class="payment-brand-mark" aria-hidden="true"><img alt="" width="37" height="22" loading="lazy" decoding="async" /></span>`
       : opt.paymentMethod === "cod"
         ? `<span class="payment-brand-mark payment-brand-mark--text" aria-hidden="true">COD</span>`
         : "";
@@ -1229,6 +1229,9 @@ function initHybridOrderFormInstance(formRoot: HTMLElement) {
         ${badgeHtml}
       </div>
     `;
+    // The logo URL is store data: set as a property, never interpolated into markup.
+    const brandImg = label.querySelector<HTMLImageElement>(".payment-brand-mark img");
+    if (brandImg && brandAsset) brandImg.src = brandAsset;
     const input = label.querySelector<HTMLInputElement>("input");
     if (input) {
       input.value = opt.code;

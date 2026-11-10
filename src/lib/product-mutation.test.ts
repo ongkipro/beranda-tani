@@ -300,3 +300,11 @@ test("a Google category is an id with its path, null clears it, and absent keeps
     assert.ok("error" in parseProductMutationPayload({ ...base, ...bad }, true));
   }
 });
+
+test("an update keeps an image address the row already stores", () => {
+  const legacy = "https://cdn.example/old.jpg";
+  const payload = validMutationPayload({ id: 7, image_url: legacy });
+  assert.ok("error" in parseProductMutationPayload(payload, true));
+  assert.ok("value" in parseProductMutationPayload(payload, true, legacy));
+  assert.ok("error" in parseProductMutationPayload(payload, true, "/images/x.jpg"));
+});

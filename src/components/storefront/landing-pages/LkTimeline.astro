@@ -1,0 +1,32 @@
+---
+/**
+ * A numbered vertical sequence with one highlighted step, for a process the
+ * buyer is somewhere inside (a growth cycle, an order flow). Only the active
+ * step carries a sentence; the rest are labels, so the line stays short.
+ */
+interface Step {
+  title: string;
+  text?: string;
+}
+interface Props {
+  steps: Step[];
+  /** Zero-based index of the highlighted step. */
+  active?: number;
+}
+
+const { steps, active = -1 } = Astro.props;
+---
+
+<ol class="lk-timeline">
+  {
+    steps.map((step, index) => (
+      <li class:list={['lk-step', { 'is-active': index === active }]}>
+        <span class="lk-step-dot">{index + 1}</span>
+        <div>
+          <h3 class="lk-step-title">{step.title}</h3>
+          {step.text && <p class="lk-step-text">{step.text}</p>}
+        </div>
+      </li>
+    ))
+  }
+</ol>

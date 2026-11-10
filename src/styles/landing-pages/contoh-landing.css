@@ -213,3 +213,84 @@
   font-size: 12px;
   font-weight: 600;
 }
+
+.cl-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 14px;
+  margin: 14px 0 0;
+  padding: 0;
+  color: #52525b;
+  font-size: 12px;
+  font-weight: 600;
+  list-style: none;
+}
+
+.cl-variants {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cl-variants li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 10px;
+  border-bottom: 1px solid #e4e4e7;
+  font-size: 14px;
+}
+
+.cl-variants li:last-child {
+  border-bottom: 0;
+}
+
+.cl-variant-name {
+  color: #111111;
+  font-weight: 600;
+}
+
+.cl-variant-price {
+  color: #3f3f46;
+  font-weight: 700;
+}
+
+.cl-steps {
+  margin: 0;
+  padding-inline-start: 20px;
+  color: #3f3f46;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.cl-steps li + li {
+  margin-block-start: 8px;
+}
+
+/* Fixed to the viewport, inside the 480 px column's width. */
+.cl-sticky {
+  position: fixed;
+  inset-block-end: 12px;
+  inset-inline: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(456px, calc(100% - 24px));
+  min-height: 48px;
+  margin-inline: auto;
+  padding-inline: 20px;
+  border-radius: 12px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.22);
+}
+
+.cl-sticky[hidden] {
+  display: none;
+}
