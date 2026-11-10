@@ -205,23 +205,52 @@ Reading:
   (another site or a Shopify/marketplace integration) on pixel …16064. Worth
   confirming in Events Manager → Data sources.
 
-### F-11 Attribution setting recommendation (2026-11-10) [read]
+### F-11 Attribution setting recommendation (2026-11-10, validated) [read][data]
 
-Facts, from Meta's own pages: since 2026-01-12 the 7-day and 28-day *view*
-windows are gone (Marketing API OCC 2025); click-through now counts only link
-clicks, and other clicks (share, save, like) moved to a 1-day
-*engage-through* window (Meta for Business, "Simplifying Ad Measurement").
+**Meta's rules, read from the Help Centre on 2026-11-10** ("About attribution
+models and attribution settings", "Significant edits and learning phase"):
+the attribution setting is chosen per ad set, "inform[s] ad delivery and
+determine[s] how conversions can be credited". Standard windows for website
+conversions: click-through 1 or 7 days after a *link* click; view-through 1
+day after an impression; engage-through 1 day after a non-link click or a 5 s
+video play. The attribution setting is **not** in Meta's list of significant
+edits (targeting, creative, optimisation event, new ad, 7-day pause, bid
+strategy).
 
-Recommendation for these COD stores (cheap, impulse, decided on WhatsApp the
-same day): **7-day click + 1-day engage-through, without 1-day view.** A view
-window credits people who scrolled past an ad and bought anyway, which in a
-store that also sells through WhatsApp and marketplaces inflates reported
-Purchases and teaches the algorithm to find viewers instead of clickers. Keep
-7-day click (not 1-day): COD buyers often order a day or two after the click,
-after asking on WhatsApp. If a campaign's Purchase count falls after the
-change, that is the view-through share leaving the report, not lost sales;
-compare Events Manager (unchanged) before judging. This is an Ads Manager
-setting for the owner, not code.
+**What our own orders say** (production D1, last 30 days, read-only; the
+`_fbc` cookie timestamp against `created_at`):
+
+| Store | Placed orders | With a Meta ad click (`fbc`) | Ordered ≤ 1 h after the click | ≤ 1 day | ≤ 7 days |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| agritani | 818 | 816 | 811 | 814 | 815 |
+| taniniaga | 666 | 665 | 658 | 662 | 664 |
+| zvara | 659 | 648 | 648 | 648 | 648 |
+| revenleather | 374 | 369 | 365 | 368 | 368 |
+| beranda-tani | 791 | 788 | 783 | 786 | 787 |
+| numaskin | 66 | 66 | 66 | 66 | 66 |
+
+`fbc` holds the *latest* click, so this is "time since the last ad click".
+Over 98% of orders had a Meta click and were placed within an hour of it.
+
+**Correction to the first version of this finding.** It argued that a view
+window credits people who buy on WhatsApp or a marketplace. That is wrong:
+Meta can only credit a Purchase it receives, and these stores send Purchase
+only for site orders. The data above also shows that almost every site order
+already has a click, so the view window adds little to the count either way.
+
+**Recommendation.** For new purchase ad sets: **7-day click + 1-day
+engage-through, view-through off.** Click-through alone already covers more
+than 99% of the orders above; view-through would mostly credit impressions to
+buyers who also clicked another ad, and engage-through keeps the shares and
+saves Meta moved out of "click" in 2026. Expected effect on reported Purchases:
+small (a few percent), not the large drop a view-heavy account would see.
+
+Not verified and to check in Ads Manager before changing a running ad set:
+whether the UI lets engage-through be kept with view-through off, and whether
+a published ad set's attribution can still be edited (historically it could
+not, which means duplicating, which restarts learning). Do not duplicate a
+profitable ad set only for this; apply it to new ad sets, or run one duplicate
+beside the original and compare with "Compare attribution settings".
 
 ## 4. Status of each finding on branch `fix/meta-purchase-gap`
 
@@ -237,7 +266,7 @@ setting for the owner, not code.
 | F-8 | Reviewed; 1, 2a done, 2b partly, 3a/3b rejected with evidence, 4 is the owner's |
 | F-9 | Done: `meta-purchase-coverage` health signal and webhook alert |
 | F-10 | Read; city/zip gap is by form design (not fabricated); beranda-tani second sender to confirm in Events Manager; pixel …35811 API error to retry |
-| F-11 | Recommendation: 7-day click + 1-day engage-through, no view window; owner applies in Ads Manager |
+| F-11 | Validated against Meta Help Centre and 30 days of orders (>98% ordered within 1 h of a Meta click); 7-day click + 1-day engage-through, view off, for new ad sets; owner applies |
 
 ## 5. Suggested order of work (as first written)
 

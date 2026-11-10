@@ -247,8 +247,14 @@ old `receiver-score: not-whitelisted`.
 Single lab runs, colo SIN; Best Practices 79 everywhere is the Facebook third-party cookie (PERF-2).
 Install fixes made during the merge: permatamall and beranda-tani gave width/height to their own landing
 images (the product's image guard, BUILD-LOG 267); numaskin, beranda-tani and revenleather deleted the
-SiteBrand guard exception, which #195 makes unnecessary from the next merge. permatamall still runs
-`placement.mode: smart` (its `wrangler.jsonc` is keepours); pinning it is a separate decision.
+SiteBrand guard exception, which #195 makes unnecessary from the next merge. permatamall was then pinned to Singapore
+(2026-11-10, install commit on `main`, Worker `34976adf`): with `smart` one request in six ran
+`local-HKG` against its APAC D1; after the pin every sample answered `local-SIN` or `remote-SIN`.
+halotani was already pinned. Neither store has a COD order in the 2-48 h window, so their
+`meta-purchase-coverage` reads `unknown`: halotani has never taken an order (5 products, Pixel
+…57874 shared with agritani and taniniaga; 7 server events in 7 days), permatamall's last order was
+2026-10-23. Their Purchase path is the same code proven on the other eight stores; no test order was
+placed on either, because a live test order would send Meta a false Purchase.
 
 ## Merge rules that differ per install
 
