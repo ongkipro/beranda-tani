@@ -1,6 +1,6 @@
 # BUILD LOG: AdsBookCMS
 
-> Verified against disk: 2026-11-10 @ `745de51` (Entries 270-273 appended). Previously: 2026-11-06 @ `700bc21` + fix/image-guard-parser working tree (Entry 268 appended; earlier entries retain their historical evidence)
+> Verified against disk: 2026-11-13 @ `1403298` + feat/variant-visibility (Entry 274 appended). Before: 2026-11-10 @ `745de51` (Entries 270-273 appended). Previously: 2026-11-06 @ `700bc21` + fix/image-guard-parser working tree (Entry 268 appended; earlier entries retain their historical evidence)
 
 Author & Curator: **[ongki.pro](https://ongki.pro)**
 
@@ -8977,3 +8977,41 @@ media rules in `@layer base`, Lk* landing kit). Merged cleanly over #191-#197 (#
 rules were swapped in the browser on five live pages (agritani home, product, landing; revenleather; baven) at 360
 and 1440 px: at most 1 px of rounding, no image stretched, overflowing or lost. On `main`, not yet on any install
 (TASKS A-469).
+
+### Entry 274: Hide a variant without deleting it; why "Hapus varian" seemed not to work; 1.11.0 (2026-11-13, Paduka: "produk listing -> ada togle on off varian ... hapus varian juga kamu review karena sebelumnya button fuction action tidak bekerja")
+
+**The delete button.** Read and replayed in the browser. The Hapus button works on the form only: it removes the card
+from React state, and nothing reaches D1 until "Simpan Produk". It said nothing when pressed, so leaving the page
+looked like a button that did nothing. And for a variant already on an order the save answered 409 ("sudah dipakai
+order"), the only way to stop selling such a variant being to deactivate the whole product. Entry 269's
+image-URL refusal was a third cause of the same symptom. Now: a variant on an order shows "Dipakai order" instead of
+Hapus (the API reports `has_orders` for the edit form), a removal states that it is saved by Simpan Produk, and the
+409 names the alternative.
+
+**The toggle.** Migration `0080` adds `product_variants.is_active` (default 1). "Tampil di toko" per variant in the
+product form; the catalogue list counts hidden variants and prices only shown ones. Hidden means: out of
+`mergeStorefrontCatalog` (every page, form, feed, sitemap, llms.txt and the Headless catalogue read it), refused by
+`findOrderVariant` (every checkout, by id or SKU), by abandoned-lead capture and CS conversion, out of the landing
+editor's variant picker and the content workbench. Not filtered on purpose: order history, admin order and export
+joins, dispatch, Kelola, and the shipping quote (the admin re-quotes an existing order by its variant; a quote sells
+nothing). An active product needs one shown variant.
+
+- 1210 tests (1207 + 3). Mutation: dropping the filter from `findOrderVariant` and `mergeStorefrontCatalog` fails
+  both new tests. `npm run check` 0/0/0 (595 files), build ok.
+- Browser, `dev:local --reset` + `dev:seed` on :8890: hid "500 ml" of Madu Hutan at 1280 px and saved; the product
+  page, `/api/form-config`, the Meta feed and `/api/v1/products` show only 250 ml; `/full-form?variant_id=5` redirects
+  to the product; a middle-form POST with variant 5 answers 422 and with variant 4 creates an order. Pembersih
+  Saluran (both variants on orders) shows "Dipakai order" and no Hapus. At 390 px a never-ordered variant of Lem
+  Serbaguna was removed, the status line said so, no horizontal overflow, and after saving D1 holds one variant.
+- An `order_items(variant_id)` index was tried and dropped: it changed the Analitik query plan the insights test
+  guards. `has_orders` is read only for the single product the edit form opens.
+- Not done: a landing page whose stored `selected_variant_id` is now hidden falls back to the cheapest shown variant
+  (existing `resolveFormVariant` behaviour), checked by reading, not rendered.
+- Reven adopted it the same day (revenleather `1fdefe2`, deployed, Worker `a1f0e9fb`): `0080` applied on its D1, all
+  208 variants shown, public pages 200. The other installs have not taken 1.11.0.
+- Post-deploy check on Reven was wrong the first time: it fetched `/kontak?cb=<random>`, which gets its own edge-cache
+  key (ADR-029 keeps unknown parameters in the key) and so rendered fresh, while the plain URL kept serving the
+  pre-deploy page from the edge for up to `EDGE_CACHE_SECONDS` (600 s). The owner saw the old bank account; the plain
+  URL answered `x-edge-cache: HIT`, age 234 s. After expiry it answered `MISS` without the account. A deploy check
+  of public HTML uses the plain URL and reads `x-edge-cache`: a `HIT` older than the deploy is the old page, not proof.
+- PR #199, CI Verify green, merged.

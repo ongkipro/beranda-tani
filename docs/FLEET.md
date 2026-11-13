@@ -1,6 +1,6 @@
 # AdsBookCMS install fleet
 
-> Verified against disk: 2026-11-10 @ `be4e7db` (1.10.0 rolled to ten installs; klikinaja and skincarebpom have no local clone on this machine and were not touched). Previously: 2026-11-02 @ `d1fa64f` (revenleather screening and fixes 2026-11-02; versions, sync, distance, deploy time and schema read with `npm run fleet:status`, plus the live submit-button colour of nine stores, after the 1.9.2 rollout; "Version" is the working tree)
+> Verified against disk: 2026-11-13 (revenleather row only: 1.11.0 deployed, Worker `a1f0e9fb`, `0080` applied on its D1, read with `wrangler d1 execute --remote`). Before: 2026-11-10 @ `be4e7db` (1.10.0 rolled to ten installs; klikinaja and skincarebpom have no local clone on this machine and were not touched). Previously: 2026-11-02 @ `d1fa64f` (revenleather screening and fixes 2026-11-02; versions, sync, distance, deploy time and schema read with `npm run fleet:status`, plus the live submit-button colour of nine stores, after the 1.9.2 rollout; "Version" is the working tree)
 
 Every store that runs AdsBookCMS: one install = one repository = one Worker
 = one store (`AGENTS.md`). This file is the registry of which installs exist,
@@ -22,7 +22,7 @@ distance behind the product, last deploy and schema for each local clone.
 | 5 | halotani.shop | `ongkipro/halotanishop` | `install/halotanishop` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
 | 6 | baven.shop | `ongkipro/bavenshop` | `install/bavenshop` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
 | 7 | page.numaskin.id | `ongkipro/numaskin-adbook` | `main` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
-| 8 | page.revenleather.com | `ongkipro/revenleather` | `main` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
+| 8 | page.revenleather.com | `ongkipro/revenleather` | `main` | **1.11.0** | 0 | 81/81 | 2026-11-13 |
 | 9 | petanisejahtera.com (+ petanisawit.com, beranda.click) | `ongkipro/beranda-tani` | `install/beranda-tani` | **1.10.0** | 0 | 80/80 | 2026-11-10 |
 | 10 | klikinaja.shop | `ongkipro/klikinaja` | `install/klikinaja` | **1.9.2** | 0 | 80/80 | 2026-11-02 |
 | 11 | skincarebpom.shop | `ongkipro/skincarebpom` | `install/skincarebpom` | 1.8.5 in tree, 371 uncommitted files | 201 | 62/80 | 2026-10-18 |

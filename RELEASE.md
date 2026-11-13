@@ -1,6 +1,6 @@
 # Release and Deployment — AdsBookCMS
 
-> Verified against disk: 2026-11-02 @ `be6ee6a` (§4 registry at 1.9.2, baseline 1167; other sections retain their recorded evidence)
+> Verified against disk: 2026-11-13 @ `1403298` + feat/variant-visibility (§3 0080 note, §4 registry at 1.11.0); before: 2026-11-02 @ `be6ee6a` (§4 registry at 1.9.2, baseline 1167; other sections retain their recorded evidence)
 
 This document is the single owner of how a change reaches production. It replaces the previous `VERSION.md` runbook and the deleted `AUTO_UPDATE_DEPLOY.md`, which between them described three mutually exclusive release models, none of which matched the one workflow that exists.
 
@@ -194,7 +194,7 @@ Migration-specific notes:
   `stores.business_address`, both nullable, edited in Pengaturan › Store and
   read by the legal and contact pages. Additive, no backfill.
 
-`1.8.0` (2026-10-31) is the first release that carries `0067`–`0078`; `1.8.2` carries `0079` (a product's Google category id and path); `1.8.3`, `1.8.4`, `1.8.5` and `1.8.6` add no migration.
+`1.8.0` (2026-10-31) is the first release that carries `0067`–`0078`; `1.8.2` carries `0079` (a product's Google category id and path); `1.8.3`, `1.8.4`, `1.8.5` and `1.8.6` add no migration. `1.11.0` carries `0080` (`product_variants.is_active`, default 1: every existing variant stays shown; a 1.10.x Worker never reads the column, so a rollback is safe).
 
 ---
 
@@ -204,15 +204,15 @@ Two registries, currently in step:
 
 | Source | Field | Value |
 | --- | --- | --- |
-| `src/lib/version.ts` | `version` | `1.9.2` |
-| `src/lib/version.ts` | `releaseTag` | `2026.10-ops` |
-| `src/lib/version.ts` | `schemaVersion` | `80` |
-| `package.json` | `version` | `1.9.2` |
+| `src/lib/version.ts` | `version` | `1.11.0` |
+| `src/lib/version.ts` | `releaseTag` | `2026.11-signal` |
+| `src/lib/version.ts` | `schemaVersion` | `81` |
+| `package.json` | `version` | `1.11.0` |
 
 `src/lib/version.ts` is what the admin sidebar renders and is the value users
 see. Keep it and `package.json` in step when bumping.
 
-`schemaVersion` counts migration files, and the tree holds 80 (`0000`–`0079`).
+`schemaVersion` counts migration files, and the tree holds 81 (`0000`–`0080`).
 `1.5.0` (2026-10-11) is the first release that carries `0056`–`0061`;
 `1.5.12` carries `0062`–`0065`; `1.6.0` carries `0066`.
 `schema-version.test.ts` fails CI on drift; middleware enforces the same chain at

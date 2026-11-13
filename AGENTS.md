@@ -1,6 +1,6 @@
 # AGENTS.md — Working Agreement for AdsBookCMS
 
-> Verified against disk: 2026-11-10 @ `745de51` (1.10.0; §4 baseline 1207 re-run on that tree). Previously: 2026-11-06 @ `700bc21` + fix/image-guard-parser working tree (1.9.2; §4 baseline 1193 re-run on that tree; the lib-module count, the auth test count and the §6 guard names re-checked; other claims not re-audited)
+> Verified against disk: 2026-11-13 @ `1403298` + feat/variant-visibility (1.11.0; §4 baseline 1210 re-run on that tree). Before: 2026-11-10 @ `745de51` (1.10.0; §4 baseline 1207). Previously: 2026-11-06 @ `700bc21` + fix/image-guard-parser working tree (1.9.2; §4 baseline 1193 re-run on that tree; the lib-module count, the auth test count and the §6 guard names re-checked; other claims not re-audited)
 
 This file is the contract for any AI coding agent or contributor working in this repository. Read it before the first edit.
 
@@ -125,7 +125,7 @@ can reach it.
 
 On a fresh clone, run `npm run check` rather than bare `npx tsc --noEmit`. `astro check` generates `.astro/types.d.ts` first; without it `tsc` reports phantom errors such as `Property 'env' does not exist on type 'ImportMeta'`.
 
-Current verified baseline: **1207 passing** (0 skipped, 2026-11-10, `main` @ `745de51`, 1.10.0), 0 type errors, `astro check` 0 errors / 0 warnings / 0 hints. A change that reduces this baseline is not done.
+Current verified baseline: **1210 passing** (0 skipped, 2026-11-13, `feat/variant-visibility`, 1.11.0), 0 type errors, `astro check` 0 errors / 0 warnings / 0 hints. A change that reduces this baseline is not done.
 
 New non-trivial logic — a branch, a parser, a money or auth path — leaves one runnable check behind. Trivial one-liners do not need a test.
 
