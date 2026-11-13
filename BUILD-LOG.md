@@ -9009,3 +9009,9 @@ nothing). An active product needs one shown variant.
   (existing `resolveFormVariant` behaviour), checked by reading, not rendered.
 - Reven adopted it the same day (revenleather `1fdefe2`, deployed, Worker `a1f0e9fb`): `0080` applied on its D1, all
   208 variants shown, public pages 200. The other installs have not taken 1.11.0.
+- Post-deploy check on Reven was wrong the first time: it fetched `/kontak?cb=<random>`, which gets its own edge-cache
+  key (ADR-029 keeps unknown parameters in the key) and so rendered fresh, while the plain URL kept serving the
+  pre-deploy page from the edge for up to `EDGE_CACHE_SECONDS` (600 s). The owner saw the old bank account; the plain
+  URL answered `x-edge-cache: HIT`, age 234 s. After expiry it answered `MISS` without the account. A deploy check
+  of public HTML uses the plain URL and reads `x-edge-cache`: a `HIT` older than the deploy is the old page, not proof.
+- PR #199, CI Verify green, merged.
