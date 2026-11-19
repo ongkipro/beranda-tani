@@ -13,7 +13,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { StoreMark } from "./StoreMark";
-import { BookOpen, ChevronRight, Sparkles } from "lucide-react";
+import { BookOpen, ChevronRight, History } from "lucide-react";
 import {
   ADMIN_ACCENT,
   getVisibleNavGroups,
@@ -247,7 +247,7 @@ export function AppSidebar({
                   onClick={onOpenChangelog}
                   className="flex h-8 items-center justify-center gap-1.5 rounded-lg bg-white/70 text-xs font-medium text-slate-700 ring-1 ring-slate-900/5 transition-colors hover:bg-white hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
                 >
-                  <Sparkles className="size-3.5" aria-hidden="true" />
+                  <History className="size-3.5" aria-hidden="true" />
                   What's new
                 </button>
               )}

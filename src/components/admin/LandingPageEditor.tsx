@@ -8,7 +8,6 @@ import {
   Package,
   Eye,
   Code,
-  Sparkles,
   Settings,
   Smartphone,
   Globe,
@@ -734,7 +733,7 @@ export default function LandingPageEditor({ landingPageId }: Props) {
                           {section.type === "html" ? (
                             <span className="flex items-center gap-1 text-blue-700"><Code className="w-3.5 h-3.5" /> HTML Content</span>
                           ) : section.type === "form" ? (
-                            <span className="flex items-center gap-1 text-emerald-700"><Sparkles className="w-3.5 h-3.5" /> Native Form COD</span>
+                            <span className="flex items-center gap-1 text-emerald-700">Native Form COD</span>
                           ) : (
                             <span className="flex items-center gap-1 text-slate-700">
                               {section.type === "image" ? <Image className="w-3.5 h-3.5" /> : section.type.includes("list") ? <List className="w-3.5 h-3.5" /> : <Type className="w-3.5 h-3.5" />}
@@ -984,7 +983,6 @@ export default function LandingPageEditor({ landingPageId }: Props) {
                             ) : (
                               <div className="p-3 bg-emerald-50/60 border border-emerald-200 rounded-lg text-xs text-emerald-900 flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                  <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
                                   <div>
                                     <span className="font-semibold">Native Form Checkout COD</span>
                                     <div className="text-xs text-emerald-700">

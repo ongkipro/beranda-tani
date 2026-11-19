@@ -12,7 +12,6 @@ import {
   RefreshCw,
   ShieldAlert,
   ShieldCheck,
-  Sparkles,
   Trash2,
   UserCheck,
   UserPlus,
@@ -429,7 +428,6 @@ export function AccessManager() {
         </div>
         <div className="rounded-xl border border-purple-200/80 bg-purple-50/50 p-4 shadow-xs">
           <div className="flex items-center gap-2 text-purple-800">
-            <Sparkles className="size-4 text-purple-600" />
             <span className="text-xs font-semibold">Operator Ads</span>
           </div>
           <p className="mt-2 text-2xl font-semibold text-purple-950">{stats.advertiser}</p>
