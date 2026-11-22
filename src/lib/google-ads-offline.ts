@@ -1,5 +1,8 @@
-const GOOGLE_ADS_API_VERSION = "v25";
+import { sha256Hex, toE164Digits } from "./meta-identity.ts";
+
+const DATA_MANAGER_INGEST_URL = "https://datamanager.googleapis.com/v1/events:ingest";
 const PAID_STATUSES = ["paid", "settled", "success"] as const;
+const VOID_SHIPPING_STATUSES = ["cancelled", "returned", "failed"] as const;
 const MAX_RECONCILE_BATCH = 50;
 const MAX_DRAIN_BATCH = 10;
 
@@ -19,7 +22,8 @@ export type GoogleAdsOutboxDepth = {
 export type GoogleAdsOfflineConfig = {
   customerId: string;
   conversionActionId: string;
-  developerToken: string;
+  /** Optional since Google sunset developer tokens (2026-09-09) and Data Manager API uses OAuth only. */
+  developerToken?: string;
   clientId: string;
   clientSecret: string;
   refreshToken: string;
@@ -36,6 +40,8 @@ export type GoogleClickConversion = {
   gclid?: string;
   gbraid?: string;
   wbraid?: string;
+  /** Pre-hashed SHA-256 hex of `+<E.164 digits>` for Data Manager `userData.userIdentifiers`. */
+  phoneHash?: string;
 };
 
 type EligibleOrder = {
@@ -44,7 +50,10 @@ type EligibleOrder = {
   payment_method: string;
   payment_status: string;
   shipping_status: string;
+  stock_restored_at?: string | null;
   created_at: string;
+  updated_at?: string | null;
+  customer_phone?: string | null;
   ad_click_ids: string | null;
   product_value: number;
 };
@@ -71,9 +80,9 @@ export function readGoogleAdsOfflineConfig(
   const customerId = digits(env.GOOGLE_ADS_CUSTOMER_ID);
   const conversionActionId = digits(env.GOOGLE_ADS_OFFLINE_CONVERSION_ACTION_ID);
   const loginCustomerId = digits(env.GOOGLE_ADS_LOGIN_CUSTOMER_ID) || undefined;
+  const developerToken = String(env.GOOGLE_ADS_DEVELOPER_TOKEN || "").trim() || undefined;
   const startAt = String(env.GOOGLE_ADS_OFFLINE_START_AT || "").trim();
   const required = {
-    developerToken: String(env.GOOGLE_ADS_DEVELOPER_TOKEN || "").trim(),
     clientId: String(env.GOOGLE_ADS_CLIENT_ID || "").trim(),
     clientSecret: String(env.GOOGLE_ADS_CLIENT_SECRET || "").trim(),
     refreshToken: String(env.GOOGLE_ADS_REFRESH_TOKEN || "").trim(),
@@ -89,6 +98,7 @@ export function readGoogleAdsOfflineConfig(
   return {
     customerId,
     conversionActionId,
+    ...(developerToken ? { developerToken } : {}),
     loginCustomerId,
     startAt,
     ...required,
@@ -114,15 +124,29 @@ function readClickIds(raw: string | null): {
   }
 }
 
-function googleDateTime(date: Date): string {
-  return `${date.toISOString().slice(0, 19).replace("T", " ")}+00:00`;
+function toRfc3339Timestamp(raw: string | undefined | null, fallback: Date): string {
+  if (raw) {
+    // Support legacy `YYYY-MM-DD HH:mm:ss+00:00` rows already queued in D1.
+    const legacy = raw.trim().match(/^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})([+-]\d{2}:\d{2}|Z)$/);
+    if (legacy) return `${legacy[1]}T${legacy[2]}${legacy[3]}`;
+    const parsed = new Date(raw);
+    if (!Number.isNaN(parsed.getTime())) return parsed.toISOString();
+  }
+  return fallback.toISOString();
 }
 
 export function buildGoogleClickConversion(
   order: EligibleOrder,
   config: Pick<GoogleAdsOfflineConfig, "customerId" | "conversionActionId">,
   observedAt: Date,
+  phoneHash?: string,
 ): { conversion: GoogleClickConversion; qualification: "online_paid" | "cod_delivered" } | null {
+  if (
+    order.stock_restored_at ||
+    VOID_SHIPPING_STATUSES.includes(order.shipping_status as (typeof VOID_SHIPPING_STATUSES)[number])
+  ) {
+    return null;
+  }
   const qualification = order.payment_method === "cod"
     ? order.shipping_status === "delivered" ? "cod_delivered" : null
     : PAID_STATUSES.includes(order.payment_status as (typeof PAID_STATUSES)[number])
@@ -144,11 +168,12 @@ export function buildGoogleClickConversion(
     qualification,
     conversion: {
       conversionAction: `customers/${config.customerId}/conversionActions/${config.conversionActionId}`,
-      conversionDateTime: googleDateTime(observedAt),
+      conversionDateTime: toRfc3339Timestamp(order.updated_at, observedAt),
       conversionValue: order.product_value,
       currencyCode: "IDR",
       orderId: order.order_number,
       ...clickIdentity,
+      ...(phoneHash ? { phoneHash } : {}),
     },
   };
 }
@@ -174,17 +199,20 @@ export function decideGoogleRetry(
 }
 
 /**
- * What a `partialFailureError` (HTTP 200) means for the one conversion sent.
- *
- * It used to read as transient, so a permanent refusal was retried until the
- * budget ran out, and a conversion Google already held — the response lost on
- * the way back, then re-sent — ended `failed` although it counted. Codes are
- * `ConversionUploadError` values from the Ads API (v25 proto):
- * already-recorded means sent; the 6-hour "too recent" pair is worth one more
- * try later; anything else will fail the same way every time.
+ * What a partial-failure payload means for the one conversion sent.
+ * Covers both legacy Ads API `ConversionUploadError` codes and Data Manager
+ * `ErrorReason` values.
  */
-const ALREADY_RECORDED = new Set(["CLICK_CONVERSION_ALREADY_EXISTS", "ORDER_ID_ALREADY_IN_USE"]);
-const RETRY_AFTER_SIX_HOURS = new Set(["TOO_RECENT_EVENT", "TOO_RECENT_CONVERSION_ACTION"]);
+const ALREADY_RECORDED = new Set([
+  "CLICK_CONVERSION_ALREADY_EXISTS",
+  "ORDER_ID_ALREADY_IN_USE",
+  "DUPLICATE_TRANSACTION_ID",
+]);
+const RETRY_AFTER_SIX_HOURS = new Set([
+  "TOO_RECENT_EVENT",
+  "TOO_RECENT_CONVERSION_ACTION",
+  "EVENT_TOO_RECENT",
+]);
 
 export function classifyGooglePartialFailure(codes: readonly string[]): "sent" | "retry-later" | "terminal" {
   if (codes.length > 0 && codes.every((code) => ALREADY_RECORDED.has(code))) return "sent";
@@ -192,14 +220,17 @@ export function classifyGooglePartialFailure(codes: readonly string[]): "sent" |
   return "terminal";
 }
 
-/** Every `conversionUploadError` code anywhere in a partial-failure payload. */
+/** Every error code anywhere in a Google Ads or Data Manager partial-failure payload. */
 export function readConversionUploadErrorCodes(partialFailure: unknown): string[] {
   const codes: string[] = [];
   const visit = (value: unknown) => {
     if (!value || typeof value !== "object") return;
     for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
-      if (key === "conversionUploadError" && typeof child === "string") codes.push(child);
-      else visit(child);
+      if ((key === "conversionUploadError" || key === "reason") && typeof child === "string") {
+        codes.push(child);
+      } else {
+        visit(child);
+      }
     }
   };
   visit(partialFailure);
@@ -228,6 +259,46 @@ async function accessToken(config: GoogleAdsOfflineConfig): Promise<string> {
   return body.access_token;
 }
 
+function toDataManagerRequest(conversion: GoogleClickConversion, config: GoogleAdsOfflineConfig) {
+  const adIdentifiers: Record<string, string> = {};
+  if (conversion.gclid) adIdentifiers.gclid = conversion.gclid;
+  else if (conversion.gbraid) adIdentifiers.gbraid = conversion.gbraid;
+  else if (conversion.wbraid) adIdentifiers.wbraid = conversion.wbraid;
+
+  const destination: Record<string, unknown> = {
+    operatingAccount: { accountType: "GOOGLE_ADS", accountId: config.customerId },
+    productDestinationId: config.conversionActionId,
+  };
+  if (config.loginCustomerId) {
+    destination.loginAccount = { accountType: "GOOGLE_ADS", accountId: config.loginCustomerId };
+  }
+
+  const event: Record<string, unknown> = {
+    transactionId: conversion.orderId,
+    eventTimestamp: toRfc3339Timestamp(conversion.conversionDateTime, new Date()),
+    eventSource: "WEB",
+    conversionValue: conversion.conversionValue,
+    currency: conversion.currencyCode,
+    adIdentifiers,
+    consent: {
+      adUserData: "CONSENT_GRANTED",
+      adPersonalization: "CONSENT_GRANTED",
+    },
+  };
+  if (conversion.phoneHash) {
+    event.userData = {
+      userIdentifiers: [{ phoneNumber: conversion.phoneHash }],
+    };
+  }
+
+  return {
+    destinations: [destination],
+    encoding: "HEX",
+    validateOnly: false,
+    events: [event],
+  };
+}
+
 export async function uploadGoogleClickConversion(
   conversion: GoogleClickConversion,
   config: GoogleAdsOfflineConfig,
@@ -235,24 +306,18 @@ export async function uploadGoogleClickConversion(
 ): Promise<{ success: boolean; statusCode?: number; reason?: string; partialFailureCodes?: string[] }> {
   try {
     const token = providedAccessToken || await accessToken(config);
-    const headers: Record<string, string> = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      "developer-token": config.developerToken,
-    };
-    if (config.loginCustomerId) headers["login-customer-id"] = config.loginCustomerId;
-    const response = await fetch(
-      `https://googleads.googleapis.com/${GOOGLE_ADS_API_VERSION}/customers/${config.customerId}:uploadClickConversions`,
-      {
-        method: "POST",
-        headers,
-        body: JSON.stringify({ conversions: [conversion], partialFailure: true }),
-        signal: AbortSignal.timeout(GOOGLE_FETCH_TIMEOUT_MS),
+    const response = await fetch(DATA_MANAGER_INGEST_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(toDataManagerRequest(conversion, config)),
+      signal: AbortSignal.timeout(GOOGLE_FETCH_TIMEOUT_MS),
+    });
     const body = await response.json().catch(() => null) as {
       partialFailureError?: { message?: unknown; details?: unknown };
-      error?: { message?: unknown };
+      error?: { message?: unknown; details?: unknown };
     } | null;
     const reason = typeof body?.partialFailureError?.message === "string"
       ? body.partialFailureError.message
@@ -262,13 +327,13 @@ export async function uploadGoogleClickConversion(
     return {
       success: response.ok && !body?.partialFailureError,
       statusCode: response.status,
-      reason: response.ok && !body?.partialFailureError ? undefined : reason || `Google Ads HTTP ${response.status}`,
+      reason: response.ok && !body?.partialFailureError ? undefined : reason || `Google Data Manager HTTP ${response.status}`,
       ...(body?.partialFailureError
         ? { partialFailureCodes: readConversionUploadErrorCodes(body.partialFailureError) }
         : {}),
     };
   } catch (error) {
-    return { success: false, reason: error instanceof Error ? error.message : "Google Ads network error" };
+    return { success: false, reason: error instanceof Error ? error.message : "Google Data Manager network error" };
   }
 }
 
@@ -282,15 +347,6 @@ export async function uploadGoogleClickConversion(
  * COD orders, which is a normal week for a COD store, therefore fill the
  * window permanently and no Google-clicked order behind them is ever uploaded
  * again.
- *
- * TRACKING_SPECS §10 already states the rule — "Only orders with a stored
- * `gclid`, `gbraid`, or `wbraid` are queued" — it just lived in the builder
- * alone. Applying it here makes the candidate set and the builder agree, which
- * is what stops the head of the queue from blocking it.
- *
- * `ad_click_ids` is written by `serializeClickIds`, i.e. `JSON.stringify` of
- * validated `[A-Za-z0-9._-]` values: no spaces, and no value can contain a
- * quoted key, so this text match cannot be tripped by a click id's contents.
  */
 const CLICK_IDENTITY_PREDICATE = `(
   o.ad_click_ids LIKE '%"gclid":"%'
@@ -304,25 +360,31 @@ export async function reconcileGoogleAdsConversions(
   observedAt = new Date(),
 ): Promise<number> {
   const paid = PAID_STATUSES.map(() => "?").join(", ");
+  const voidStatuses = VOID_SHIPPING_STATUSES.map(() => "?").join(", ");
   const result = await database.prepare(
     `SELECT o.id, o.order_number, o.payment_method, o.payment_status,
-       o.shipping_status, o.created_at, o.ad_click_ids,
+       o.shipping_status, o.stock_restored_at, o.created_at, o.updated_at,
+       o.customer_phone, o.ad_click_ids,
        COALESCE((SELECT SUM(oi.unit_price * oi.quantity) FROM order_items oi WHERE oi.order_id = o.id), 0) AS product_value
      FROM orders o
      LEFT JOIN google_ads_conversion_outbox g ON g.order_id = o.id
      WHERE g.order_id IS NULL
+       AND o.stock_restored_at IS NULL
+       AND o.shipping_status NOT IN (${voidStatuses})
        AND o.created_at >= ?
        AND ${CLICK_IDENTITY_PREDICATE}
        AND ((o.payment_method = 'cod' AND o.shipping_status = 'delivered')
          OR (o.payment_method <> 'cod' AND o.payment_status IN (${paid})))
      ORDER BY o.id
      LIMIT ?`,
-  ).bind(config.startAt, ...PAID_STATUSES, MAX_RECONCILE_BATCH).all<EligibleOrder>();
+  ).bind(...VOID_SHIPPING_STATUSES, config.startAt, ...PAID_STATUSES, MAX_RECONCILE_BATCH).all<EligibleOrder>();
 
   let queued = 0;
   const now = observedAt.toISOString();
   for (const order of result.results || []) {
-    const built = buildGoogleClickConversion(order, config, observedAt);
+    const e164 = toE164Digits(order.customer_phone ?? undefined);
+    const phoneHash = e164 ? await sha256Hex(`+${e164}`) : undefined;
+    const built = buildGoogleClickConversion(order, config, observedAt, phoneHash);
     if (!built) continue;
     const inserted = await database.prepare(
       `INSERT OR IGNORE INTO google_ads_conversion_outbox
@@ -358,8 +420,6 @@ export async function drainGoogleAdsConversionOutbox(
   try {
     token = await accessToken(config);
   } catch {
-    // One credential outage affects the whole batch. Leave rows pending rather
-    // than spending every conversion's retry budget on the same shared failure.
     return 0;
   }
   for (const row of rows.results || []) {
@@ -373,11 +433,6 @@ export async function drainGoogleAdsConversionOutbox(
       continue;
     }
     const outcome = await uploadGoogleClickConversion(conversion, config, token);
-    // 401/403 from the Ads API is the account's answer, not this row's: an
-    // unapproved developer token, a missing login-customer-id, a revoked
-    // permission. Terminating per row spent ten conversions an hour on one
-    // shared fault with no requeue path. Leave them pending — the stalled
-    // queue raises the google-ads-outbox alert — and stop the batch.
     if (outcome.statusCode === 401 || outcome.statusCode === 403) {
       console.error("google-ads-offline-access-denied", {
         status: outcome.statusCode,
@@ -413,18 +468,6 @@ export async function drainGoogleAdsConversionOutbox(
   return sent;
 }
 
-
-/**
- * How much conversion signal Google is owed right now.
- *
- * The Google outbox had no health signal at all, which is precisely why a
- * head-of-line block in reconciliation stopped discovery entirely and nobody
- * saw it (`UNIMPLEMENTED_SPECS.md`, task A-227). Served by
- * `google_ads_conversion_outbox_due_idx (status, next_retry_at)`.
- *
- * Returns null when the table cannot be read, which the caller must report as
- * "unknown" rather than as a depth of zero.
- */
 export async function readGoogleAdsOutboxDepth(
   database: D1Database,
   now = new Date(),
@@ -461,11 +504,6 @@ export async function readGoogleAdsOutboxDepth(
   }
 }
 
-/**
- * Settled and terminal rows older than 30 days, the same retention the Meta
- * outbox keeps. The Google queue had none, so every delivered conversion stayed
- * forever and every health read scanned all of them.
- */
 export async function purgeExpiredGoogleAdsConversions(database: D1Database, now = new Date()) {
   const result = await database
     .prepare(

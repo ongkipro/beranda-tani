@@ -240,11 +240,11 @@ const preloadImageUrls =
         }
       }
     </style>
-    <GtmBase gtmId={adsConfig.googleTagManagerId} />
     <GoogleAdsBase
       googleAdsId={adsConfig.googleAdsConversionId}
       googleAdsLabel={adsConfig.googleAdsConversionLabel}
     />
+    <GtmBase gtmId={adsConfig.googleTagManagerId} />
     <MetaPixelBase pixelId={adsConfig.metaPixelId} />
     {hasMetaPixel && <MetaPageViewTracker />}
     <MetaDebugTracker />

@@ -36,7 +36,7 @@ const ORDER = {
   product_value: 249000,
 };
 
-test("offline config is all-or-nothing and requires an explicit backfill boundary", () => {
+test("offline config is all-or-nothing, does not require a sunset developer token, and requires a backfill boundary", () => {
   assert.deepEqual(readGoogleAdsOfflineConfig({
     GOOGLE_ADS_CUSTOMER_ID: "123-456-7890",
     GOOGLE_ADS_OFFLINE_CONVERSION_ACTION_ID: "987654321",
@@ -47,20 +47,30 @@ test("offline config is all-or-nothing and requires an explicit backfill boundar
     GOOGLE_ADS_REFRESH_TOKEN: "refresh-token",
     GOOGLE_ADS_OFFLINE_START_AT: "2026-08-25T00:00:00.000Z",
   }), CONFIG);
+  const withoutDevToken = readGoogleAdsOfflineConfig({
+    GOOGLE_ADS_CUSTOMER_ID: "123-456-7890",
+    GOOGLE_ADS_OFFLINE_CONVERSION_ACTION_ID: "987654321",
+    GOOGLE_ADS_CLIENT_ID: "client-id",
+    GOOGLE_ADS_CLIENT_SECRET: "client-secret",
+    GOOGLE_ADS_REFRESH_TOKEN: "refresh-token",
+    GOOGLE_ADS_OFFLINE_START_AT: "2026-08-25T00:00:00.000Z",
+  });
+  assert.equal(withoutDevToken?.customerId, "1234567890");
+  assert.equal(withoutDevToken?.developerToken, undefined);
   assert.equal(readGoogleAdsOfflineConfig({
     GOOGLE_ADS_CUSTOMER_ID: "1234567890",
     GOOGLE_ADS_OFFLINE_CONVERSION_ACTION_ID: "987654321",
   }), null);
 });
 
-test("COD delivered and online paid produce one click conversion with merchandise value", () => {
+test("COD delivered and online paid produce one click conversion with RFC 3339 timestamp and merchandise value", () => {
   const observedAt = new Date("2026-08-25T02:03:04.000Z");
   const cod = buildGoogleClickConversion(ORDER, CONFIG, observedAt);
   assert.deepEqual(cod, {
     qualification: "cod_delivered",
     conversion: {
       conversionAction: "customers/1234567890/conversionActions/987654321",
-      conversionDateTime: "2026-08-25 02:03:04+00:00",
+      conversionDateTime: "2026-08-25T02:03:04.000Z",
       conversionValue: 249000,
       currencyCode: "IDR",
       orderId: "INV-10042",
@@ -78,9 +88,11 @@ test("COD delivered and online paid produce one click conversion with merchandis
   assert.equal(online?.conversion.gbraid, "0AAAA_valid");
 });
 
-test("unqualified, unattributed, and valueless orders never enter the outbox", () => {
+test("unqualified, voided, unattributed, and valueless orders never enter the outbox", () => {
   const observedAt = new Date("2026-08-25T02:03:04.000Z");
   assert.equal(buildGoogleClickConversion({ ...ORDER, shipping_status: "shipped" }, CONFIG, observedAt), null);
+  assert.equal(buildGoogleClickConversion({ ...ORDER, payment_method: "qris", payment_status: "paid", shipping_status: "cancelled" }, CONFIG, observedAt), null);
+  assert.equal(buildGoogleClickConversion({ ...ORDER, stock_restored_at: "2026-08-25T02:00:00.000Z" }, CONFIG, observedAt), null);
   assert.equal(buildGoogleClickConversion({ ...ORDER, ad_click_ids: null }, CONFIG, observedAt), null);
   assert.equal(buildGoogleClickConversion({ ...ORDER, product_value: 0 }, CONFIG, observedAt), null);
 });
@@ -93,7 +105,7 @@ test("retry policy retries rate limits and network failures but stops permanent 
   assert.equal(decideGoogleRetry(false, 500, 4, 5).status, "failed");
 });
 
-test("sender refreshes OAuth and uploads through the pinned Google Ads API contract", async (context) => {
+test("sender refreshes OAuth and uploads through the Google Data Manager events:ingest contract", async (context) => {
   const originalFetch = globalThis.fetch;
   context.after(() => { globalThis.fetch = originalFetch; });
   const requests: Array<{ url: string; init?: RequestInit }> = [];
@@ -102,19 +114,36 @@ test("sender refreshes OAuth and uploads through the pinned Google Ads API contr
     if (String(input).includes("oauth2.googleapis.com")) {
       return new Response(JSON.stringify({ access_token: "access-token" }), { status: 200 });
     }
-    return new Response(JSON.stringify({ results: [{}] }), { status: 200 });
+    return new Response(JSON.stringify({ requestId: "req-1" }), { status: 200 });
   };
-  const built = buildGoogleClickConversion(ORDER, CONFIG, new Date("2026-08-25T02:03:04.000Z"));
+  const built = buildGoogleClickConversion(ORDER, CONFIG, new Date("2026-08-25T02:03:04.000Z"), "deadbeef".repeat(8));
   assert.ok(built);
   const result = await uploadGoogleClickConversion(built.conversion, CONFIG);
   assert.equal(result.success, true);
-  assert.equal(requests[1].url, "https://googleads.googleapis.com/v25/customers/1234567890:uploadClickConversions");
+  assert.equal(requests[1].url, "https://datamanager.googleapis.com/v1/events:ingest");
   const headers = new Headers(requests[1].init?.headers);
-  assert.equal(headers.get("developer-token"), "developer-token");
-  assert.equal(headers.get("login-customer-id"), "1122334455");
   assert.equal(headers.get("authorization"), "Bearer access-token");
+  assert.equal(headers.get("developer-token"), null);
   const body = JSON.parse(String(requests[1].init?.body));
-  assert.deepEqual(body, { conversions: [built.conversion], partialFailure: true });
+  assert.deepEqual(body, {
+    destinations: [{
+      operatingAccount: { accountType: "GOOGLE_ADS", accountId: "1234567890" },
+      loginAccount: { accountType: "GOOGLE_ADS", accountId: "1122334455" },
+      productDestinationId: "987654321",
+    }],
+    encoding: "HEX",
+    validateOnly: false,
+    events: [{
+      transactionId: "INV-10042",
+      eventTimestamp: "2026-08-25T02:03:04.000Z",
+      eventSource: "WEB",
+      conversionValue: 249000,
+      currency: "IDR",
+      adIdentifiers: { gclid: "Cj0KCQ_valid-click" },
+      userData: { userIdentifiers: [{ phoneNumber: "deadbeef".repeat(8) }] },
+      consent: { adUserData: "CONSENT_GRANTED", adPersonalization: "CONSENT_GRANTED" },
+    }],
+  });
 });
 
 /**
@@ -171,7 +200,8 @@ test("reconciliation advances past orders that carry no Google click", async () 
     CREATE TABLE orders (
       id INTEGER PRIMARY KEY, order_number TEXT NOT NULL, payment_method TEXT NOT NULL,
       payment_status TEXT NOT NULL, shipping_status TEXT NOT NULL,
-      created_at TEXT NOT NULL, ad_click_ids TEXT
+      stock_restored_at TEXT, created_at TEXT NOT NULL, updated_at TEXT,
+      customer_phone TEXT, ad_click_ids TEXT
     );
     CREATE TABLE order_items (
       id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL,
@@ -185,18 +215,19 @@ test("reconciliation advances past orders that carry no Google click", async () 
     ).replaceAll("--> statement-breakpoint", ""),
   );
 
-  const insertOrder = (id: number, clickIds: string | null) => {
+  const insertOrder = (id: number, clickIds: string | null, opts?: { stockRestoredAt?: string; phone?: string }) => {
     sqlite
       .prepare(
-        `INSERT INTO orders VALUES (?, ?, 'cod', 'unpaid', 'delivered', '2026-08-26T00:00:00.000Z', ?)`,
+        `INSERT INTO orders VALUES (?, ?, 'cod', 'unpaid', 'delivered', ?, '2026-08-26T00:00:00.000Z', '2026-08-26T12:00:00.000Z', ?, ?)`,
       )
-      .run(id, `INV-${10000 + id}`, clickIds);
+      .run(id, `INV-${10000 + id}`, opts?.stockRestoredAt ?? null, opts?.phone ?? null, clickIds);
     sqlite.prepare(`INSERT INTO order_items VALUES (?, ?, 100000, 1)`).run(id, id);
   };
   // More organic orders than one reconciliation window holds.
   for (let id = 1; id <= 60; id += 1) insertOrder(id, null);
   insertOrder(61, JSON.stringify({ utm_source: "instagram" }));
-  insertOrder(62, JSON.stringify({ gclid: "Cj0KCQ_real-click" }));
+  insertOrder(62, JSON.stringify({ gclid: "Cj0KCQ_real-click" }), { phone: "0812-3456-7890" });
+  insertOrder(63, JSON.stringify({ gclid: "Cj0KCQ_void-click" }), { stockRestoredAt: "2026-08-26T13:00:00.000Z" });
 
   const database = {
     prepare: (sql: string) => new ReconcileStatement(sqlite, sql),
