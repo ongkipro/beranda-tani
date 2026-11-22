@@ -1,6 +1,30 @@
 # STATUS — AdsBookCMS
 
-> Verified against disk: 2026-11-02 @ `f333530` (product `main` has PRs #167-#171 not yet on any install; installs run 1.9.2 plus PRs #157-#164 on eleven of the twelve; fleet registry in `docs/FLEET.md`; the sections below retain their dated evidence)
+> Verified against disk: 2026-11-10 @ `745de51` (ten installs run 1.10.0; product `main` also has #190, not yet deployed; klikinaja and skincarebpom are not on this machine). Previously: 2026-11-02 @ `f333530` (installs ran 1.9.2; fleet registry in `docs/FLEET.md`; the sections below retain their dated evidence)
+
+## 2026-11-10 — after the rollout
+
+- PR #190 (another session: image guard parser, unchanged image URL on edit, media CSS layer, Lk* kit) is merged
+  to `main` (`745de51`), CI green, verified on five live pages; **not yet deployed** to any install (TASKS A-469).
+- permatamall pinned to Singapore (Worker `34976adf`). halotani has never taken an order and permatamall's last
+  was 2026-10-23, so their `meta-purchase-coverage` reads `unknown`; no live test order by design.
+- Deferred by Paduka: `OPS_ALERT_WEBHOOK_URL` (A-468). Done by Paduka: paid transfers confirmed; the rest are
+  left unconfirmed by his choice. Owner's: attribution setting on new ad sets, the second sender on
+  beranda-tani's pixel.
+
+## 2026-11-10 — 1.10.0 on ten installs; COD Purchase coverage healthy everywhere
+
+1.10.0 (#191, #193; docs #192, #194; test #195) runs on zvara, permatamall, agritani, taniniaga, halotani,
+baven, numaskin, revenleather, beranda-tani and cekat (`docs/FLEET.md` "Rollout of 1.10.0" has Worker
+versions and Lighthouse). The 22:07 UTC cron confirmed `v1.10.0`, schema `match` and
+`meta-purchase-coverage` healthy, 0 missing, on every store with COD orders. Post-deploy orders on
+agritani, taniniaga and zvara had their Purchase `sent`. "Transfer Diterima" was proven on `dev:local`
+as admin: order `paid`, Purchase enqueued with the buyer's stored fbc, IP and value. Meta Dataset
+Quality per pixel and the attribution recommendation: audit F-10, F-11.
+
+**Not done:** klikinaja and skincarebpom (no local clone here). No live test order was placed on any
+store. **Owner's:** attribution setting in Ads Manager (7-day click + 1-day engage-through, audit
+F-11), the second sender on beranda-tani's pixel, `OPS_ALERT_WEBHOOK_URL`, confirming paid transfers.
 
 ## 2026-11-10 — PR #191 (COD Purchase at checkout) live on agritani.shop only
 

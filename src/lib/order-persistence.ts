@@ -285,7 +285,7 @@ export async function recordAbandonedOrder(
           `SELECT pv.id, pv.price
            FROM product_variants pv
            INNER JOIN products p ON p.id = pv.product_id
-           WHERE pv.id = ? AND p.is_active = 1
+           WHERE pv.id = ? AND p.is_active = 1 AND pv.is_active = 1
            LIMIT 1`,
         )
         .bind(input.variantId)
@@ -464,6 +464,7 @@ export async function findOrderVariant(database: D1Database, variantKey: string)
       FROM product_variants pv
       INNER JOIN products p ON p.id = pv.product_id
       WHERE p.is_active = 1
+        AND pv.is_active = 1
         AND (
           CAST(pv.id AS TEXT) = ?
           OR (

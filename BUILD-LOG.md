@@ -1,6 +1,6 @@
 # BUILD LOG: AdsBookCMS
 
-> Verified against disk: 2026-11-06 @ `2cf79d0` (Entry 267; earlier entries retain their historical evidence)
+> Verified against disk: 2026-11-13 @ `1403298` + feat/variant-visibility (Entry 274 appended). Before: 2026-11-10 @ `745de51` (Entries 270-273 appended). Previously: 2026-11-06 @ `700bc21` + fix/image-guard-parser working tree (Entry 268 appended; earlier entries retain their historical evidence)
 
 Author & Curator: **[ongki.pro](https://ongki.pro)**
 
@@ -9308,3 +9308,172 @@ rules. In that pass its radius was corrected from Tailwind's stock 6/12/16 px to
 (`--radius: 0.625rem`), and its re-brand contract now lists all thirteen `--sf-*` tokens, not nine. Baseline 1188.
 Not verified: the payment brand logo at its new declared size in a browser (CSS sizes it to its box). Nothing deploys from
 this repository; installs pick it up with their next product merge.
+
+### Entry 268: image guard reads comments without hiding tags; page-wide media rules move into `@layer base`; payment logo URL no longer reaches `innerHTML` (2026-11-06, Paduka: "perbaiki bagian masih error dan bug, rapikan, kemudian review")
+
+**Guard.** The Entry 267 guard had a known limit: a comment such as `// an <img that won't` in code could open a quote
+and throw. The guard still scans every `<img` in the raw file, each one on its own, so odd text before a tag cannot
+hide it. A tag is now skipped only when it starts in a comment the TypeScript parser reports: anywhere in a `.ts` file,
+and in `.astro` frontmatter when the TS and TSX parses agree. Any span that is JSX text is never treated as a comment.
+A commented-out tag in markup or in a `<script>` is still read; no file has one.
+
+Four review passes ran before commit, and each found a way a draft could hide a real tag:
+
+- The first draft parsed `.astro` with `@astrojs/compiler`. That package is a transitive dependency of `@astrojs/check`,
+  not the compiler the build uses, and the draft stopped seeing tags in frontmatter JSX, in markup expression strings
+  and in `set:html`.
+- The second draft blanked comment-like text by pattern.
+- The third trusted guessed markup and `<script>` regions.
+- The last read JSX text that starts with `//` as a comment when it sits right after an opening tag.
+
+Every one of these is now a test case. The test's `// lazy:` note names the remaining ceiling.
+
+**Cascade.** Browser proof found a bug the guard could not see. `BaseLayout`'s global
+`:where(img, video) { height: auto }` was unlayered, and an unlayered rule beats every layered one whatever its
+specificity, so it overrode Tailwind's `h-full` (in `@layer utilities`) on every public image. On `/payment` the QRIS
+logo rendered 102x51 in a 102x46 box.
+
+- The rules now sit in `@layer base`, the `img, video` defaults that repeat preflight are dropped, and Tailwind's layer
+  order is declared in the same block so bundle order cannot change it. The logo is now 102x46.
+- Five pages of the local dummy store were measured: home, catalogue, product, 404 and payment. No other image changed
+  size.
+- Every public `<img>` that carries a size or aspect class (`aspect-square`, `size-14`, `w-[58px]`, `h-full`) declares
+  attributes of the same shape, so a class winning cannot change its box.
+- A test now refuses an unlayered page-wide media rule in any public stylesheet or component `<style>`. It was
+  mutation-checked in `form-hybrid.css` and in a second BaseLayout block.
+
+**Payment logo.** `buildPaymentRow` interpolated `opt.logoUrl` (store data) into `label.innerHTML`. The logo `src` is
+now set as a DOM property, like the label and description on the same row. The tag declares 37x22, its measured
+content box.
+
+Baseline 1193.
+
+**Browser proof (local only).** The proof ran Chromium via Playwright against an isolated copy of this working tree,
+built from the patch and served by `dev:local --no-build` on `:8797`. The copy reused the existing local store's state,
+so there was no new seed and no order. The run held the `adsbookcms-env` and `browser-e2e` locks.
+
+- POSTs to `record-abandoned-order`, `meta-event`, submit and payment routes were aborted, as were all non-local hosts.
+- Only the district field was typed (`Gambir`), which is enough to reveal the full form's payment block. Name, phone and
+  address stayed empty.
+- On `/full-form`, all seven payment logos (QRIS, five VA banks, COD) load. Each paints at 37.2x22 inside its 45.6x30.4
+  mark with `object-fit: contain`, at 390 px and at 1280 px.
+- Selecting QRIS, then VA BRI, then COD moves the checked radio each time.
+- On `/payment`, the QRIS logo is 102x46 inside its 112x56 box at both widths. Before the patch it was 102x51.
+
+**XSS check.** This is an actual browser check against the real `buildPaymentRow`, not a DOM unit test.
+`/api/payment-methods` was rewritten in the browser so that two `logo_url` values carried quote-breaking payloads, still
+using local URLs: `…bca.svg" onerror=…` and `x"><img … onerror=…><b id="injected">`.
+
+- Neither handler ran, no node was injected, the block holds no `on*` attribute, and each row keeps one `img` and eight
+  elements.
+- A normal logo (BNI) still loads, and the poisoned Mandiri row still selects.
+- The pre-fix template, given the same payloads on the same page, ran the second handler, injected the node and added
+  two `onerror` attributes.
+- The pre-fix build itself could not be driven, because the long-running `:3575` server serves stale script hashes.
+- No durable suite test was added: `node --test` has no DOM, and adding a DOM dependency for one check is out of scope.
+
+Renders: `proof-{390,1280}-payment.png`, `proof-xss-390-payment.png`, `proof-{390,1280}-payment-logo.png` in the session
+scratchpad. Thirteen `meta-event` POSTs reached the local `:3575` dummy store, from layout measurements taken earlier in
+the session before the blocks were set. No live store was contacted.
+
+### Entry 269: An edit no longer re-judges an unchanged image address
+
+Removing a variant in the product form failed with "URL gambar produk tidak valid." `PATCH /api/admin/products`
+re-validates the whole product, and `parseProductMutationPayload` accepts an `image_url` only under `/assets/uploads/`
+or `/images/`. A row holding any other shape was sent back untouched and refused. The handler now reads the stored
+`image_url` and passes it as `storedImageUrl`; a value equal to it is accepted, a changed value stays allowlisted.
+
+- Unit test added (1194 passing). In a local `dev:local --reset` store, product 34466 was set to an `https://` image,
+  variant 3 removed in the browser and saved: variants S and M remain, `image_url` unchanged.
+- Not done: the same steps against the pre-fix code, and widening the allowlist (a decision, not made).
+- Report: `docs/REVIEW-2026-11-07.md`.
+
+### Entry 270: Meta Purchase from the server, 14-day leads, coverage alert; 1.10.0 (2026-11-10, Paduka: "kenapa pixel tidak terkirim ke dashbord meta")
+
+Measured on agritani.shop production D1 before changing code (read-only): of 732 COD orders in 30 days, 727 had a
+`sent` Purchase and 5 had none; 55 manual transfers were never confirmed, so never reported; 98 leads were
+correctly unreported. The 5 never reached `/thanks` (4 from the Facebook in-app browser, store on WhatsApp
+auto-redirect), and both legs left only from that page. No signal noticed, because the queue alerts only see
+events that were enqueued. Audit: `docs/AUDIT-2026-11-10-agritani-purchase-gap.md` (F-1..F-11).
+
+- Checkout and a CS lead conversion enqueue the COD Purchase themselves; an hourly sweep catches 30 min-48 h
+  misses; `meta-purchase-coverage` alerts on any COD order 2-48 h old without one (ADR-036).
+- Leads kept 14 days (was 7) and refused by the order delete route (ADR-035); a lead stores its Meta identity.
+- Analitik "Purchase ke Meta", "Transfer belum dikonfirmasi", "Kirim ulang event gagal", Meta/Google fetch
+  timeouts (AUD-M5), no PageView post without a Pixel (L-5), version 1.10.0. PRs #191, #193.
+- Proved on `dev:local`: a middle-form COD order enqueued its Purchase (fbc, value) without `/thanks`;
+  "Transfer Diterima" as admin set the order `paid` and enqueued its Purchase with the stored fbc and IP.
+  Mutation checks on the sweep, the lead guard and the lead identity capture.
+- An outside recommendation list was reviewed (F-8): the 18-19 digit `_fbp` claim and the "double drain"
+  were rejected with evidence (live fbevents.js `SignalsFBEventsPixelCookie`, Meta's own example).
+
+### Entry 271: 1.10.0 on ten installs, reviewed live (2026-11-10, Paduka: "jalankan paralel ke seluruhan project")
+
+Three parallel worker agents per wave, one install each, then the parent re-read every store. Each install:
+fetch and fast-forward any other session's commits first (zvara, permatamall, taniniaga had landing pages
+ahead), merge product, gates, push, `npm run deploy` (preflight, no override). Install fixes made on the way:
+permatamall and beranda-tani gave width/height to their own landing images (the PR #189 guard); numaskin,
+beranda-tani and revenleather deleted a SiteBrand guard exception their own SiteBrand did not need, which #195
+makes unnecessary from the next merge; the `docs/FLEET.md` grafir rule belonged to revenleather, not baven.
+permatamall was pinned to Singapore after a sample ran `local-HKG`. The 22:07 UTC cron reported `v1.10.0`,
+schema `match` and `meta-purchase-coverage` healthy, 0 missing, on every store with COD orders. Worker versions
+and Lighthouse in `docs/FLEET.md`. Not done: klikinaja, skincarebpom (not on this machine); no live test order
+(it would send Meta a false Purchase); `OPS_ALERT_WEBHOOK_URL` deferred by Paduka.
+
+### Entry 272: Meta's own view and the attribution setting (2026-11-10)
+
+Dataset Quality API per pixel with each store's stored CAPI token, never printed: Purchase EMQ 7.8 and event_id
+dedupe 100/100 on most pixels; city and postal code near 0 on middle-form stores (the form does not ask; not
+filled from the IP, which would be a fabricated key); beranda-tani's pixel shows phone 49% and external_id 4%
+while all 205 of our server Purchases carry both, so a second sender is on that pixel (owner to check in Events
+Manager). Attribution: Meta's Help Centre read on the day (click-through 1 or 7 days after a link click,
+view-through 1 day, engage-through 1 day; the setting is not a significant edit) and 30 days of orders (>98%
+placed within an hour of a Meta click) support 7-day click + 1-day engage-through with view-through off for new
+ad sets. The first version's WhatsApp/marketplace argument was wrong and is corrected in F-11.
+
+### Entry 273: PR #190 reviewed and merged (2026-11-10)
+
+Another session's branch (image guard parser on the TypeScript AST, unchanged stored image URL accepted on edit,
+media rules in `@layer base`, Lk* landing kit). Merged cleanly over #191-#197 (#195's stale-exception rule kept);
+1207 tests, check 0, build ok, CI on `main` green. The CSS move touches every public image, so the old and new
+rules were swapped in the browser on five live pages (agritani home, product, landing; revenleather; baven) at 360
+and 1440 px: at most 1 px of rounding, no image stretched, overflowing or lost. On `main`, not yet on any install
+(TASKS A-469).
+
+### Entry 274: Hide a variant without deleting it; why "Hapus varian" seemed not to work; 1.11.0 (2026-11-13, Paduka: "produk listing -> ada togle on off varian ... hapus varian juga kamu review karena sebelumnya button fuction action tidak bekerja")
+
+**The delete button.** Read and replayed in the browser. The Hapus button works on the form only: it removes the card
+from React state, and nothing reaches D1 until "Simpan Produk". It said nothing when pressed, so leaving the page
+looked like a button that did nothing. And for a variant already on an order the save answered 409 ("sudah dipakai
+order"), the only way to stop selling such a variant being to deactivate the whole product. Entry 269's
+image-URL refusal was a third cause of the same symptom. Now: a variant on an order shows "Dipakai order" instead of
+Hapus (the API reports `has_orders` for the edit form), a removal states that it is saved by Simpan Produk, and the
+409 names the alternative.
+
+**The toggle.** Migration `0080` adds `product_variants.is_active` (default 1). "Tampil di toko" per variant in the
+product form; the catalogue list counts hidden variants and prices only shown ones. Hidden means: out of
+`mergeStorefrontCatalog` (every page, form, feed, sitemap, llms.txt and the Headless catalogue read it), refused by
+`findOrderVariant` (every checkout, by id or SKU), by abandoned-lead capture and CS conversion, out of the landing
+editor's variant picker and the content workbench. Not filtered on purpose: order history, admin order and export
+joins, dispatch, Kelola, and the shipping quote (the admin re-quotes an existing order by its variant; a quote sells
+nothing). An active product needs one shown variant.
+
+- 1210 tests (1207 + 3). Mutation: dropping the filter from `findOrderVariant` and `mergeStorefrontCatalog` fails
+  both new tests. `npm run check` 0/0/0 (595 files), build ok.
+- Browser, `dev:local --reset` + `dev:seed` on :8890: hid "500 ml" of Madu Hutan at 1280 px and saved; the product
+  page, `/api/form-config`, the Meta feed and `/api/v1/products` show only 250 ml; `/full-form?variant_id=5` redirects
+  to the product; a middle-form POST with variant 5 answers 422 and with variant 4 creates an order. Pembersih
+  Saluran (both variants on orders) shows "Dipakai order" and no Hapus. At 390 px a never-ordered variant of Lem
+  Serbaguna was removed, the status line said so, no horizontal overflow, and after saving D1 holds one variant.
+- An `order_items(variant_id)` index was tried and dropped: it changed the Analitik query plan the insights test
+  guards. `has_orders` is read only for the single product the edit form opens.
+- Not done: a landing page whose stored `selected_variant_id` is now hidden falls back to the cheapest shown variant
+  (existing `resolveFormVariant` behaviour), checked by reading, not rendered.
+- Reven adopted it the same day (revenleather `1fdefe2`, deployed, Worker `a1f0e9fb`): `0080` applied on its D1, all
+  208 variants shown, public pages 200. The other installs have not taken 1.11.0.
+- Post-deploy check on Reven was wrong the first time: it fetched `/kontak?cb=<random>`, which gets its own edge-cache
+  key (ADR-029 keeps unknown parameters in the key) and so rendered fresh, while the plain URL kept serving the
+  pre-deploy page from the edge for up to `EDGE_CACHE_SECONDS` (600 s). The owner saw the old bank account; the plain
+  URL answered `x-edge-cache: HIT`, age 234 s. After expiry it answered `MISS` without the account. A deploy check
+  of public HTML uses the plain URL and reads `x-edge-cache`: a `HIT` older than the deploy is the old page, not proof.
+- PR #199, CI Verify green, merged.

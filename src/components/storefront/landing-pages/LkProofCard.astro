@@ -1,0 +1,45 @@
+---
+/**
+ * One customer case: who, what crop or problem, what they said, the outcome
+ * line, and optionally their own photo. Render it only for a case the
+ * merchant can substantiate (docs/LANDING-PAGES.md §5): the kit has no
+ * placeholder testimonial and must never gain one.
+ */
+import RatingStars from '../shared/RatingStars.astro';
+
+interface Props {
+  name: string;
+  location: string;
+  context?: string;
+  quote: string;
+  outcome?: string;
+  image?: string;
+  imageAlt?: string;
+  rating?: number;
+}
+
+const { name, location, context, quote, outcome, image, imageAlt, rating } = Astro.props;
+---
+
+<figure class="lk-proof">
+  {
+    image && (
+      <img
+        class="lk-proof-image"
+        src={image}
+        alt={imageAlt || `Foto dari ${name}`}
+        width="440"
+        height="330"
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  }
+  <div class="lk-proof-body">
+    {rating && <RatingStars rating={rating} starClass="h-[12px] w-[12px]" label={`Rating ${rating} dari 5`} />}
+    {context && <p class="lk-proof-context">{context}</p>}
+    <blockquote class="lk-proof-quote">{quote}</blockquote>
+    {outcome && <p class="lk-proof-outcome">{outcome}</p>}
+    <figcaption class="lk-proof-who">{name} · {location}</figcaption>
+  </div>
+</figure>

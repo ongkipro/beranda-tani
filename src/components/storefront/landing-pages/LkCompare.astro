@@ -1,0 +1,50 @@
+---
+/**
+ * A before/after pair: two captioned photos side by side under one label.
+ * Both photos must be the merchant's own evidence; the kit supplies the
+ * layout, never an image.
+ */
+interface Side {
+  image: string;
+  alt: string;
+  badge: string;
+  title: string;
+  text: string;
+}
+interface Props {
+  label: string;
+  bad: Side;
+  good: Side;
+}
+
+const { label, bad, good } = Astro.props;
+const sides = [
+  { side: bad, tone: 'bad' },
+  { side: good, tone: 'good' },
+] as const;
+---
+
+<div class="lk-compare">
+  <p class="lk-compare-label">{label}</p>
+  <div class="lk-compare-grid">
+    {
+      sides.map(({ side, tone }) => (
+        <figure class={`lk-compare-card lk-compare-card--${tone}`}>
+          <img
+            src={side.image}
+            alt={side.alt}
+            width="360"
+            height="240"
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="lk-compare-badge">{side.badge}</span>
+          <figcaption>
+            <strong>{side.title}</strong>
+            <span>{side.text}</span>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+</div>

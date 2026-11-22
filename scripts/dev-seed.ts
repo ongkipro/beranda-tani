@@ -14,7 +14,8 @@
  *
  *   --url=http://localhost:8787   store to seed (default)
  *   --orders=12                   how many checkout orders to place
- *   --images=<dir>                product photos: <dir>/<slug>.webp|.jpg|.png
+ *   --images=<dir>                product photos: <dir>/<slug>.webp|.jpg|.png, and an
+ *                                 optional <dir>/<slug>-sm.webp card copy
  *                                 replaces the flat colour for that product.
  *                                 Keep the folder outside the repository —
  *                                 another merchant's photos must never be
@@ -138,6 +139,12 @@ function productImage(slug: string, color: [number, number, number]) {
     if (path && existsSync(path)) return new File([readFileSync(path)], `${slug}.${extension}`, { type });
   }
   return new File([solidPng(color)], `${slug}.png`, { type: "image/png" });
+}
+
+/** `<dir>/<slug>-sm.webp`, the 480px card copy; null when the folder has none. */
+function productCard(slug: string) {
+  const path = `${imageDir!.replace(/\/$/, "")}/${slug}-sm.webp`;
+  return existsSync(path) ? new File([readFileSync(path)], `${slug}-sm.webp`, { type: "image/webp" }) : null;
 }
 
 // ── Invented catalogue ──────────────────────────────────────────────────────
@@ -347,6 +354,17 @@ async function products() {
     form.set("file", productImage(product.slug, product.color));
     const upload = ok(`upload ${product.slug}`, await call("/api/admin/upload-r2", { method: "POST", body: form }));
     const imageUrl = upload?.data?.url ?? upload?.url;
+    // The card-sized sibling, as the admin form uploads it. Optional: a missing
+    // `-sm` falls back to the full image, so a miss is reported, not fatal.
+    const fileName = upload?.data?.fileName ?? upload?.fileName;
+    const cardFile = imageDir ? productCard(product.slug) : null;
+    if (fileName && cardFile) {
+      const cardForm = new FormData();
+      cardForm.set("file", cardFile);
+      cardForm.set("derivative_of", fileName);
+      const card = await call("/api/admin/upload-r2", { method: "POST", body: cardForm });
+      if (card.status >= 400) console.warn(`[dev:seed] card derivative for ${product.slug} → HTTP ${card.status}`);
+    }
     ok(
       `create ${product.slug}`,
       await call("/api/admin/products", {
