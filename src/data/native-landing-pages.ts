@@ -170,3 +170,26 @@ export const nativeLandingPages: NativeLandingPage[] = [
  * is refused the same way without being repeated here.
  */
 export const installRouteSlugs: string[] = [];
+
+/** Slugs featured first with a "Baru" badge on Home and `/landing-page`. */
+export const featuredNewLandingPageSlugs: readonly string[] = [
+  'bensu-bawang-merah',
+  'saratoga-kubis',
+  'bensu-cabai-hujan',
+  'aussie-bibit-sawit',
+  'bensu-jagung',
+];
+
+export function inferLandingPageCrop(slug: string, title = ''): string {
+  const s = `${slug} ${title}`;
+  if (/bibit[- ]sawit/i.test(s)) return 'Bibit Sawit';
+  if (/sawit|ganoderma|landak|pucuk|formulabaru|edukasi/i.test(s)) return 'Sawit';
+  if (/cabai/i.test(s)) return 'Cabai';
+  if (/kubis/i.test(s)) return 'Kubis';
+  if (/bawang/i.test(s)) return 'Bawang Merah';
+  if (/jagung/i.test(s)) return 'Jagung';
+  if (/padi/i.test(s)) return 'Padi';
+  if (/anggrek/i.test(s)) return 'Anggrek';
+  if (/anthurium/i.test(s)) return 'Anthurium';
+  return 'Solusi';
+}

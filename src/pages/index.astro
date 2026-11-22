@@ -1,6 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CompactMarketHome from '../components/storefront/templates/CompactMarketHome.astro';
+import {
+  featuredNewLandingPageSlugs,
+  inferLandingPageCrop,
+  nativeLandingPages,
+} from '../data/native-landing-pages';
 import { getStorefrontProducts } from '../lib/catalog';
 import { getRuntimeEnv } from '../lib/env';
 import { getTenantHomeContent } from '../lib/tenant-content';
@@ -34,7 +39,28 @@ const products = catalog.map((product) => ({
 }));
 const ready = homeResolution.state === 'ready' && templateResolution.state === 'ready';
 const unavailable = homeResolution.state === 'unavailable' || templateResolution.state !== 'ready';
-const content = homeResolution.state === 'ready' ? homeResolution.content : null;
+const rawContent = homeResolution.state === 'ready' ? homeResolution.content : null;
+const featuredHomeSolutions = featuredNewLandingPageSlugs
+  .map((slug) => nativeLandingPages.find((entry) => entry.slug === slug && entry.isActive !== false && !entry.canonicalSlug))
+  .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
+  .map((entry) => ({
+    title: entry.title,
+    excerpt: entry.description,
+    image: entry.image ?? '',
+    href: `/${entry.slug}`,
+    crop: inferLandingPageCrop(entry.slug, entry.title),
+    isNew: true,
+  }));
+const featuredHrefs = new Set(featuredHomeSolutions.map((item) => item.href));
+const content = rawContent
+  ? {
+      ...rawContent,
+      solutions: [
+        ...featuredHomeSolutions,
+        ...rawContent.solutions.filter((item) => !item.href || !featuredHrefs.has(item.href)),
+      ],
+    }
+  : null;
 const template = templateResolution.state === 'ready' ? templateResolution.definition : null;
 if (unavailable) Astro.response.status = 503;
 const homepageTitle = ready

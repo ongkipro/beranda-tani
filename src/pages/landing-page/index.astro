@@ -12,13 +12,19 @@
  */
 import PageIntro from '../../components/storefront/shared/PageIntro.astro';
 import Icon from '../../components/storefront/shared/Icon.astro';
-import { nativeLandingPages } from '../../data/native-landing-pages';
+import {
+  featuredNewLandingPageSlugs,
+  inferLandingPageCrop,
+  nativeLandingPages,
+} from '../../data/native-landing-pages';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { listPublicLandingPages } from '../../lib/landing-pages';
 import { getTenantHomeContent } from '../../lib/tenant-content';
 import { cardImageSrc } from '../../lib/image-derivative';
 
 export const prerender = false;
+
+const PAGE_SIZE = 10;
 
 const [pages, home] = await Promise.all([
   listPublicLandingPages(Astro.locals),
@@ -28,32 +34,16 @@ const cards = home.state === 'ready' ? home.content.solutions : [];
 const cardFor = (href: string, slug: string) =>
   cards.find((card) => card.href === href || card.href === `/${slug}`);
 
-const featuredNewOrder = [
-  'bensu-bawang-merah',
-  'saratoga-kubis',
-  'bensu-cabai-hujan',
-  'aussie-bibit-sawit',
-  'bensu-jagung',
-];
-const featuredNewSet = new Set(featuredNewOrder);
-
-const inferCrop = (slug: string, title: string) => {
-  const s = `${slug} ${title}`;
-  if (/bibit[- ]sawit/i.test(s)) return 'Bibit Sawit';
-  if (/sawit|ganoderma|landak|pucuk|formulabaru|edukasi/i.test(s)) return 'Sawit';
-  if (/cabai/i.test(s)) return 'Cabai';
-  if (/kubis/i.test(s)) return 'Kubis';
-  if (/bawang/i.test(s)) return 'Bawang Merah';
-  if (/jagung/i.test(s)) return 'Jagung';
-  if (/padi/i.test(s)) return 'Padi';
-  if (/anggrek/i.test(s)) return 'Anggrek';
-  if (/anthurium/i.test(s)) return 'Anthurium';
-  return 'Solusi';
-};
-
+const featuredNewSet = new Set(featuredNewLandingPageSlugs);
 const publishedSlugs = new Set(pages.map((p) => p.slug));
 const pendingFeatured = nativeLandingPages
-  .filter((entry) => featuredNewSet.has(entry.slug) && entry.isActive !== false && !entry.canonicalSlug && !publishedSlugs.has(entry.slug))
+  .filter(
+    (entry) =>
+      featuredNewSet.has(entry.slug) &&
+      entry.isActive !== false &&
+      !entry.canonicalSlug &&
+      !publishedSlugs.has(entry.slug),
+  )
   .map((entry) => ({
     slug: entry.slug,
     href: `/${entry.slug}`,
@@ -73,21 +63,23 @@ const items = mergedPages
       href: page.href,
       title: card?.title || page.title,
       excerpt: card?.excerpt || page.excerpt,
-      // The home card's photo first; else the list thumbnail the product picks
-      // (the page's own image, its register image, or its product's photo).
+      // New featured pages keep their fresh hero image; others prefer the home card image.
       image: (isNew ? page.image : null) || card?.image || page.image,
-      crop: card?.crop || inferCrop(page.slug, page.title),
+      crop: card?.crop || inferLandingPageCrop(page.slug, page.title),
       isNew,
     };
   })
   .sort((a, b) => {
-    const ai = featuredNewOrder.indexOf(a.slug);
-    const bi = featuredNewOrder.indexOf(b.slug);
+    const ai = featuredNewLandingPageSlugs.indexOf(a.slug);
+    const bi = featuredNewLandingPageSlugs.indexOf(b.slug);
     if (ai !== -1 && bi !== -1) return ai - bi;
     if (ai !== -1) return -1;
     if (bi !== -1) return 1;
     return 0;
   });
+
+const remainingCount = Math.max(0, items.length - PAGE_SIZE);
+const firstImage = items[0]?.image ? cardImageSrc(items[0].image) : undefined;
 
 const cropTone = (crop: string) =>
   /sawit/i.test(crop)
@@ -103,6 +95,7 @@ const storeName = Astro.locals.tenant.name;
 <BaseLayout
   title={`Solusi Masalah Sawit, Cabai, Kubis & Bawang - ${storeName}`}
   description={`Pilih halaman solusi ${storeName} untuk bibit sawit, jagung, cabai musim hujan, kubis, bawang merah, dan padi lengkap dengan takaran dan form COD.`}
+  preloadImages={firstImage}
   breadcrumbs={[
     { name: 'Beranda', url: '/' },
     { name: 'Solusi Terbaru', url: '/landing-page' },
@@ -118,50 +111,69 @@ const storeName = Astro.locals.tenant.name;
 
     <section aria-label="Daftar solusi" class="mx-auto max-w-[480px] px-5 py-8">
       {items.length > 0 ? (
-        <div class="divide-y divide-[#E5E7EB]">
-          {items.map((item, index) => (
-            <article>
-              <a href={item.href} class:list={['group block py-5', index === 0 && 'pt-0']}>
-                {item.image && (
-                  <div class="relative aspect-[3/2] overflow-hidden rounded-[14px] bg-slate-100">
-                    <img
-                      src={cardImageSrc(item.image)}
-                      alt={`Solusi ${item.title}`}
-                      width="600"
-                      height="400"
-                      class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.025]"
-                      loading={index === 0 ? 'eager' : 'lazy'}
-                      fetchpriority={index === 0 ? 'high' : undefined}
-                      decoding="async"
-                    />
-                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent p-3">
-                      <div class="flex flex-wrap items-center gap-2">
-                        <span class="inline-flex rounded-md bg-white/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em]" style={`color: ${cropTone(item.crop)}`}>
-                          {item.crop}
-                        </span>
-                        {item.isNew ? (
-                          <span class="inline-flex rounded-md bg-[#FFD84D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-950">Baru</span>
-                        ) : (
-                          <span class="inline-flex rounded-md bg-[#D9F99D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#1B5E20]">Live</span>
-                        )}
+        <>
+          <div id="lp-list" class="divide-y divide-[#E5E7EB]">
+            {items.map((item, index) => {
+              const isHidden = index >= PAGE_SIZE;
+              const imgSrc = item.image ? cardImageSrc(item.image) : null;
+              return (
+                <article data-lp-item hidden={isHidden}>
+                  <a href={item.href} class:list={['group block py-5', index === 0 && 'pt-0']}>
+                    {imgSrc && (
+                      <div class="relative aspect-[3/2] overflow-hidden rounded-[14px] bg-slate-100">
+                        <img
+                          src={isHidden ? undefined : imgSrc}
+                          data-src={isHidden ? imgSrc : undefined}
+                          alt={`Solusi ${item.title}`}
+                          width="600"
+                          height="400"
+                          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.025]"
+                          loading={index === 0 ? 'eager' : 'lazy'}
+                          fetchpriority={index === 0 ? 'high' : undefined}
+                          decoding="async"
+                        />
+                        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent p-3">
+                          <div class="flex flex-wrap items-center gap-2">
+                            <span class="inline-flex rounded-md bg-white/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em]" style={`color: ${cropTone(item.crop)}`}>
+                              {item.crop}
+                            </span>
+                            {item.isNew ? (
+                              <span class="inline-flex rounded-md bg-[#FFD84D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-950">Baru</span>
+                            ) : (
+                              <span class="inline-flex rounded-md bg-[#D9F99D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#1B5E20]">Live</span>
+                            )}
+                          </div>
+                        </div>
                       </div>
+                    )}
+                    <div class:list={[imgSrc && 'pt-3']}>
+                      <h2 class:list={['font-semibold leading-[1.28] tracking-[-0.02em] text-[#263238]', index === 0 ? 'text-[21px]' : 'text-[19px]']}>
+                        {item.title}
+                      </h2>
+                      {item.excerpt && <p class="mt-2 text-[13px] leading-6 text-[#616161]">{item.excerpt}</p>}
+                      <span class="mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#1B5E20]">
+                        Lihat detail solusi
+                        <Icon name="lucide:arrow-right" class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                      </span>
                     </div>
-                  </div>
-                )}
-                <div class:list={[item.image && 'pt-3']}>
-                  <h2 class:list={['font-semibold leading-[1.28] tracking-[-0.02em] text-[#263238]', index === 0 ? 'text-[21px]' : 'text-[19px]']}>
-                    {item.title}
-                  </h2>
-                  {item.excerpt && <p class="mt-2 text-[13px] leading-6 text-[#616161]">{item.excerpt}</p>}
-                  <span class="mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#1B5E20]">
-                    Lihat detail solusi
-                    <Icon name="lucide:arrow-right" class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-                  </span>
-                </div>
-              </a>
-            </article>
-          ))}
-        </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+
+          {remainingCount > 0 && (
+            <button
+              id="lp-load-more"
+              type="button"
+              data-step={PAGE_SIZE}
+              class="mt-6 flex min-h-11 w-full items-center justify-center gap-2 rounded-[14px] border border-[#D7E7D8] bg-white px-4 py-3 text-[13px] font-semibold text-[#1B5E20] transition-colors hover:bg-[#F4FAF2]"
+            >
+              <span data-label>Muat lebih banyak ({remainingCount} lainnya)</span>
+              <Icon name="lucide:chevron-down" class="h-4 w-4" aria-hidden="true" />
+            </button>
+          )}
+        </>
       ) : (
         <div class="rounded-xl border border-[#E5E7EB] py-10 text-center">
           <h2 class="text-lg font-semibold text-[#263238]">Belum ada halaman solusi</h2>
@@ -170,4 +182,31 @@ const storeName = Astro.locals.tenant.name;
       )}
     </section>
   </main>
+
+  <script is:inline>
+    (() => {
+      const btn = document.getElementById('lp-load-more');
+      const list = document.getElementById('lp-list');
+      if (!btn || !list) return;
+      const step = Number(btn.getAttribute('data-step')) || 10;
+      const label = btn.querySelector('[data-label]');
+      btn.addEventListener('click', () => {
+        const hidden = Array.from(list.querySelectorAll('[data-lp-item][hidden]'));
+        hidden.slice(0, step).forEach((el) => {
+          el.removeAttribute('hidden');
+          const img = el.querySelector('img[data-src]');
+          if (img) {
+            img.setAttribute('src', img.getAttribute('data-src') || '');
+            img.removeAttribute('data-src');
+          }
+        });
+        const left = hidden.length - step;
+        if (left <= 0) {
+          btn.remove();
+        } else if (label) {
+          label.textContent = `Muat lebih banyak (${left} lainnya)`;
+        }
+      });
+    })();
+  </script>
 </BaseLayout>

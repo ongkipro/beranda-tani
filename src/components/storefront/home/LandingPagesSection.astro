@@ -14,6 +14,7 @@ interface LandingPage {
   image?: string;
   href?: string;
   crop?: string;
+  isNew?: boolean;
 }
 interface Heading {
   eyebrow: string;
@@ -69,10 +70,17 @@ const productOf = (href = '') => href.replace(/^\//, '').split('-')[0] ?? '';
                       decoding="async"
                     />
                     <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/45 to-transparent p-3">
-                      <span class="inline-flex items-center gap-1.5 rounded-md bg-white/92 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#1B5E20] backdrop-blur-sm">
-                        <span class={`h-1.5 w-1.5 rounded-full ${productDots[product] ?? 'bg-[#F9A825]'}`} aria-hidden="true" />
-                        <span>{label}</span>
-                      </span>
+                      <div class="flex flex-wrap items-center gap-2">
+                        <span class="inline-flex items-center gap-1.5 rounded-md bg-white/92 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#1B5E20] backdrop-blur-sm">
+                          <span class={`h-1.5 w-1.5 rounded-full ${productDots[product] ?? 'bg-[#F9A825]'}`} aria-hidden="true" />
+                          <span>{label}</span>
+                        </span>
+                        {page.isNew && (
+                          <span class="inline-flex rounded-md bg-[#FFD84D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-slate-950">
+                            Baru
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
