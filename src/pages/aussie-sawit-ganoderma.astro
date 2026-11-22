@@ -1,29 +1,13 @@
 ---
 import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import PetaniSejahteraLandingShell from '../components/storefront/landing-pages/PetaniSejahteraLandingShell.astro';
 import Icon from '../components/storefront/shared/Icon.astro';
-import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
-import StickyCTA from '../components/storefront/landing-pages/StickyCTA.astro';
-import SocialProofToast from '../components/storefront/shared/SocialProofToast.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
 import { getStorefrontProduct } from '../lib/catalog';
-import { defaultCatalogContentId } from '../lib/catalog-feed';
-import { getRuntimeEnv } from '../lib/env';
-import { nativeLandingCanonicalPath } from '../lib/landing-pages';
-import { recentOrderCount } from '../lib/social-proof';
-import { landingProductJsonLd } from '../lib/landing-product-jsonld';
-import '../styles/form-hybrid.css';
-import '../styles/petani-sejahtera.css';
 
 export const prerender = false;
 
 const product = await getStorefrontProduct(Astro.locals, 'aussie');
 if (!product) return Astro.rewrite('/404');
-const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
-
-const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'aussie-sawit-ganoderma')}`;
-const seoTitle = 'Aussie Sawit Ganoderma - Recovery Sawit Kuning & Jamur';
-const seoDescription =
-  'Landing page Aussie Sawit Ganoderma untuk perawatan pendamping sawit kuning, jamur, busuk akar, busuk batang, busuk pucuk, dan gejala Ganoderma.';
 
 const sectionTitle = 'text-[26px] font-bold leading-[1.16] tracking-tight text-[#8B1E1E]';
 const body = 'text-[15px] leading-relaxed text-slate-600';
@@ -31,27 +15,14 @@ const listIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-
 const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#9A3412]';
 ---
 
-<BaseLayout
-  product={landingProductJsonLd(product, canonical)}
-  preloadImages="/images/landing/aussie/ganoderma.webp"
-  title={seoTitle}
-  description={seoDescription}
+<PetaniSejahteraLandingShell
+  slug="aussie-sawit-ganoderma"
+  product={product}
+  title="Aussie Sawit Ganoderma - Recovery Sawit Kuning & Jamur"
+  description="Landing page Aussie Sawit Ganoderma untuk perawatan pendamping sawit kuning, jamur, busuk akar, busuk batang, busuk pucuk, dan gejala Ganoderma."
   image="/images/landing/aussie/ganoderma.webp"
-  canonical={canonical}
-  hideHeader={true}
-  hideFooter={true}
-  breadcrumbs={[
-    { name: 'Beranda', url: '/' },
-    { name: 'Aussie Sawit Ganoderma', url: '/aussie-sawit-ganoderma' },
-  ]}
+  breadcrumbLabel="Aussie Sawit Ganoderma"
 >
-  <main class="mx-auto min-h-screen w-full max-w-[480px] bg-white text-slate-950">
-    <MetaLandingTracker
-      slug="aussie-sawit-ganoderma"
-      contentId={defaultCatalogContentId(product)}
-      contentName={product.productName}
-      price={product.price}
-    />
     <section class="bg-white pb-8 text-left text-slate-950">
       <div class="px-5 pt-8">
         <p
@@ -81,10 +52,13 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
         <div
           class="relative overflow-hidden border-y border-slate-100 bg-white shadow-[0_14px_34px_rgba(139,30,30,0.10)]"
         >
-          <img loading="eager" width="800" height="533"
-            fetchpriority="high"
+          <img
             src="/images/landing/aussie/ganoderma.webp"
+            width="800"
+            height="533"
             alt="Gejala Ganoderma dan jamur pada sawit"
+            loading="eager"
+            fetchpriority="high"
             class="aspect-[3/2] w-full rounded-lg object-cover"
           />
           <div
@@ -203,12 +177,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
       </p>
       <div class="grid gap-4">
         <figure class="relative overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
-          <img width="800" height="533"
+          <img
             src="/images/landing/aussie/sawitkuning.webp"
+            width="800"
+            height="533"
             alt="Sawit kuning tanda pohon stres"
-            class="aspect-[3/2] w-full rounded-lg object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
           />
           <figcaption
             class="absolute left-3 top-3 rounded-md bg-[#9A3412] px-3 py-1 text-[12px] font-medium uppercase tracking-wide text-white shadow-sm"
@@ -217,12 +193,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
           </figcaption>
         </figure>
         <figure class="relative overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
-          <img width="800" height="533"
+          <img
             src="/images/landing/aussie/diagramakar.webp"
+            width="800"
+            height="533"
             alt="Fokus perawatan akar sawit"
-            class="aspect-[3/2] w-full rounded-lg object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
           />
           <figcaption
             class="absolute left-3 top-3 rounded-md bg-[#8B1E1E] px-3 py-1 text-[12px] font-medium uppercase tracking-wide text-white shadow-sm"
@@ -247,12 +225,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
       </p>
       <div class="-mx-5 grid gap-4">
         <div class="relative overflow-hidden bg-slate-900">
-          <img width="800" height="533"
+          <img
             src="/images/landing/aussie/before.webp"
+            width="800"
+            height="533"
             alt="Kondisi Sebelum Perawatan Aussie"
-            class="aspect-[3/2] w-full object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full object-cover"
           />
           <div
             class="absolute left-4 top-4 rounded bg-[#9A3412] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow"
@@ -261,12 +241,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
           </div>
         </div>
         <div class="relative overflow-hidden bg-slate-900">
-          <img width="800" height="533"
+          <img
             src="/images/landing/aussie/after.webp"
+            width="800"
+            height="533"
             alt="Hasil Setelah Perawatan Aussie"
-            class="aspect-[3/2] w-full object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full object-cover"
           />
           <div
             class="absolute left-4 top-4 rounded bg-[#15803D] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow"
@@ -383,12 +365,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
       <div class="grid grid-cols-2 gap-3">
         {
           [1, 2, 3, 4].map((n) => (
-            <img width="720" height="1280"
+            <img
               src={`/images/landing/aussie/wa${n}.webp`}
+              width="720"
+              height="1280"
               alt={`Screenshot WhatsApp pemesanan Aussie ${n}`}
-              class="aspect-[9/16] w-full rounded-lg border border-slate-200 object-cover shadow-sm"
               loading="lazy"
               decoding="async"
+              class="aspect-[9/16] w-full rounded-lg border border-slate-200 object-cover shadow-sm"
             />
           ))
         }
@@ -414,12 +398,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
       </p>
       <div class="mt-8 grid gap-6">
         <figure>
-          <img width="480" height="600"
+          <img
             src="/images/landing/aussie/produk.webp"
+            width="480"
+            height="600"
             alt="Botol Aussie Sawit Ganoderma"
-            class="aspect-[3/2] w-full rounded-lg border border-slate-200 object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full rounded-lg border border-slate-200 object-cover"
           />
           <figcaption class="mt-3 border-l-4 border-[#8B1E1E] pl-3">
             <h3 class="text-[16px] font-bold text-slate-950">Perawatan Pemulihan Sawit</h3>
@@ -430,12 +416,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
           </figcaption>
         </figure>
         <figure>
-          <img width="800" height="533"
+          <img
             src="/images/landing/aussie/daunkuning.webp"
+            width="800"
+            height="533"
             alt="Daun sawit kuning yang perlu perawatan"
-            class="aspect-[3/2] w-full rounded-lg object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
           />
           <figcaption class="mt-3 border-l-4 border-[#9A3412] pl-3">
             <h3 class="text-[16px] font-bold text-slate-950">Fokus Akar, Batang, Pucuk, Daun</h3>
@@ -537,7 +525,4 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
       </div>
       <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
     </section>
-    <StickyCTA productSlug={product.slug} productName={product.productName} />
-    <SocialProofToast orderCount={socialProofOrders} heroSelector="main section" formSelector="#checkout" />
-  </main>
-</BaseLayout>
+</PetaniSejahteraLandingShell>

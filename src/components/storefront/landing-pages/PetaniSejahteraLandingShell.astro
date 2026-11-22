@@ -1,0 +1,59 @@
+---
+/**
+ * Shared shell for the Petani Sejahtera native Astro landing pages:
+ * BaseLayout metadata, canonical URL, Product JSON-LD, breadcrumbs,
+ * MetaLandingTracker, 480 px column, StickyCTA, and SocialProofToast.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SocialProofToast from '../shared/SocialProofToast.astro';
+import MetaLandingTracker from '../tracking/MetaLandingTracker.astro';
+import StickyCTA from './StickyCTA.astro';
+import type { Product } from '../../../data/products';
+import { defaultCatalogContentId } from '../../../lib/catalog-feed';
+import { getRuntimeEnv } from '../../../lib/env';
+import { nativeLandingCanonicalPath } from '../../../lib/landing-pages';
+import { landingProductJsonLd } from '../../../lib/landing-product-jsonld';
+import { recentOrderCount } from '../../../lib/social-proof';
+import '../../../styles/form-hybrid.css';
+import '../../../styles/petani-sejahtera.css';
+
+interface Props {
+  slug: string;
+  product: Product;
+  title: string;
+  description: string;
+  image: string;
+  breadcrumbLabel: string;
+}
+
+const { slug, product, title, description, image, breadcrumbLabel } = Astro.props;
+const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, slug)}`;
+---
+
+<BaseLayout
+  product={landingProductJsonLd(product, canonical)}
+  preloadImages={image}
+  title={title}
+  description={description}
+  image={image}
+  canonical={canonical}
+  hideHeader={true}
+  hideFooter={true}
+  breadcrumbs={[
+    { name: 'Beranda', url: '/' },
+    { name: breadcrumbLabel, url: `/${slug}` },
+  ]}
+>
+  <main class="mx-auto min-h-screen w-full max-w-[480px] bg-white text-slate-950">
+    <MetaLandingTracker
+      slug={slug}
+      contentId={defaultCatalogContentId(product)}
+      contentName={product.productName}
+      price={product.price}
+    />
+    <slot />
+    <StickyCTA productSlug={product.slug} productName={product.productName} />
+    <SocialProofToast orderCount={socialProofOrders} heroSelector="main section" formSelector="#checkout" />
+  </main>
+</BaseLayout>

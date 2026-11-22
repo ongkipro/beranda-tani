@@ -1,62 +1,33 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
 import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import PetaniSejahteraLandingShell from '../components/storefront/landing-pages/PetaniSejahteraLandingShell.astro';
 import Icon from '../components/storefront/shared/Icon.astro';
-import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
-import StickyCTA from '../components/storefront/landing-pages/StickyCTA.astro';
-import SocialProofToast from '../components/storefront/shared/SocialProofToast.astro';
 import { getStorefrontProduct } from '../lib/catalog';
-import { defaultCatalogContentId } from '../lib/catalog-feed';
-import { getRuntimeEnv } from '../lib/env';
-import { nativeLandingCanonicalPath } from '../lib/landing-pages';
-import { recentOrderCount } from '../lib/social-proof';
-import { landingProductJsonLd } from '../lib/landing-product-jsonld';
-import '../styles/form-hybrid.css';
-import '../styles/petani-sejahtera.css';
 
 export const prerender = false;
 
 const product = await getStorefrontProduct(Astro.locals, 'saratoga');
 if (!product) return Astro.rewrite('/404');
-const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
-
-const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'saratoga-anthurium')}`;
-const seoTitle = 'Saratoga Anthurium - Serum Asam Amino Perangsang Bunga Premium';
-const seoDescription =
-  'Saratoga untuk anthurium yang subur daun tapi susah berbunga: bantu tangkai bunga keluar, kelopak melebar merah pekat, dan rajin berbunga.';
 
 const sectionTitle = 'text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950';
 const body = 'text-[16px] leading-relaxed text-slate-600';
 ---
 
-<BaseLayout
-  product={landingProductJsonLd(product, canonical)}
-  preloadImages="/images/landing/saratoga-anthurium/saratoga-serum-anthurium-merah-berbunga-lebat.webp"
-  title={seoTitle}
-  description={seoDescription}
+<PetaniSejahteraLandingShell
+  slug="saratoga-anthurium"
+  product={product}
+  title="Saratoga Anthurium - Serum Asam Amino Perangsang Bunga Premium"
+  description="Saratoga untuk anthurium yang subur daun tapi susah berbunga: bantu tangkai bunga keluar, kelopak melebar merah pekat, dan rajin berbunga."
   image="/images/landing/saratoga-anthurium/saratoga-serum-anthurium-merah-berbunga-lebat.webp"
-  canonical={canonical}
-  hideHeader={true}
-  hideFooter={true}
-  breadcrumbs={[
-    { name: 'Beranda', url: '/' },
-    { name: 'Saratoga Anthurium', url: '/saratoga-anthurium' },
-  ]}
+  breadcrumbLabel="Saratoga Anthurium"
 >
-  <main class="mx-auto min-h-screen w-full max-w-[480px] bg-white text-slate-950">
-    <MetaLandingTracker
-      slug="saratoga-anthurium"
-      contentId={defaultCatalogContentId(product)}
-      contentName={product.productName}
-      price={product.price}
-    />
 
     <section class="bg-white pb-8 text-center">
       <div class="px-5 pt-8">
         <h1
           class="mx-auto max-w-[440px] text-[clamp(32px,8.8vw,36px)] font-extrabold leading-[1.14] tracking-tight text-slate-950"
         >
-          Anthurium Cuma Tumbuh Daun Terus? Saatnya Dipaksa <span class="hl-brush">Rajin Berbunga!</span>
+          Anthurium Cuma Tumbuh Daun Terus? Saatnya Dipaksa <span class="hl-brush hl-brush--crimson">Rajin Berbunga!</span>
         </h1>
         <p class="mx-auto mt-4 max-w-[400px] text-[16px] font-semibold leading-relaxed text-slate-700">
           Bahkan anthurium <strong class="text-slate-950 font-bold">“bandel” yang bertahun-tahun cuma berdaun</strong>.
@@ -71,13 +42,13 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
         <div class="relative overflow-hidden bg-slate-950 aspect-[3/2]">
           <img
             src="/images/landing/saratoga-anthurium/saratoga-serum-anthurium-merah-berbunga-lebat.webp"
-            alt="Serum asam amino Saratoga untuk anthurium merah berbunga lebat: memicu tangkai bunga muncul, kelopak melebar mengilap, dan warna merah pekat"
-            class="h-full w-full object-cover"
             width="1000"
             height="667"
+            alt="Serum asam amino Saratoga untuk anthurium merah berbunga lebat: memicu tangkai bunga muncul, kelopak melebar mengilap, dan warna merah pekat"
             loading="eager"
-            fetchpriority="high"
             decoding="async"
+            fetchpriority="high"
+            class="h-full w-full object-cover"
           />
 
           <div class="absolute bottom-0 left-0 right-0 bg-slate-950/80 px-4 py-3 text-center backdrop-blur-sm">
@@ -117,7 +88,7 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
     <section class="border-t border-slate-100 bg-red-50/30 px-5 py-10">
       <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-red-600">Keluhan Penghobi</span>
       <h2 class={`${sectionTitle} mt-1`}>
-        Anthurium Rajin Tumbuh, tapi <span class="hl-brush">Tak Kunjung Berbunga</span>
+        Anthurium Rajin Tumbuh, tapi <span class="hl-brush hl-brush--crimson">Tak Kunjung Berbunga</span>
       </h2>
       <p class={`${body} mt-3 mb-6`}>
         Awalnya, kita tentu bangga melihat daun yang tumbuh lebar dan segar. Namun setelah berbulan-bulan, tanaman justru hanya sibuk memproduksi daun baru tanpa ada tanda-tanda berbunga. Padahal, pada anthurium dewasa, setiap daun penuh seharusnya diiringi oleh tumbuhnya satu tangkai bunga baru dari sela ketiaknya.
@@ -170,12 +141,12 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
             <div class="relative overflow-hidden bg-slate-50/60 border border-slate-100">
               <img
                 src="/images/landing/saratoga-anthurium/anthurium-hanya-berdaun-tanpa-bunga.webp"
-                alt="Kondisi anthurium yang hanya berdaun lebat namun ketiak daun kosong tanpa tangkai bunga"
-                class="aspect-[3/2] w-full object-cover"
                 width="760"
                 height="507"
+                alt="Kondisi anthurium yang hanya berdaun lebat namun ketiak daun kosong tanpa tangkai bunga"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -192,12 +163,12 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
             <div class="relative overflow-hidden bg-slate-50/60 border border-slate-100">
               <img
                 src="/images/landing/saratoga-anthurium/anthurium-berbunga-lebat-tangkai-muncul.webp"
-                alt="Kondisi anthurium prima berbunga lebat setelah tangkai bunga terus bermunculan berkat asam amino"
-                class="aspect-[3/2] w-full object-cover"
                 width="760"
                 height="507"
+                alt="Kondisi anthurium prima berbunga lebat setelah tangkai bunga terus bermunculan berkat asam amino"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -223,12 +194,12 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
             <div class="relative overflow-hidden bg-slate-50/60 border border-slate-100">
               <img
                 src="/images/landing/saratoga-anthurium/bunga-anthurium-sempit-dan-kusam.webp"
-                alt="Bunga anthurium yang kekurangan nutrisi pembungaan dengan kelopak sempit, kusam, dan pucat kehijauan"
-                class="aspect-[3/2] w-full object-cover"
                 width="760"
                 height="507"
+                alt="Bunga anthurium yang kekurangan nutrisi pembungaan dengan kelopak sempit, kusam, dan pucat kehijauan"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -245,12 +216,12 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
             <div class="relative overflow-hidden bg-slate-50/60 border border-slate-100">
               <img
                 src="/images/landing/saratoga-anthurium/bunga-anthurium-merah-pekat-mengilap.webp"
-                alt="Bunga anthurium premium dengan kelopak melebar penuh, berwarna merah pekat mengilap yang tahan lama"
-                class="aspect-[3/2] w-full object-cover"
                 width="760"
                 height="507"
+                alt="Bunga anthurium premium dengan kelopak melebar penuh, berwarna merah pekat mengilap yang tahan lama"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -391,12 +362,12 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       <div class="-mx-5 mb-8 relative border-y border-slate-100">
         <img
           src="/images/landing/saratoga-anthurium/saratoga-serum-perangsang-bunga-anthurium-premium.webp"
-          alt="Botol serum Saratoga premium perangsang bunga anthurium: kaya asam amino esensial teknologi Jepang untuk memacu tangkai bunga dan melebarkan kelopak"
-          class="aspect-[16/9] w-full object-cover"
           width="1000"
           height="563"
+          alt="Botol serum Saratoga premium perangsang bunga anthurium: kaya asam amino esensial teknologi Jepang untuk memacu tangkai bunga dan melebarkan kelopak"
           loading="lazy"
           decoding="async"
+          class="aspect-[16/9] w-full object-cover"
         />
         <div
           class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-950/90 to-transparent pt-10 pb-3.5 px-5 text-center"
@@ -455,12 +426,12 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       <div class="-mx-5 mb-8 mt-4 border-y border-slate-100">
         <img
           src="/images/landing/saratoga-anthurium/saratoga-cara-kerja-langkah-1.webp"
-          alt="Ilustrasi penyemprotan asam amino Saratoga ke daun dan akar anthurium"
-          class="w-full object-cover"
           width="800"
           height="450"
+          alt="Ilustrasi penyemprotan asam amino Saratoga ke daun dan akar anthurium"
           loading="lazy"
           decoding="async"
+          class="w-full object-cover"
         />
       </div>
 
@@ -578,12 +549,12 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
               <div class="relative aspect-[16/9] w-full overflow-hidden border border-slate-100">
                 <img
                   src={item.image}
-                  alt={`Dokumentasi anthurium berbunga milik ${item.name}`}
-                  class="h-full w-full object-cover"
                   width="900"
                   height="506"
+                  alt={`Dokumentasi anthurium berbunga milik ${item.name}`}
                   loading="lazy"
                   decoding="async"
+                  class="h-full w-full object-cover"
                 />
               </div>
 
@@ -637,12 +608,12 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
           ].map(([src, alt]) => (
             <img
               src={src}
-              alt={alt}
-              class="aspect-[9/16] w-full object-cover ring-1 ring-slate-100"
               width="480"
               height="853"
+              alt={alt}
               loading="lazy"
               decoding="async"
+              class="aspect-[9/16] w-full object-cover ring-1 ring-slate-100"
             />
           ))
         }
@@ -735,7 +706,7 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
         <h2
           class="mx-auto max-w-[320px] text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950"
         >
-          Lengkapi Data <span class="hl-brush">Pengiriman</span>
+          Lengkapi Data <span class="hl-brush hl-brush--crimson">Pengiriman</span>
         </h2>
         <p class="mx-auto mt-4 max-w-[320px] text-[15px] font-medium leading-relaxed text-slate-600">
           Isi data di bawah ini dengan benar. <span class="text-slate-900 font-bold border-b-2 border-emerald-200">Form akan menyesuaikan wilayah Anda</span>, lalu tim kami memproses pesanan dan panduan penggunaan.
@@ -743,21 +714,4 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       </div>
       <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
     </section>
-    <StickyCTA productSlug={product.slug} productName={product.productName} />
-    <SocialProofToast orderCount={socialProofOrders} heroSelector="main section" formSelector="#checkout" />
-  </main>
-</BaseLayout>
-
-<style>
-  /* Highlight sapuan kuas (brush underline) untuk frasa kunci di headline.
-     Teks tetap gelap; sapuan crimson anthurium di bawah — tidak menumpuk saat teks wrap ke baris baru. */
-  .hl-brush {
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-    padding-bottom: 0.14em;
-    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20320%2024'%20preserveAspectRatio='none'%3E%3Cpath%20d='M3%2013C55%206%20120%2016%20182%2011S292%208%20317%2012L315%2020C252%2015%20150%2023%2072%2019S13%2021%205%2020C2%2017%202%2016%203%2013Z'%20fill='%23BE123C'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center 100%;
-    background-size: 100% 0.32em;
-  }
-</style>
+</PetaniSejahteraLandingShell>

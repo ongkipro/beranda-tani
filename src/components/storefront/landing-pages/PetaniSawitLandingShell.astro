@@ -1,0 +1,48 @@
+---
+/**
+ * Shared shell for the Petani Sawit (Berdu-ported) native Astro landing pages:
+ * BaseLayout metadata, canonical URL, Product JSON-LD, MetaLandingTracker, and
+ * the 480 px `.ps-page` column.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import MetaLandingTracker from '../tracking/MetaLandingTracker.astro';
+import type { Product } from '../../../data/products';
+import { defaultCatalogContentId } from '../../../lib/catalog-feed';
+import { nativeLandingCanonicalPath } from '../../../lib/landing-pages';
+import { landingProductJsonLd } from '../../../lib/landing-product-jsonld';
+import '../../../styles/form-hybrid.css';
+import '../../../styles/landing-pages/petanisawit.css';
+
+interface Props {
+  slug: string;
+  canonicalSlug?: string;
+  product: Product;
+  title: string;
+  description: string;
+  image: string;
+}
+
+const { slug, canonicalSlug, product, title, description, image } = Astro.props;
+const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, canonicalSlug ?? slug)}`;
+---
+
+<BaseLayout
+  product={landingProductJsonLd(product, canonical)}
+  title={title}
+  description={description}
+  image={image}
+  preloadImages={image}
+  canonical={canonical}
+  hideHeader={true}
+  hideFooter={true}
+>
+  <main class="ps-page">
+    <MetaLandingTracker
+      slug={slug}
+      contentId={defaultCatalogContentId(product)}
+      contentName={product.productName}
+      price={product.price}
+    />
+    <slot />
+  </main>
+</BaseLayout>

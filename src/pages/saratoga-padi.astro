@@ -1,55 +1,26 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
 import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import PetaniSejahteraLandingShell from '../components/storefront/landing-pages/PetaniSejahteraLandingShell.astro';
 import Icon from '../components/storefront/shared/Icon.astro';
-import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
-import StickyCTA from '../components/storefront/landing-pages/StickyCTA.astro';
-import SocialProofToast from '../components/storefront/shared/SocialProofToast.astro';
 import { getStorefrontProduct } from '../lib/catalog';
-import { defaultCatalogContentId } from '../lib/catalog-feed';
-import { getRuntimeEnv } from '../lib/env';
-import { nativeLandingCanonicalPath } from '../lib/landing-pages';
-import { recentOrderCount } from '../lib/social-proof';
-import { landingProductJsonLd } from '../lib/landing-product-jsonld';
-import '../styles/form-hybrid.css';
-import '../styles/petani-sejahtera.css';
 
 export const prerender = false;
 
 const product = await getStorefrontProduct(Astro.locals, 'saratoga');
 if (!product) return Astro.rewrite('/404');
-const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
-
-const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'saratoga-padi')}`;
-const seoTitle = 'Saratoga Padi - Serum Asam Amino Premium Fase Generatif';
-const seoDescription =
-  'Saratoga untuk petani padi Indonesia: mendukung fase pembungaan dan pengisian bulir agar potensi hasil panen tidak turun karena bulir tidak terisi optimal.';
 
 const sectionTitle = 'text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950';
 const body = 'text-[16px] leading-relaxed text-slate-600';
 ---
 
-<BaseLayout
-  product={landingProductJsonLd(product, canonical)}
-  preloadImages="/images/landing/saratoga-padi/hero-padi.webp"
-  title={seoTitle}
-  description={seoDescription}
+<PetaniSejahteraLandingShell
+  slug="saratoga-padi"
+  product={product}
+  title="Saratoga Padi - Serum Asam Amino Premium Fase Generatif"
+  description="Saratoga untuk petani padi Indonesia: mendukung fase pembungaan dan pengisian bulir agar potensi hasil panen tidak turun karena bulir tidak terisi optimal."
   image="/images/landing/saratoga-padi/hero-padi.webp"
-  canonical={canonical}
-  hideHeader={true}
-  hideFooter={true}
-  breadcrumbs={[
-    { name: 'Beranda', url: '/' },
-    { name: 'Saratoga Padi', url: '/saratoga-padi' },
-  ]}
+  breadcrumbLabel="Saratoga Padi"
 >
-  <main class="mx-auto min-h-screen w-full max-w-[480px] bg-white text-slate-950">
-    <MetaLandingTracker
-      slug="saratoga-padi"
-      contentId={defaultCatalogContentId(product)}
-      contentName={product.productName}
-      price={product.price}
-    />
 
     <section class="bg-white pb-8 text-center">
       <div class="px-5 pt-8">
@@ -72,14 +43,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       <div class="mt-8">
         <div class="relative overflow-hidden bg-white aspect-[5/4]">
           <img
-            fetchpriority="high"
             src="/images/landing/saratoga-padi/hero-padi.webp"
-            alt="Hamparan bulir padi emas yang sangat lebat dan padat hasil panen maksimal"
             width="800"
             height="640"
-            class="h-full w-full object-cover"
+            alt="Hamparan bulir padi emas yang sangat lebat dan padat hasil panen maksimal"
             loading="eager"
             decoding="async"
+            fetchpriority="high"
+            class="h-full w-full object-cover"
           />
           <div
             class="absolute left-4 top-4 rounded-md bg-[#14532D] px-3 py-1.5 text-[11px] font-medium uppercase tracking-widest text-white"
@@ -179,12 +150,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
           <p class="mb-2 text-[12px] font-semibold uppercase tracking-wider text-slate-500">1. Pengisian Malai Padi</p>
           <div class="grid grid-cols-2 gap-4">
             <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
-              <img width="480" height="480"
+              <img
                 src="/images/landing/saratoga-padi/hampa.webp"
+                width="480"
+                height="480"
                 alt="Kondisi bulir padi hampa dan kurang terisi akibat kekurangan nutrisi pembungaan"
-                class="aspect-[3/2] w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -199,12 +172,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
               </div>
             </div>
             <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
-              <img width="480" height="480"
+              <img
                 src="/images/landing/saratoga-padi/padat.webp"
+                width="480"
+                height="480"
                 alt="Bulir padi padat terisi penuh hingga ke pangkal berkat nutrisi asam amino Saratoga"
-                class="aspect-[3/2] w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -228,12 +203,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
           </p>
           <div class="grid grid-cols-2 gap-4">
             <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
-              <img width="480" height="480"
+              <img
                 src="/images/landing/saratoga-padi/gabah-kusam.webp"
+                width="480"
+                height="480"
                 alt="Gabah padi kusam, berdebu, dan kurang berbobot saat panen"
-                class="aspect-[3/2] w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -248,12 +225,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
               </div>
             </div>
             <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
-              <img width="480" height="480"
+              <img
                 src="/images/landing/saratoga-padi/gabah-bersih.webp"
+                width="480"
+                height="480"
                 alt="Hasil panen gabah kuning bersih, mengkilap, dan berbobot tinggi"
-                class="aspect-[3/2] w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -378,12 +357,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
     </section>
 
     <section class="border-t border-slate-100 px-5 py-10">
-      <img width="800" height="600"
+      <img
         src="/images/landing/saratoga-padi/saratoga-hamparan.webp"
+        width="800"
+        height="600"
         alt="Saratoga Serum Padi premium untuk pengisian bulir gabah padat dan kuning mengkilap"
-        class="mb-6 aspect-[4/3] w-full rounded-xl object-cover"
         loading="lazy"
         decoding="async"
+        class="mb-6 aspect-[4/3] w-full rounded-xl object-cover"
       />
       <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]"
         >Spesifikasi Produk</span
@@ -436,12 +417,12 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       </p>
       <img
         src="/images/landing/saratoga-padi/saratoga-infografis.webp"
-        alt="Infografis cara kerja Saratoga untuk padi"
-        class="-mx-5 w-[calc(100%+2.5rem)] max-w-none aspect-square h-auto mb-6"
-        loading="lazy"
-        decoding="async"
         width="800"
         height="800"
+        alt="Infografis cara kerja Saratoga untuk padi"
+        loading="lazy"
+        decoding="async"
+        class="-mx-5 w-[calc(100%+2.5rem)] max-w-none aspect-square h-auto mb-6"
       />
 
       <div class="relative border-l-2 border-emerald-100/80 pl-6 space-y-6 ml-2">
@@ -555,12 +536,12 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
               <div class="relative aspect-[16/9] w-full overflow-hidden rounded-xl">
                 <img
                   src={item.image}
-                  alt={`Dokumentasi hasil panen ${item.name}`}
                   width="480"
                   height="480"
-                  class="h-full w-full object-cover"
+                  alt={`Dokumentasi hasil panen ${item.name}`}
                   loading="lazy"
                   decoding="async"
+                  class="h-full w-full object-cover"
                 />
               </div>
 
@@ -588,12 +569,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       <div class="grid grid-cols-2 gap-3">
         {
           [1, 2, 3, 4, 5, 6].map((n) => (
-            <img width="720" height="1280"
+            <img
               src={`/images/landing/saratoga/wa${n}.webp`}
+              width="720"
+              height="1280"
               alt={`Screenshot WhatsApp konsultasi Saratoga padi ${n}`}
-              class="aspect-[9/16] w-full rounded-xl object-cover"
               loading="lazy"
               decoding="async"
+              class="aspect-[9/16] w-full rounded-xl object-cover"
             />
           ))
         }
@@ -700,7 +683,4 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       </div>
       <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
     </section>
-    <StickyCTA productSlug={product.slug} productName={product.productName} />
-    <SocialProofToast orderCount={socialProofOrders} heroSelector="main section" formSelector="#checkout" />
-  </main>
-</BaseLayout>
+</PetaniSejahteraLandingShell>

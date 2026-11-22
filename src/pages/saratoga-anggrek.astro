@@ -1,62 +1,33 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
 import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import PetaniSejahteraLandingShell from '../components/storefront/landing-pages/PetaniSejahteraLandingShell.astro';
 import Icon from '../components/storefront/shared/Icon.astro';
-import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
-import StickyCTA from '../components/storefront/landing-pages/StickyCTA.astro';
-import SocialProofToast from '../components/storefront/shared/SocialProofToast.astro';
 import { getStorefrontProduct } from '../lib/catalog';
-import { defaultCatalogContentId } from '../lib/catalog-feed';
-import { getRuntimeEnv } from '../lib/env';
-import { nativeLandingCanonicalPath } from '../lib/landing-pages';
-import { recentOrderCount } from '../lib/social-proof';
-import { landingProductJsonLd } from '../lib/landing-product-jsonld';
-import '../styles/form-hybrid.css';
-import '../styles/petani-sejahtera.css';
 
 export const prerender = false;
 
 const product = await getStorefrontProduct(Astro.locals, 'saratoga');
 if (!product) return Astro.rewrite('/404');
-const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
-
-const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'saratoga-anggrek')}`;
-const seoTitle = 'Saratoga Anggrek - Serum Asam Amino Perangsang Bunga Premium';
-const seoDescription =
-  'Saratoga untuk pecinta anggrek Indonesia: memaksa anggrek yang subur daun tapi enggan berbunga agar keluar tangkai dan mekar serempak, kuntum tidak mudah rontok.';
 
 const sectionTitle = 'text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950';
 const body = 'text-[16px] leading-relaxed text-slate-600';
 ---
 
-<BaseLayout
-  product={landingProductJsonLd(product, canonical)}
-  preloadImages="/images/landing/saratoga-anggrek/hero-anggrek.webp"
-  title={seoTitle}
-  description={seoDescription}
+<PetaniSejahteraLandingShell
+  slug="saratoga-anggrek"
+  product={product}
+  title="Saratoga Anggrek - Serum Asam Amino Perangsang Bunga Premium"
+  description="Saratoga untuk pecinta anggrek Indonesia: memaksa anggrek yang subur daun tapi enggan berbunga agar keluar tangkai dan mekar serempak, kuntum tidak mudah rontok."
   image="/images/landing/saratoga-anggrek/hero-anggrek.webp"
-  canonical={canonical}
-  hideHeader={true}
-  hideFooter={true}
-  breadcrumbs={[
-    { name: 'Beranda', url: '/' },
-    { name: 'Saratoga Anggrek', url: '/saratoga-anggrek' },
-  ]}
+  breadcrumbLabel="Saratoga Anggrek"
 >
-  <main class="mx-auto min-h-screen w-full max-w-[480px] bg-white text-slate-950">
-    <MetaLandingTracker
-      slug="saratoga-anggrek"
-      contentId={defaultCatalogContentId(product)}
-      contentName={product.productName}
-      price={product.price}
-    />
 
     <section class="bg-white pb-8 text-center">
       <div class="px-5 pt-8">
         <h1
           class="mx-auto max-w-[440px] text-[clamp(32px,8.8vw,36px)] font-extrabold leading-[1.14] tracking-tight text-slate-950"
         >
-          Anggrek Cuma Tumbuh Daun Terus? Saatnya Dipaksa <span class="hl-brush">Berbunga Lebat Serempak!</span>
+          Anggrek Cuma Tumbuh Daun Terus? Saatnya Dipaksa <span class="hl-brush hl-brush--violet">Berbunga Lebat Serempak!</span>
         </h1>
         <p class="mx-auto mt-4 max-w-[400px] text-[16px] font-semibold leading-relaxed text-slate-700">
           Bahkan anggrek <strong class="text-slate-950 font-bold">“bandel” yang bertahun-tahun cuma daun</strong>. Cukup
@@ -69,13 +40,15 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
 
       <div class="mt-8">
         <div class="relative overflow-hidden bg-slate-950 aspect-[3/2]">
-          <img width="840" height="472"
-            fetchpriority="high"
+          <img
             src="/images/landing/saratoga-anggrek/hero-anggrek.webp"
+            width="840"
+            height="472"
             alt="Banner Saratoga Serum Anggrek: anggrek ungu bermekaran lebat — dukung pembentukan tangkai, kuatkan kuncup, warna bunga lebih cerah"
-            class="h-full w-full object-cover"
             loading="eager"
             decoding="async"
+            fetchpriority="high"
+            class="h-full w-full object-cover"
           />
 
           <div class="absolute bottom-0 left-0 right-0 bg-slate-950/80 px-4 py-3 text-center backdrop-blur-sm">
@@ -116,7 +89,7 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
     <section class="border-t border-slate-100 bg-red-50/30 px-5 py-10">
       <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-red-600">Kondisi Hobiis</span>
       <h2 class={`${sectionTitle} mt-1`}>
-        Anggrek Rajin Tumbuh Tapi Bunga Justru <span class="hl-brush">Tak Datang</span>
+        Anggrek Rajin Tumbuh Tapi Bunga Justru <span class="hl-brush hl-brush--violet">Tak Datang</span>
       </h2>
       <p class={`${body} mt-3 mb-6`}>
         Di awal, hobiis biasanya senang melihat daun tebal dan akar banyak. Tapi berbulan-bulan berlalu, tanaman tetap
@@ -170,12 +143,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
           </p>
           <div class="grid grid-cols-2 gap-4">
             <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
-              <img width="1000" height="563"
+              <img
                 src="/images/landing/saratoga-anggrek/tanpa-tangkai.webp"
+                width="1000"
+                height="563"
                 alt="Anggrek hanya berdaun tanpa tangkai bunga"
-                class="aspect-[3/2] w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -190,12 +165,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
               </div>
             </div>
             <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
-              <img width="480" height="270"
+              <img
                 src="/images/landing/saratoga-anggrek/tangkai-lebat.webp"
+                width="480"
+                height="270"
                 alt="Anggrek dengan tangkai bunga penuh kuntum"
-                class="aspect-[3/2] w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -217,12 +194,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
           <p class="mb-2 text-[12px] font-semibold uppercase tracking-wider text-slate-500">2. Kualitas Bunga Mekar</p>
           <div class="grid grid-cols-2 gap-4">
             <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
-              <img width="1000" height="563"
+              <img
                 src="/images/landing/saratoga-anggrek/bunga-pucat.webp"
+                width="1000"
+                height="563"
                 alt="Bunga anggrek pucat dan kecil"
-                class="aspect-[3/2] w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -237,12 +216,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
               </div>
             </div>
             <div class="relative overflow-hidden rounded-lg bg-slate-50/60">
-              <img width="480" height="270"
+              <img
                 src="/images/landing/saratoga-anggrek/bunga-prima.webp"
+                width="480"
+                height="270"
                 alt="Bunga anggrek mekar penuh warna pekat"
-                class="aspect-[3/2] w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                class="aspect-[3/2] w-full object-cover"
               />
               <div
                 class="absolute left-2 top-2 rounded bg-emerald-700 px-2 py-0.5 text-[9px] font-bold uppercase text-white tracking-wider"
@@ -378,12 +359,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
     </section>
 
     <section class="border-t border-slate-100 px-5 py-10">
-      <img width="840" height="472"
+      <img
         src="/images/landing/saratoga-anggrek/saratoga-hamparan.webp"
+        width="840"
+        height="472"
         alt="Saratoga Serum Premium Untuk Anggrek: asam amino siap serap, formula teknologi Jepang, aplikasi daun dan akar"
-        class="mb-6 aspect-[16/9] w-full rounded-xl object-cover"
         loading="lazy"
         decoding="async"
+        class="mb-6 aspect-[16/9] w-full rounded-xl object-cover"
       />
       <span class="mb-2 block text-[11px] font-medium uppercase tracking-[0.2em] text-[#14532D]"
         >Spesifikasi Produk</span
@@ -581,12 +564,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
               </div>
 
               <div class="relative aspect-[16/9] w-full overflow-hidden rounded-xl">
-                <img width="840" height="473"
+                <img
                   src={item.image}
+                  width="840"
+                  height="473"
                   alt={`Dokumentasi anggrek berbunga ${item.name}`}
-                  class="h-full w-full object-cover"
                   loading="lazy"
                   decoding="async"
+                  class="h-full w-full object-cover"
                 />
               </div>
 
@@ -615,12 +600,14 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       <div class="grid grid-cols-2 gap-3">
         {
           [1, 2, 3, 4].map((n) => (
-            <img width="640" height="1137"
+            <img
               src={`/images/landing/saratoga-anggrek/wa${n}.webp`}
+              width="640"
+              height="1137"
               alt={`Screenshot WhatsApp konsultasi Saratoga anggrek ${n}`}
-              class="aspect-[9/16] w-full rounded-xl object-cover"
               loading="lazy"
               decoding="async"
+              class="aspect-[9/16] w-full rounded-xl object-cover"
             />
           ))
         }
@@ -716,7 +703,7 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
         <h2
           class="mx-auto max-w-[320px] text-[clamp(28px,7.2vw,32px)] font-extrabold leading-[1.12] tracking-tight text-slate-950"
         >
-          Lengkapi Data <span class="hl-brush">Pengiriman</span>
+          Lengkapi Data <span class="hl-brush hl-brush--violet">Pengiriman</span>
         </h2>
         <p class="mx-auto mt-4 max-w-[320px] text-[15px] font-medium leading-relaxed text-slate-600">
           Isi data di bawah ini dengan benar. <span class="text-slate-900 font-bold border-b-2 border-emerald-200">Form akan menyesuaikan wilayah Anda</span>, lalu tim kami memproses pesanan dan panduan penggunaan.
@@ -724,21 +711,4 @@ const body = 'text-[16px] leading-relaxed text-slate-600';
       </div>
       <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
     </section>
-    <StickyCTA productSlug={product.slug} productName={product.productName} />
-    <SocialProofToast orderCount={socialProofOrders} heroSelector="main section" formSelector="#checkout" />
-  </main>
-</BaseLayout>
-
-<style>
-  /* Highlight sapuan kuas (brush underline) untuk frasa kunci di headline.
-     Teks tetap gelap; sapuan ungu di bawah — tidak menumpuk saat teks wrap ke baris baru. */
-  .hl-brush {
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-    padding-bottom: 0.14em;
-    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20320%2024'%20preserveAspectRatio='none'%3E%3Cpath%20d='M3%2013C55%206%20120%2016%20182%2011S292%208%20317%2012L315%2020C252%2015%20150%2023%2072%2019S13%2021%205%2020C2%2017%202%2016%203%2013Z'%20fill='%236D28D9'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center 100%;
-    background-size: 100% 0.32em;
-  }
-</style>
+</PetaniSejahteraLandingShell>

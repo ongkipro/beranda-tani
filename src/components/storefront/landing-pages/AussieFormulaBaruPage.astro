@@ -1,0 +1,112 @@
+---
+/**
+ * Shared body for `/aussie-formulabaru` and its duplicate ad slug
+ * `/aussie-formulabaru-evrpro` (canonical -> `/aussie-formulabaru`).
+ */
+import GeoIpResolvedForm from '../forms/GeoIpResolvedForm.astro';
+import PetaniSawitLandingShell from './PetaniSawitLandingShell.astro';
+import WhatsAppChat from './WhatsAppChat.astro';
+import type { Product } from '../../../data/products';
+import { formulaBaruChats } from '../../../data/petanisawit-chats';
+
+interface Props {
+  slug: string;
+  canonicalSlug?: string;
+  product: Product;
+}
+
+const { slug, canonicalSlug, product } = Astro.props;
+// petanisawit's form opened on the 1 litre bottle; without that SKU the form
+// falls back to its own default.
+const liter = product.variants.find((variant) => variant.sku === 'AUSSIE1LITER');
+
+const title = 'AUSSIE Formula Baru - Lindungi Sawit dari Jamur Ganoderma';
+const description =
+  'AUSSIE, pupuk cair organik formula baru untuk membantu membasmi jamur Ganoderma dan melindungi sawit. Botol 1 liter dan 500 ml, bisa COD.';
+
+const topImages = [
+  { file: '02.webp', width: 900, height: 1217, n: 2 },
+  { file: '03.webp', width: 900, height: 996, n: 3 },
+  { file: '04.webp', width: 900, height: 1021, n: 4 },
+  { file: '05.webp', width: 900, height: 947, n: 5 },
+  { file: '06.webp', width: 900, height: 1020, n: 6 },
+  { file: '07.webp', width: 900, height: 1442, n: 7 },
+  { file: '08.webp', width: 900, height: 1200, n: 8 },
+  { file: '09.webp', width: 900, height: 2119, n: 9 },
+] as const;
+---
+
+<PetaniSawitLandingShell
+  slug={slug}
+  canonicalSlug={canonicalSlug}
+  product={product}
+  title={title}
+  description={description}
+  image="/images/landing/aussie-formulabaru/01.webp"
+>
+  <h1 class="sr-only">{title}</h1>
+  <div class="ps-image">
+    <img
+      src="/images/landing/aussie-formulabaru/01.webp"
+      width="900"
+      height="1298"
+      alt={`${title} — gambar 1`}
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+  {
+    topImages.map((img) => (
+      <div class="ps-image">
+        <img
+          src={`/images/landing/aussie-formulabaru/${img.file}`}
+          width={img.width}
+          height={img.height}
+          alt={`${title} — gambar ${img.n}`}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    ))
+  }
+  <section class="ps-wa ps-wa-dark" style="background-color:#014c8d">
+    <h2 class="ps-wa-title">Testimoni Para Petani Sawit</h2>
+    <p class="ps-wa-subtitle">Kata mereka yang sudah memakai AUSSIE</p>
+    <WhatsAppChat {...formulaBaruChats.fbKarni} />
+    <WhatsAppChat {...formulaBaruChats.fbSuroso} />
+    <WhatsAppChat {...formulaBaruChats.fbAndi} />
+  </section>
+  <div class="ps-image">
+    <img
+      src="/images/landing/aussie-formulabaru/11.webp"
+      width="900"
+      height="1772"
+      alt={`${title} — gambar 10`}
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <section id="checkout" class="ps-form">
+    <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} selectedVariantId={liter?.id} embedded={true} />
+  </section>
+  <div class="ps-image" style="padding-bottom:35px">
+    <img
+      src="/images/landing/aussie-formulabaru/12.webp"
+      width="960"
+      height="291"
+      alt={`${title} — gambar 11`}
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <div class="ps-image">
+    <img
+      src="/images/landing/aussie-formulabaru/13.webp"
+      width="900"
+      height="109"
+      alt={`${title} — gambar 12`}
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+</PetaniSawitLandingShell>

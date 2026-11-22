@@ -1,29 +1,13 @@
 ---
 import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import PetaniSejahteraLandingShell from '../components/storefront/landing-pages/PetaniSejahteraLandingShell.astro';
 import Icon from '../components/storefront/shared/Icon.astro';
-import MetaLandingTracker from '../components/storefront/tracking/MetaLandingTracker.astro';
-import StickyCTA from '../components/storefront/landing-pages/StickyCTA.astro';
-import SocialProofToast from '../components/storefront/shared/SocialProofToast.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
 import { getStorefrontProduct } from '../lib/catalog';
-import { defaultCatalogContentId } from '../lib/catalog-feed';
-import { getRuntimeEnv } from '../lib/env';
-import { nativeLandingCanonicalPath } from '../lib/landing-pages';
-import { recentOrderCount } from '../lib/social-proof';
-import { landingProductJsonLd } from '../lib/landing-product-jsonld';
-import '../styles/form-hybrid.css';
-import '../styles/petani-sejahtera.css';
 
 export const prerender = false;
 
 const product = await getStorefrontProduct(Astro.locals, 'aussie');
 if (!product) return Astro.rewrite('/404');
-const socialProofOrders = await recentOrderCount(getRuntimeEnv(Astro.locals)?.OMS_DB as D1Database | undefined);
-
-const canonical = `${Astro.locals.tenant.siteUrl}${await nativeLandingCanonicalPath(Astro.locals, 'aussie-buah-landak')}`;
-const seoTitle = 'AUSSIE Buah Landak Sawit - Tandan Padat, Fruit Set Naik';
-const seoDescription =
-  'Tandan landak, buah jarang, dan biji kosong menggerus tonase sawit. AUSSIE bantu perbaiki fruit set. Bisa COD, retur lewat CS, ada panduan pemakaian.';
 
 const sectionTitle = 'text-[26px] font-bold leading-[1.16] tracking-tight text-[#8B1E1E]';
 const body = 'text-[15px] leading-relaxed text-slate-600';
@@ -31,27 +15,14 @@ const listIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-
 const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#9A3412]';
 ---
 
-<BaseLayout
-  product={landingProductJsonLd(product, canonical)}
-  preloadImages="/images/landing/aussie/aussie-buah-landak-hero.webp"
-  title={seoTitle}
-  description={seoDescription}
+<PetaniSejahteraLandingShell
+  slug="aussie-buah-landak"
+  product={product}
+  title="AUSSIE Buah Landak Sawit - Tandan Padat, Fruit Set Naik"
+  description="Tandan landak, buah jarang, dan biji kosong menggerus tonase sawit. AUSSIE bantu perbaiki fruit set. Bisa COD, retur lewat CS, ada panduan pemakaian."
   image="/images/landing/aussie/aussie-buah-landak-hero.webp"
-  canonical={canonical}
-  hideHeader={true}
-  hideFooter={true}
-  breadcrumbs={[
-    { name: 'Beranda', url: '/' },
-    { name: 'Aussie Buah Landak', url: '/aussie-buah-landak' },
-  ]}
+  breadcrumbLabel="Aussie Buah Landak"
 >
-  <main class="mx-auto min-h-screen w-full max-w-[480px] bg-white text-slate-950">
-    <MetaLandingTracker
-      slug="aussie-buah-landak"
-      contentId={defaultCatalogContentId(product)}
-      contentName={product.productName}
-      price={product.price}
-    />
     <section class="bg-white pb-8 text-left text-slate-950">
       <div class="px-5 pt-8">
         <p
@@ -81,14 +52,15 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
         <div
           class="relative overflow-hidden border-y border-slate-100 bg-white shadow-[0_14px_34px_rgba(139,30,30,0.10)]"
         >
-          <img loading="eager"
+          <img
             src="/images/landing/aussie/aussie-buah-landak-hero.webp"
-            alt="Tandan sawit buah landak berduri dengan buah jarang"
-            class="aspect-[3/2] w-full rounded-lg object-cover"
             width="1200"
             height="800"
-            fetchpriority="high"
+            alt="Tandan sawit buah landak berduri dengan buah jarang"
+            loading="eager"
             decoding="async"
+            fetchpriority="high"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
           />
           <div
             class="absolute left-4 top-4 rounded-md bg-[#8B1E1E] px-3 py-1.5 text-[11px] font-medium uppercase tracking-widest text-white shadow-lg"
@@ -206,12 +178,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
       </p>
       <div class="grid gap-4">
         <figure class="relative overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
-          <img width="840" height="560"
+          <img
             src="/images/landing/aussie/aussie-buah-landak-pohon-sekarat.webp"
+            width="840"
+            height="560"
             alt="Sawit sekarat dengan pembungaan dan pembuahan gagal"
-            class="aspect-[3/2] w-full rounded-lg object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
           />
           <figcaption
             class="absolute left-3 top-3 rounded-md bg-[#9A3412] px-3 py-1 text-[12px] font-medium uppercase tracking-wide text-white shadow-sm"
@@ -220,12 +194,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
           </figcaption>
         </figure>
         <figure class="relative overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
-          <img width="840" height="560"
+          <img
             src="/images/landing/aussie/aussie-buah-landak-bunga-nutrisi.webp"
+            width="840"
+            height="560"
             alt="Bunga sawit dan kumbang penyerbuk pada fase pembungaan"
-            class="aspect-[3/2] w-full rounded-lg object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
           />
           <figcaption
             class="absolute left-3 top-3 rounded-md bg-[#8B1E1E] px-3 py-1 text-[12px] font-medium uppercase tracking-wide text-white shadow-sm"
@@ -251,12 +227,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
       </p>
       <div class="-mx-5 grid gap-4">
         <div class="relative overflow-hidden bg-slate-900">
-          <img width="840" height="560"
+          <img
             src="/images/landing/aussie/aussie-buah-landak-sebelum-perawatan.webp"
+            width="840"
+            height="560"
             alt="Kondisi Sebelum Perawatan Aussie"
-            class="aspect-[3/2] w-full object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full object-cover"
           />
           <div
             class="absolute left-4 top-4 rounded bg-[#9A3412] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow"
@@ -265,12 +243,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
           </div>
         </div>
         <div class="relative overflow-hidden bg-slate-900">
-          <img width="840" height="560"
+          <img
             src="/images/landing/aussie/aussie-buah-landak-setelah-perawatan.webp"
+            width="840"
+            height="560"
             alt="Hasil Setelah Perawatan Aussie"
-            class="aspect-[3/2] w-full object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full object-cover"
           />
           <div
             class="absolute left-4 top-4 rounded bg-[#15803D] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow"
@@ -391,12 +371,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
       <div class="grid grid-cols-2 gap-3">
         {
           [1, 2, 3, 4].map((n) => (
-            <img width="720" height="1280"
+            <img
               src={`/images/landing/aussie/testimoni-wa-aussie-buah-landak-${n}.webp`}
+              width="720"
+              height="1280"
               alt={`Screenshot WhatsApp pemesanan Aussie ${n}`}
-              class="aspect-[9/16] w-full rounded-lg border border-slate-200 object-cover shadow-sm"
               loading="lazy"
               decoding="async"
+              class="aspect-[9/16] w-full rounded-lg border border-slate-200 object-cover shadow-sm"
             />
           ))
         }
@@ -422,12 +404,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
       </p>
       <div class="mt-8 grid gap-6">
         <figure>
-          <img width="480" height="600"
+          <img
             src="/images/landing/aussie/produk.webp"
+            width="480"
+            height="600"
             alt="Botol Aussie pemusnah tandan landak sawit"
-            class="aspect-[3/2] w-full rounded-lg border border-slate-200 object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full rounded-lg border border-slate-200 object-cover"
           />
           <figcaption class="mt-3 border-l-4 border-[#8B1E1E] pl-3">
             <h3 class="text-[16px] font-bold text-slate-950">Mesin Pemadat Tandan</h3>
@@ -438,12 +422,14 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
           </figcaption>
         </figure>
         <figure>
-          <img width="840" height="560"
+          <img
             src="/images/landing/aussie/aussie-buah-landak-sebelum-perawatan.webp"
+            width="840"
+            height="560"
             alt="Tandan sawit buah landak yang wajib dihajar"
-            class="aspect-[3/2] w-full rounded-lg object-cover"
             loading="lazy"
             decoding="async"
+            class="aspect-[3/2] w-full rounded-lg object-cover"
           />
           <figcaption class="mt-3 border-l-4 border-[#9A3412] pl-3">
             <h3 class="text-[16px] font-bold text-slate-950">Bidik Vitalitas & Pembungaan</h3>
@@ -547,7 +533,4 @@ const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center tex
       </div>
       <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
     </section>
-    <StickyCTA productSlug={product.slug} productName={product.productName} />
-    <SocialProofToast orderCount={socialProofOrders} heroSelector="main section" formSelector="#checkout" />
-  </main>
-</BaseLayout>
+</PetaniSejahteraLandingShell>
