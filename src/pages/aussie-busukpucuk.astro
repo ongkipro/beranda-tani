@@ -16,9 +16,9 @@ const product = await getStorefrontProduct(Astro.locals, 'aussie');
 if (!product) return Astro.rewrite('/404');
 const liter = product.variants.find((variant) => variant.sku === 'AUSSIE1LITER');
 
-const title = 'AUSSIE Obat Pucuk Busuk Kelapa Sawit';
+const title = 'AUSSIE Obat Pucuk Busuk Kelapa Sawit - Petani Sejahtera';
 const description =
-  'Atasi pucuk busuk pada kelapa sawit dengan AUSSIE, pupuk cair organik. Botol 1 liter dan 500 ml, bisa COD.';
+  'Atasi pucuk busuk pada kelapa sawit dengan AUSSIE pupuk cair organik. Tersedia botol 500 ml dan 1 liter, order praktis bisa COD.';
 
 const topImages = [
   { file: '02.webp', width: 960, height: 1612, n: 2 },

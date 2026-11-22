@@ -6,7 +6,7 @@ import { getRuntimeEnv } from '../lib/env';
 import { getTenantHomeContent } from '../lib/tenant-content';
 import { resolveStorefrontTemplate } from '../lib/storefront-template';
 import { dailySeed, pickDaily } from '../lib/daily-rotation';
-import { homeDescription, homeTitle } from '../lib/home-seo';
+import { homeDescription } from '../lib/home-seo';
 
 const database = getRuntimeEnv(Astro.locals)?.OMS_DB;
 const [catalog, homeResolution, templateResolution] = await Promise.all([
@@ -38,7 +38,7 @@ const content = homeResolution.state === 'ready' ? homeResolution.content : null
 const template = templateResolution.state === 'ready' ? templateResolution.definition : null;
 if (unavailable) Astro.response.status = 503;
 const homepageTitle = ready
-  ? homeTitle(Astro.locals.tenant.name, Astro.locals.tenant.tagline || Astro.locals.tenant.description)
+  ? `${Astro.locals.tenant.name} - Solusi Nutrisi & Recovery Tanaman Pertanian`
   : `Storefront ${Astro.locals.tenant.name}`;
 const homepageDescription = homeDescription(
   Astro.locals.tenant.description,

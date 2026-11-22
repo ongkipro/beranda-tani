@@ -14,7 +14,7 @@ const product = await getStorefrontProduct(Astro.locals, 'aussie');
 if (!product) return Astro.rewrite('/404');
 const liter = product.variants.find((variant) => variant.sku === 'AUSSIE1LITER');
 
-const title = 'Aussie untuk Buah Landak Sawit';
+const title = 'Aussie untuk Tandan Buah Landak Kelapa Sawit - Petani Sejahtera';
 const gallery = [
   { file: '02.webp', width: 720, height: 768, n: 2 },
   { file: '03.webp', width: 720, height: 768, n: 3 },
@@ -29,7 +29,7 @@ const gallery = [
   slug="aussie-buahlandak"
   product={product}
   title={title}
-  description="Atasi tandan sawit landak dan buah jarang dengan Aussie. Botol 1 liter dan 500 ml, bisa COD."
+  description="Atasi tandan sawit landak, buah jarang, dan biji kosong dengan Aussie. Tersedia botol 500 ml dan 1 liter, pesan mudah bisa COD."
   image="/images/landing/aussie-buahlandak/01.webp"
 >
   <h1 class="sr-only">{title}</h1>
