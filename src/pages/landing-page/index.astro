@@ -12,6 +12,7 @@
  */
 import PageIntro from '../../components/storefront/shared/PageIntro.astro';
 import Icon from '../../components/storefront/shared/Icon.astro';
+import { nativeLandingPages } from '../../data/native-landing-pages';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { listPublicLandingPages } from '../../lib/landing-pages';
 import { getTenantHomeContent } from '../../lib/tenant-content';
@@ -27,26 +28,81 @@ const cards = home.state === 'ready' ? home.content.solutions : [];
 const cardFor = (href: string, slug: string) =>
   cards.find((card) => card.href === href || card.href === `/${slug}`);
 
-const items = pages.map((page) => {
-  const card = cardFor(page.href, page.slug);
-  return {
-    href: page.href,
-    title: card?.title || page.title,
-    excerpt: card?.excerpt || page.excerpt,
-    // The home card's photo first; else the list thumbnail the product picks
-    // (the page's own image, its register image, or its product's photo).
-    image: card?.image || page.image,
-    crop: card?.crop || 'Solusi',
-  };
-});
+const featuredNewOrder = [
+  'bensu-bawang-merah',
+  'saratoga-kubis',
+  'bensu-cabai-hujan',
+  'aussie-bibit-sawit',
+  'bensu-jagung',
+];
+const featuredNewSet = new Set(featuredNewOrder);
+
+const inferCrop = (slug: string, title: string) => {
+  const s = `${slug} ${title}`;
+  if (/bibit[- ]sawit/i.test(s)) return 'Bibit Sawit';
+  if (/sawit|ganoderma|landak|pucuk|formulabaru|edukasi/i.test(s)) return 'Sawit';
+  if (/cabai/i.test(s)) return 'Cabai';
+  if (/kubis/i.test(s)) return 'Kubis';
+  if (/bawang/i.test(s)) return 'Bawang Merah';
+  if (/jagung/i.test(s)) return 'Jagung';
+  if (/padi/i.test(s)) return 'Padi';
+  if (/anggrek/i.test(s)) return 'Anggrek';
+  if (/anthurium/i.test(s)) return 'Anthurium';
+  return 'Solusi';
+};
+
+const publishedSlugs = new Set(pages.map((p) => p.slug));
+const pendingFeatured = nativeLandingPages
+  .filter((entry) => featuredNewSet.has(entry.slug) && entry.isActive !== false && !entry.canonicalSlug && !publishedSlugs.has(entry.slug))
+  .map((entry) => ({
+    slug: entry.slug,
+    href: `/${entry.slug}`,
+    title: entry.title,
+    excerpt: entry.description,
+    image: entry.image || null,
+  }));
+
+const mergedPages = [...pendingFeatured, ...pages];
+
+const items = mergedPages
+  .map((page) => {
+    const card = cardFor(page.href, page.slug);
+    const isNew = featuredNewSet.has(page.slug);
+    return {
+      slug: page.slug,
+      href: page.href,
+      title: card?.title || page.title,
+      excerpt: card?.excerpt || page.excerpt,
+      // The home card's photo first; else the list thumbnail the product picks
+      // (the page's own image, its register image, or its product's photo).
+      image: (isNew ? page.image : null) || card?.image || page.image,
+      crop: card?.crop || inferCrop(page.slug, page.title),
+      isNew,
+    };
+  })
+  .sort((a, b) => {
+    const ai = featuredNewOrder.indexOf(a.slug);
+    const bi = featuredNewOrder.indexOf(b.slug);
+    if (ai !== -1 && bi !== -1) return ai - bi;
+    if (ai !== -1) return -1;
+    if (bi !== -1) return 1;
+    return 0;
+  });
+
 const cropTone = (crop: string) =>
-  /sawit/i.test(crop) ? '#8B1E1E' : /jagung/i.test(crop) ? '#B45309' : '#14532D';
+  /sawit/i.test(crop)
+    ? '#8B1E1E'
+    : /cabai|bawang/i.test(crop)
+      ? '#991B1B'
+      : /jagung/i.test(crop)
+        ? '#B45309'
+        : '#14532D';
 const storeName = Astro.locals.tenant.name;
 ---
 
 <BaseLayout
-  title={`Solusi Masalah Tanaman Sawit, Padi & Hias - ${storeName}`}
-  description={`Pilih halaman solusi ${storeName} untuk sawit, jagung, padi, anggrek, dan anthurium, lengkap dengan edukasi, bukti lapangan, dan form order.`}
+  title={`Solusi Masalah Sawit, Cabai, Kubis & Bawang - ${storeName}`}
+  description={`Pilih halaman solusi ${storeName} untuk bibit sawit, jagung, cabai musim hujan, kubis, bawang merah, dan padi lengkap dengan takaran dan form COD.`}
   breadcrumbs={[
     { name: 'Beranda', url: '/' },
     { name: 'Solusi Terbaru', url: '/landing-page' },
@@ -83,7 +139,11 @@ const storeName = Astro.locals.tenant.name;
                         <span class="inline-flex rounded-md bg-white/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em]" style={`color: ${cropTone(item.crop)}`}>
                           {item.crop}
                         </span>
-                        <span class="inline-flex rounded-md bg-[#D9F99D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#1B5E20]">Live</span>
+                        {item.isNew ? (
+                          <span class="inline-flex rounded-md bg-[#FFD84D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-950">Baru</span>
+                        ) : (
+                          <span class="inline-flex rounded-md bg-[#D9F99D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#1B5E20]">Live</span>
+                        )}
                       </div>
                     </div>
                   </div>
