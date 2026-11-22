@@ -1,0 +1,614 @@
+---
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import PetaniSejahteraLandingShell from '../components/storefront/landing-pages/PetaniSejahteraLandingShell.astro';
+import Icon from '../components/storefront/shared/Icon.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+
+export const prerender = false;
+
+const product = await getStorefrontProduct(Astro.locals, 'aussie');
+if (!product) return Astro.rewrite('/404');
+
+const sectionTitle = 'text-[23px] font-bold leading-[1.18] tracking-tight text-[#8B1E1E]';
+const body = 'text-[15px] leading-relaxed text-slate-600';
+const listIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#8B1E1E]';
+const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#9A3412]';
+---
+
+<PetaniSejahteraLandingShell
+  slug="aussie-bibit-sawit"
+  product={product}
+  title="AUSSIE Bibit Sawit - Pengobatan & Perawatan Bibit Polybag"
+  description="Atasi bibit sawit kuning, kerdil, busuk pucuk, dan bercak daun di polybag dengan AUSSIE. Lengkap takaran khusus bibit & jadwal pakai, bisa COD."
+  image="/images/landing/aussie-bibit-sawit/hero-petani.webp"
+>
+  <section class="flex flex-col gap-4 bg-white pb-6 pt-[max(1.5rem,env(safe-area-inset-top))] text-left text-slate-950">
+    <div class="px-5">
+      <h1 class="text-[clamp(22px,6vw,26px)] font-extrabold leading-[1.18] tracking-tight text-slate-950">
+        Bibit Sawit Kuning & Busuk Pucuk?{' '}
+        <span
+          class="box-decoration-clone px-0.5 text-[#8B1E1E]"
+          style="background-image: linear-gradient(to top, #FFD84D 0.24em, rgba(255,216,77,0) 0.24em); background-repeat: no-repeat; background-position: 0 94%; background-size: 100% 100%;"
+        >
+          Hentikan Kematian Massal Sebelum Modal Pembibitan Hangus Total!
+        </span>
+      </h1>
+      <p class="mt-3 text-[clamp(14px,3.6vw,15px)] font-medium leading-relaxed text-slate-700">
+        Telat tangani seminggu saja, <strong class="font-bold text-slate-950">satu bedengan polybag rontok habis</strong>{' '}
+        — dan bibit cacat yang dipaksa tanam akan{' '}
+        <span class="box-decoration-clone bg-[#FFD84D]/45 px-1 font-bold text-slate-950">
+          menghancurkan panen Anda 25 tahun ke depan.
+        </span>
+      </p>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="relative overflow-hidden border-y border-slate-200 bg-slate-100">
+        <img
+          src="/images/landing/aussie-bibit-sawit/hero-petani.webp"
+          width="800"
+          height="800"
+          alt="Petani sawit memeriksa bibit polybag yang menguning, bercak daun, dan pucuk layu"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          class="aspect-square w-full object-cover"
+        />
+      </div>
+
+      <div class="grid grid-cols-3 divide-x divide-slate-200 border-b border-slate-200 bg-slate-50 text-center">
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Pucuk Busuk</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Tombak layu & bau</p>
+        </div>
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Daun Gosong</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Bercak cepat menular</p>
+        </div>
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Bibit Kerdil</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Akar mogok tumbuh</p>
+        </div>
+      </div>
+
+      <div class="px-4 pt-4">
+        <div class="border border-slate-200 border-l-[3px] border-l-[#8B1E1E] bg-white px-4 py-3">
+          <h2 class="text-[14px] font-bold leading-snug text-slate-950">
+            Pupuk NPK biasa tidak mempan saat akar lumpuh & jamur sudah masuk pucuk.
+          </h2>
+          <p class="mt-1 text-[13px] leading-snug text-slate-600">
+            Wajib <strong class="font-semibold text-[#8B1E1E]">sikat jamur perusak + bangunkan akar serabut sekaligus</strong>{' '}
+            pakai AUSSIE takaran khusus bibit sebelum seluruh polybag rontok jadi afkir!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-slate-100 px-5 py-9">
+    <h2 class={sectionTitle}>
+      AUSSIE bukan pupuk bibit biasa. Ini <span class="box-decoration-clone bg-[#FDE2D2] px-1.5 pb-0.5 text-[#8B1E1E]"
+        >senjata brutal penyelamat & pendongkrak bibit sawit</span
+      > yang bikin bonggol gemuk dan daun hijau pekat!
+    </h2>
+    <p class={`${body} mt-3`}>
+      Kerjanya ganas ke dua arah sekaligus: sikat tuntas jamur penyebab busuk pucuk & bercak daun, lalu paksa akar
+      bibit kembali rakus menyerap nutrisi sampai bibit melesat seragam siap tanam.
+    </p>
+    <div class="mt-6 grid gap-2.5">
+      <div class="rounded-md border border-[#8B1E1E]/15 bg-[#FFF6F2] p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Hajar tuntas busuk pucuk & bercak daun</strong> (jamur pembibitan)
+            sebelum menular dan menghabisi satu bedengan polybag.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-md border border-slate-200 bg-white p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Bongkar bibit kerdil & kuning pucat</strong> agar pucuk tombak baru
+            langsung melesat keluar hijau mengilap dan tidak bengkok.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-md border border-[#8B1E1E]/15 bg-[#FFF6F2] p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:zap" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Ledakkan akar serabut & gemukkan bonggol</strong> sejak polybag kecil sampai
+            polybag besar supaya bibit tahan stres saat pindah tanam ke lahan.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-[#8B1E1E]/10 bg-[#FFF7ED] px-5 py-9">
+    <h2 class={sectionTitle}>
+      Kalau 4 tanda ini muncul di polybag, pembibitan Anda sudah <span
+        class="text-[#9A3412] underline decoration-orange-200 decoration-4 underline-offset-4">mode bahaya merah</span
+      >
+    </h2>
+    <div class="mt-6 grid gap-4">
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Pucuk tombak layu, kecokelatan, dan membusuk</strong> — kalau ditarik langsung
+          lepas dan berbau, bibit tinggal tunggu hari mati.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Bercak cokelat/hitam & ujung daun gosong kering</strong> yang merembet cepat
+          dari satu polybag ke sebelahnya saat hujan atau lembap.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Bibit kerdil, daun kuning pucat, batang kurus</strong> padahal sudah rutin
+          dikasih NPK — tanda akar mogok dan media polybag stres.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Bibit syok habis pindah ke polybag besar</strong> — daun
+          menggulung, kusam, dan pertumbuhan macet berbulan-bulan.
+        </p>
+      </div>
+    </div>
+    <p class="mt-5 border-l-[3px] border-[#9A3412] bg-white px-3.5 py-2.5 text-[13.5px] font-medium leading-snug text-slate-800">
+      <strong class="text-[#9A3412]">Jangan tunggu menular satu bedengan:</strong> sekali kecambah & bibit jatuh jadi
+      afkir, uang modal + waktu rawat berbulan-bulan langsung hangus tak bersisa.
+    </p>
+  </section>
+
+  <section class="border-t border-slate-100 px-5 py-9">
+    <h2 class={sectionTitle}>
+      Kenapa bibit tetap mati <span class="box-decoration-clone bg-[#FDE2D2] px-1.5 pb-0.5 text-[#8B1E1E]"
+        >meski sudah dihajar pupuk kimia?</span
+      >
+    </h2>
+    <p class={`${body} mt-3 mb-5`}>
+      Pupuk kimia biasa cuma menumpuk garam di polybag sempit. Saat akar bibit terbakar atau jamur perusak sudah masuk
+      ke pucuk, tambah pupuk malah bikin bibit makin sekarat. Yang dibutuhkan itu <strong class="text-slate-950"
+        >bersihkan jamur perusak + pulihkan akar + nutrisi organik cepat serap</strong
+      >.
+    </p>
+    <div class="grid gap-3.5">
+      <figure class="relative overflow-hidden border border-slate-200 bg-white">
+        <img
+          src="/images/landing/aussie-bibit-sawit/bibit-sekarat.webp"
+          width="840"
+          height="560"
+          alt="Bibit sawit sekarat di polybag akibat busuk pucuk dan bercak daun"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="absolute left-3 top-3 rounded-sm bg-[#9A3412] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-sm"
+        >
+          Bibit Sekarat & Kerdil
+        </figcaption>
+      </figure>
+      <figure class="relative overflow-hidden border border-slate-200 bg-white">
+        <img
+          src="/images/landing/aussie-bibit-sawit/akar-nutrisi.webp"
+          width="840"
+          height="560"
+          alt="Bibit sawit sehat dengan bonggol gemuk, daun hijau pekat, dan akar aktif"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="absolute left-3 top-3 rounded-sm bg-[#15803D] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-sm"
+        >
+          Akar Aktif & Bonggol Gemuk
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="border-t border-[#8B1E1E]/20 bg-[#2B0B0B] px-5 py-9 text-white">
+    <p class="mb-2 text-[11px] font-semibold uppercase tracking-widest text-[#FBBF24]">
+      Panduan Wajib Pembibitan
+    </p>
+    <h2 class="text-[24px] font-bold leading-[1.16] tracking-tight text-white">
+      Cara Pakai Khusus Bibit Sawit: <span class="text-[#FDE2D2]">Takaran & Waktu Pemakaian</span>
+    </h2>
+    <p class="mt-2.5 mb-5 text-[14px] leading-relaxed text-slate-300">
+      Dosis bibit di polybag <strong class="text-white">BERBEDA</strong> dengan sawit dewasa. Ikuti takaran presisi di
+      bawah ini supaya bibit langsung ngebut pulih tanpa risiko overdosis!
+    </p>
+
+    <div class="-mx-5 grid gap-3">
+      <div class="relative overflow-hidden bg-slate-900">
+        <img
+          src="/images/landing/aussie-bibit-sawit/sebelum-perawatan.webp"
+          width="840"
+          height="560"
+          alt="Barisan bibit sawit polybag kuning dan tidak seragam sebelum perawatan"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div
+          class="absolute left-3.5 top-3.5 rounded-sm bg-[#9A3412] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow"
+        >
+          Sebelum
+        </div>
+      </div>
+      <div class="relative overflow-hidden bg-slate-900">
+        <img
+          src="/images/landing/aussie-bibit-sawit/setelah-perawatan.webp"
+          width="840"
+          height="560"
+          alt="Barisan bibit sawit polybag hijau pekat, bonggol kokoh, dan seragam"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div
+          class="absolute left-3.5 top-3.5 rounded-sm bg-[#15803D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow"
+        >
+          Setelah Perawatan
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-7 space-y-5">
+      <!-- Step 1 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FBBF24] text-[#2B0B0B]">
+            <Icon name="lucide:droplets" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+          <span class="mt-2 w-px flex-1 bg-white/15" aria-hidden="true"></span>
+        </div>
+        <div class="flex-1 pb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FBBF24]">Langkah 01</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Semprot Daun & Pucuk</h3>
+          <div class="mt-2.5 grid grid-cols-2 gap-2">
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">Pre-Nursery (0–3 bln)</p>
+              <p class="mt-1 text-[17px] font-extrabold leading-none text-[#FDE2D2]">2–3 ml / L</p>
+              <p class="mt-1 text-[11px] text-slate-400">30–45 ml / tangki 15L</p>
+            </div>
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">Main Nursery (3–12 bln)</p>
+              <p class="mt-1 text-[17px] font-extrabold leading-none text-[#FDE2D2]">4–5 ml / L</p>
+              <p class="mt-1 text-[11px] text-slate-400">60–75 ml / tangki 15L</p>
+            </div>
+          </div>
+          <p class="mt-2 text-[12.5px] text-slate-300">Semprot kabut halus merata ke daun, bawah pelepah & pucuk.</p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FBBF24] text-[#2B0B0B]">
+            <Icon name="lucide:sprout" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+          <span class="mt-2 w-px flex-1 bg-white/15" aria-hidden="true"></span>
+        </div>
+        <div class="flex-1 pb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FBBF24]">Langkah 02</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Kocor Akar & Bonggol</h3>
+          <div class="mt-2.5 bg-[#8B1E1E]/60 px-3 py-2">
+            <span class="text-[15px] font-extrabold text-white">5 ml / 1 L air</span>
+            <span class="ml-1.5 text-[12px] text-[#FDE2D2]">(100 ml / 20 L air)</span>
+          </div>
+          <div class="mt-2 grid grid-cols-2 gap-2">
+            <div class="bg-white/8 px-3 py-2">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">Pre-Nursery</p>
+              <p class="mt-0.5 text-[13.5px] font-bold text-white">50–100 ml <span class="font-normal text-slate-300">/polybag</span></p>
+            </div>
+            <div class="bg-white/8 px-3 py-2">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">Main Nursery</p>
+              <p class="mt-0.5 text-[13.5px] font-bold text-white">150–200 ml <span class="font-normal text-slate-300">/polybag</span></p>
+            </div>
+          </div>
+          <p class="mt-2 text-[12.5px] text-slate-300">Siram pangkal bonggol saat kondisi media polybag lembap.</p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FBBF24] text-[#2B0B0B]">
+            <Icon name="lucide:calendar-sync" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+        </div>
+        <div class="flex-1">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FBBF24]">Langkah 03</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Waktu & Jadwal Pakai</h3>
+          <div class="mt-2.5 bg-white/10 px-3 py-2 text-[12.5px] text-slate-100">
+            <strong class="text-[#FBBF24]">Pagi 06.30–09.00</strong> atau <strong class="text-[#FBBF24]">Sore 15.30–17.30 WIB</strong>
+            <span class="block text-[11px] text-slate-300">Hindari terik siang & hujan deras</span>
+          </div>
+          <div class="mt-2 grid grid-cols-2 gap-2">
+            <div class="bg-[#8B1E1E]/55 px-3 py-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wide text-[#FBBF24]">Bibit Sakit (Obat)</p>
+              <p class="mt-0.5 text-[15px] font-extrabold text-white">Tiap 5–7 hari</p>
+              <p class="mt-0.5 text-[11px] text-slate-200">3–4 putaran sampai pulih</p>
+            </div>
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wide text-slate-300">Perawatan Rutin</p>
+              <p class="mt-0.5 text-[15px] font-extrabold text-white">Tiap 10–14 hari</p>
+              <p class="mt-0.5 text-[11px] text-slate-300">Sampai siap tanam lahan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white px-5 py-10">
+    <h2 class={sectionTitle}>
+      Dipakai saat bibit di polybag mulai <span class="box-decoration-clone bg-[#FDE2D2] px-1.5 pb-0.5 text-[#8B1E1E]"
+        >kuning, kerdil & busuk pucuk</span
+      >
+    </h2>
+    <p class={`${body} mt-2.5 mb-8`}>
+      Begitu bibit mulai rontok di bedengan, petani pembibitan butuh hasil nyata — bukan sekadar tambah NPK lalu pasrah
+      melihat polybag mati satu per satu.
+    </p>
+
+    <div class="space-y-9">
+      <article>
+        <img
+          src="/images/landing/aussie-bibit-sawit/testimoni-1.webp"
+          width="840"
+          height="560"
+          alt="Petani sawit menunjukkan pucuk baru bibit polybag yang pulih hijau segar"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Pak Hendra
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Pelalawan, Riau · Busuk Pucuk Bibit</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Lebih dari 40 polybag saya tadinya <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >pucuk tombaknya layu dan mulai busuk</strong
+          > habis hujan terus. Saya semprot + kocor AUSSIE pakai takaran bibit tiap 5 hari, <strong class="text-[#8B1E1E]"
+            >pucuk baru langsung keluar hijau tegak</strong
+          > dan penularannya berhenti total.”
+        </p>
+      </article>
+
+      <article>
+        <img
+          src="/images/landing/aussie-bibit-sawit/testimoni-2.webp"
+          width="840"
+          height="560"
+          alt="Deretan bibit sawit polybag dengan bonggol gemuk dan daun hijau pekat"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Dedi Kurniawan
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Ketapang, Kalbar · Bibit Kuning & Kerdil</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Bibit umur 6 bulan macet, <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >daun kuning pucat dan batang kurus</strong
+          > padahal NPK rutin. Begitu dikocor AUSSIE 5 ml/liter, 3 minggu kemudian <strong class="text-[#8B1E1E]"
+            >bonggol makin gemuk, warna daun hijau pekat</strong
+          > dan tingginya cepat seragam.”
+        </p>
+      </article>
+
+      <article>
+        <img
+          src="/images/landing/aussie-bibit-sawit/testimoni-3.webp"
+          width="840"
+          height="560"
+          alt="Petani memegang bibit sawit polybag sehat siap tanam setelah perawatan"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              H. Sutrisno
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Musi Banyuasin, Sumsel · Bercak Daun & Stres</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Habis pindah ke polybag besar, <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >banyak yang stres dan muncul bercak gosong</strong
+          >. Rutin semprot pagi pakai AUSSIE, <strong class="text-[#8B1E1E]"
+            >daun baru bersih tanpa bercak dan bibit siap tanam jauh lebih kuat</strong
+          > waktu masuk lahan.”
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 px-5 py-9">
+    <h2 class={sectionTitle}>
+      Bukti Chat Petani Sawit yang <span class="text-[#9A3412]">Sudah Pakai AUSSIE</span>
+    </h2>
+    <p class={`${body} mt-2.5 mb-5`}>
+      Kirim kondisi bibit di polybag Anda, pilih paket, lalu admin langsung bantu proses pesanan dan pendampingan
+      takaran pertama.
+    </p>
+    <div class="grid grid-cols-2 gap-2.5">
+      {
+        [1, 2, 3, 4].map((n) => (
+          <img
+            src={`/images/landing/aussie/wa${n}.webp`}
+            width="520"
+            height="680"
+            alt={`Screenshot WhatsApp testimoni petani sawit pengguna Aussie ${n}`}
+            loading="lazy"
+            decoding="async"
+            class="aspect-[9/16] w-full rounded border border-slate-200 object-cover"
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-[#8B1E1E]/10 bg-[#FFF6F2] px-5 py-9">
+    <div class="mb-4 flex items-center gap-2">
+      <span
+        class="flex h-5 w-5 items-center justify-center rounded-sm bg-[#9A3412] text-white"
+        ><Icon name="lucide:badge-alert" class="h-3.5 w-3.5" aria-hidden="true" /></span
+      >
+      <p class="text-[11px] font-semibold uppercase tracking-widest text-[#8B1E1E]">Product Knowledge</p>
+    </div>
+    <h2 class="text-[26px] font-bold leading-[1.14] tracking-tight text-slate-950">
+      AUSSIE Sawit: <span class="inline-block rounded-sm bg-[#FDE2D2] px-2 py-0.5 leading-none text-[#8B1E1E]"
+        >Formula 3-in-1 Pembibitan</span
+      >
+    </h2>
+    <p class="mt-3 text-[15px] leading-relaxed text-slate-700">
+      <strong class="text-slate-950">Satu botol untuk tiga kerja ganas di polybag:</strong> tumpas jamur & bakteri
+      perusak, hidupkan akar serabut muda, dan pacu tunas serta bonggol bibit sawit secara organik tanpa bikin akar
+      terbakar.
+    </p>
+    <div class="mt-6">
+      <figure>
+        <img
+          src="/images/landing/aussie/produk.webp"
+          width="480"
+          height="600"
+          alt="Botol AUSSIE perawatan dan pengobatan bibit kelapa sawit"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full rounded border border-slate-200 object-cover"
+        />
+        <figcaption class="mt-3 border-l-4 border-[#8B1E1E] pl-3">
+          <h3 class="text-[16px] font-bold text-slate-950">100% Organik, Aman untuk Akar Bibit</h3>
+          <p class="mt-1 text-[14px] leading-relaxed text-slate-600">
+            Cepat diserap pori daun dan akar serabut muda tanpa bikin media polybag asam atau daun terbakar bila dipakai
+            sesuai takaran bibit.
+          </p>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="mt-7 grid gap-4 border-t border-[#8B1E1E]/15 pt-6">
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Kunci Mati Jamur Pembibitan.</strong> Hentikan penyebaran busuk
+          pucuk dan bercak daun sebelum menghabisi seluruh bedengan.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Pacu Bonggol Gemuk & Daun Hijau Pekat.</strong> Bikin bibit
+          kuning dan kerdil cepat mengejar tinggi seragam siap tanam.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:droplets" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Super Irit untuk Ratusan Polybag.</strong> Takaran bibit hanya
+          2–5 ml/liter air — 1 botol cukup untuk ratusan hingga ribuan bibit per aplikasi.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:calendar-sync" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Siap Tempur Saat Pindah Tanam.</strong> Kurangi stres pindah
+          polybag kecil ke polybag besar maupun saat tanam ke lahan.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-white">
+    <div class="flex items-center justify-between bg-slate-950 px-5 py-2.5 text-white">
+      <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest">
+        <Icon name="lucide:shield-check" class="h-3.5 w-3.5 text-[#FBBF24]" aria-hidden="true" />
+        Jaminan Belanja Aman
+      </span>
+      <span class="text-[10px] font-medium uppercase tracking-wider text-slate-400">Resmi</span>
+    </div>
+
+    <div class="grid grid-cols-3 divide-x divide-slate-200 text-center">
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#FFF6F2] text-[#8B1E1E]">
+          <Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">100% Original</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Tersegel resmi, bukan oplosan</p>
+      </div>
+
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#FFF6F2] text-[#8B1E1E]">
+          <Icon name="lucide:hand-coins" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">Bisa COD</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Bayar di rumah saat sampai</p>
+      </div>
+
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#FFF6F2] text-[#8B1E1E]">
+          <Icon name="lucide:wallet-cards" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">Retur via CS</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Foto paket & no. pesanan</p>
+      </div>
+    </div>
+
+    <p class="border-t border-slate-200 bg-slate-50 px-5 py-2.5 text-center text-[11px] text-slate-600">
+      Order resmi Petani Sejahtera — dikonfirmasi admin sebelum paket dikirim.
+    </p>
+  </section>
+
+  <section id="checkout" class="bg-white py-7">
+    <div class="px-5 pb-5 text-center">
+      <div class="mx-auto mb-2.5 flex justify-center text-[#8B1E1E]">
+        <Icon name="lucide:arrow-down" class="h-7 w-7 animate-bounce motion-reduce:animate-none" aria-hidden="true" />
+      </div>
+      <h2 class="text-[22px] font-extrabold leading-tight tracking-tight text-slate-950">Lengkapi Pemesanan</h2>
+      <p class="mx-auto mt-1.5 max-w-[330px] text-[13.5px] leading-snug text-slate-600">
+        Pilih ukuran botol & isi alamat lengkap — panduan takaran bibit ikut dikirim bareng paket.
+      </p>
+    </div>
+    <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+  </section>
+</PetaniSejahteraLandingShell>

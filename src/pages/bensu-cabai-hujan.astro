@@ -1,0 +1,606 @@
+---
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import PetaniSejahteraLandingShell from '../components/storefront/landing-pages/PetaniSejahteraLandingShell.astro';
+import Icon from '../components/storefront/shared/Icon.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+
+export const prerender = false;
+
+const product = await getStorefrontProduct(Astro.locals, 'bensu');
+if (!product) return Astro.rewrite('/404');
+
+const sectionTitle = 'text-[23px] font-bold leading-[1.18] tracking-tight text-[#0F2A5F]';
+const body = 'text-[15px] leading-relaxed text-slate-600';
+const listIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#0F2A5F]';
+const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#B91C1C]';
+---
+
+<PetaniSejahteraLandingShell
+  slug="bensu-cabai-hujan"
+  product={product}
+  title="BENSU Cabai Musim Hujan - Cegah Patek, Rontok & Layu Rendeng"
+  description="Jaga cabai besar dan rawit di musim hujan ekstrem dari patek, bunga rontok, dan layu dengan BENSU. Lengkap takaran & jadwal pakai, bisa COD."
+  image="/images/landing/bensu-cabai-hujan/hero-petani.webp"
+>
+  <section class="flex flex-col gap-4 bg-white pb-6 pt-[max(1.5rem,env(safe-area-inset-top))] text-left text-slate-950">
+    <div class="px-5">
+      <h1 class="text-[clamp(22px,6vw,26px)] font-extrabold leading-[1.18] tracking-tight text-slate-950">
+        Cabai Patek, Busuk Buah & Rontok Dihajar Hujan?{' '}
+        <span
+          class="box-decoration-clone px-0.5 text-[#0F2A5F]"
+          style="background-image: linear-gradient(to top, #FFD84D 0.24em, rgba(255,216,77,0) 0.24em); background-repeat: no-repeat; background-position: 0 94%; background-size: 100% 100%;"
+        >
+          Selamatkan Panen Emas Desember Sebelum Lahan Ludes Digilas Musim Rendeng!
+        </span>
+      </h1>
+      <p class="mt-3 text-[clamp(14px,3.6vw,15px)] font-medium leading-relaxed text-slate-700">
+        Harga cabai musim hujan lagi puncak-puncaknya — biarkan patek & rontok seminggu saja,{' '}
+        <span class="box-decoration-clone bg-[#FFD84D]/45 px-1 font-bold text-slate-950">
+          satu bedengan busuk menular dan peluang untung besar langsung hangus!
+        </span>
+      </p>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="relative overflow-hidden border-y border-slate-200 bg-slate-100">
+        <img
+          src="/images/landing/bensu-cabai-hujan/hero-petani.webp"
+          width="800"
+          height="800"
+          alt="Petani cabai memeriksa buah cabai patek busuk dan daun layu di bedengan basah musim hujan"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          class="aspect-square w-full object-cover"
+        />
+      </div>
+
+      <div class="grid grid-cols-3 divide-x divide-slate-200 border-b border-slate-200 bg-slate-50 text-center">
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Patek / Busuk</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Bercak hitam menular</p>
+        </div>
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Bunga Rontok</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Gugur kena hujan</p>
+        </div>
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Layu Becek</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Akar stres & kuning</p>
+        </div>
+      </div>
+
+      <div class="px-4 pt-4">
+        <div class="border border-slate-200 border-l-[3px] border-l-[#0F2A5F] bg-white px-4 py-3">
+          <h2 class="text-[14px] font-bold leading-snug text-slate-950">
+            Musim hujan ekstrem bikin kulit buah lembek & akar cepat lumpuh di bedengan becek.
+          </h2>
+          <p class="mt-1 text-[13px] leading-snug text-slate-600">
+            Jangan cuma mengandalkan semprot biasa — wajib{' '}
+            <strong class="font-semibold text-[#0F2A5F]">tebalkan kulit buah + kunci bunga & bangunkan akar sekaligus</strong>{' '}
+            pakai BENSU sebelum kebun cabai rendeng ludes dihajar patek!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-slate-100 px-5 py-9">
+    <h2 class={sectionTitle}>
+      BENSU bukan nutrisi biasa. Ini <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
+        >booster brutal penjaga panen cabai rendeng</span
+      > biar buah mulus tebal, bunga lengket, dan batang kebal cuaca ekstrem!
+    </h2>
+    <p class={`${body} mt-3`}>
+      Dirancang untuk kondisi kebun paling kejam saat curah hujan tinggi: paksa kulit buah & daun jadi tebal keras,
+      bangunkan akar yang syok di tanah becek, dan jaga cabai besar maupun rawit tetap panen ramai berkali-kali.
+    </p>
+    <div class="mt-6 grid gap-2.5">
+      <div class="rounded-md border border-[#0F2A5F]/15 bg-[#EFF6FF]/60 p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Bentengi kulit buah & daun dari patek / busuk buah</strong> — kulit buah
+            lebih tebal keras sehingga bibit jamur patek tidak gampang menembus buah saat lembap ekstrem.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-md border border-slate-200 bg-white p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:flower-2" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Kunci tangkai bunga & pentil anti-rontok</strong> — bikin bunga menempel
+            kuat jadi buah lebat, tidak habis berguguran setiap kali diguyur hujan angin.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-md border border-[#0F2A5F]/15 bg-[#EFF6FF]/60 p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Bangunkan akar yang syok di bedengan basah</strong> supaya serapan kalsium &
+            pupuk dasar kembali lancar tanpa bikin tanaman layu mendadak.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-red-100 bg-[#FEF2F2]/60 px-5 py-9">
+    <h2 class="text-[23px] font-bold leading-[1.18] tracking-tight text-[#991B1B]">
+      Kalau 4 tanda ini muncul di bedengan cabai, lahan Anda sudah <span
+        class="underline decoration-red-200 decoration-4 underline-offset-4">mode darurat rendeng</span
+      >
+    </h2>
+    <div class="mt-6 grid gap-4">
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Bercak cekung cokelat/hitam (patek) di kulit buah</strong> — sehari muncul di
+          beberapa pohon, seminggu kemudian bisa merembet menghabisi satu petak.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Bunga dan pentil cabai rontok massal di atas mulsa</strong> setiap selesai
+          hujan deras — pohon rimbun tapi buah kosong.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Daun mulai menguning, keriting, atau layu siang hari</strong> karena tanah
+          jadi asam dan akar kesulitan bernapas di bedengan lembap.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Buah lembek, cepat busuk ujung, dan bobot ringan</strong> saat dipetik —
+          langsung ditolak tengkulak atau jatuh harga di pasar.
+        </p>
+      </div>
+    </div>
+    <p class="mt-5 border-l-[3px] border-[#991B1B] bg-white px-3.5 py-2.5 text-[13.5px] font-medium leading-snug text-slate-800">
+      <strong class="text-[#991B1B]">Musim rendeng cuma datang sekali setahun:</strong> kalau patek & rontok dibiarkan
+      lewat 5 hari, kebun tetangga panen harga tinggi sementara petak Anda habis disortir busuk.
+    </p>
+  </section>
+
+  <section class="border-t border-slate-100 px-5 py-9">
+    <h2 class={sectionTitle}>
+      Kenapa cabai tetap rontok & patek <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
+        >meski sudah disemprot fungisida rutin?</span
+      >
+    </h2>
+    <p class={`${body} mt-3 mb-5`}>
+      Air hujan tinggi mencuci nutrisi & bikin tanah jadi asam, membuat <strong class="text-slate-950"
+        >kulit buah cabai tipis lembek dan akar stres tidak sanggup menyedot kalsium</strong
+      >. Fungisida saja tidak cukup kalau fisik tanamannya lemah — wajib didampingi{' '}
+      <strong class="text-slate-950">booster pengeras kulit buah, pengunci bunga, dan pemulih akar aktif</strong>{' '}
+      seperti BENSU.
+    </p>
+    <div class="grid gap-3.5">
+      <figure class="relative overflow-hidden border border-slate-200 bg-white">
+        <img
+          src="/images/landing/bensu-cabai-hujan/patek-rontok.webp"
+          width="840"
+          height="560"
+          alt="Buah cabai terserang bercak busuk patek dan bunga rontok di atas mulsa basah"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="absolute left-3 top-3 rounded-sm bg-[#991B1B] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-sm"
+        >
+          Patek & Rontok Musim Hujan
+        </figcaption>
+      </figure>
+      <figure class="relative overflow-hidden border border-slate-200 bg-white">
+        <img
+          src="/images/landing/bensu-cabai-hujan/buah-tebal.webp"
+          width="840"
+          height="560"
+          alt="Dompolan buah cabai besar dan rawit mulus mengilap, kulit tebal tanpa bercak patek"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="absolute left-3 top-3 rounded-sm bg-[#15803D] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-sm"
+        >
+          Kulit Buah Tebal & Tangkai Kuat
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="border-t border-[#0F2A5F]/20 bg-[#0A1D42] px-5 py-9 text-white">
+    <p class="mb-2 text-[11px] font-semibold uppercase tracking-widest text-[#FACC15]">
+      Panduan Wajib Cabai Rendeng
+    </p>
+    <h2 class="text-[24px] font-bold leading-[1.16] tracking-tight text-white">
+      Cara Pakai Khusus Cabai Musim Hujan: <span class="text-[#DBEAFE]">Takaran & Jadwal</span>
+    </h2>
+    <p class="mt-2.5 mb-5 text-[14px] leading-relaxed text-slate-300">
+      Ikuti 3 langkah presisi ini supaya cabai besar & rawit tetap kokoh panen saat curah hujan ekstrem!
+    </p>
+
+    <div class="-mx-5 grid gap-3">
+      <div class="relative overflow-hidden bg-slate-900">
+        <img
+          src="/images/landing/bensu-cabai-hujan/sebelum-perawatan.webp"
+          width="840"
+          height="560"
+          alt="Bedengan cabai lesu, kuning, dan daun keriting saat musim hujan sebelum BENSU"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div
+          class="absolute left-3.5 top-3.5 rounded-sm bg-[#991B1B] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow"
+        >
+          Sebelum
+        </div>
+      </div>
+      <div class="relative overflow-hidden bg-slate-900">
+        <img
+          src="/images/landing/bensu-cabai-hujan/setelah-perawatan.webp"
+          width="840"
+          height="560"
+          alt="Barisan cabai hijau tegak dan berbuah lebat mulus di bedengan mulsa setelah BENSU"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div
+          class="absolute left-3.5 top-3.5 rounded-sm bg-[#15803D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow"
+        >
+          Setelah Perawatan
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-7 space-y-5">
+      <!-- Step 1 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0A1D42]">
+            <Icon name="lucide:droplets" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+          <span class="mt-2 w-px flex-1 bg-white/15" aria-hidden="true"></span>
+        </div>
+        <div class="flex-1 pb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 01</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Semprot Daun, Bunga & Buah</h3>
+          <div class="mt-2.5 grid grid-cols-2 gap-2">
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">Masa Tumbuh / Muda</p>
+              <p class="mt-1 text-[17px] font-extrabold leading-none text-[#DBEAFE]">3 ml / L</p>
+              <p class="mt-1 text-[11px] text-slate-400">45 ml / tangki 15L</p>
+            </div>
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">Berbunga & Berbuah</p>
+              <p class="mt-1 text-[17px] font-extrabold leading-none text-[#DBEAFE]">4–5 ml / L</p>
+              <p class="mt-1 text-[11px] text-slate-400">60–75 ml / tangki 15L</p>
+            </div>
+          </div>
+          <p class="mt-2 text-[12.5px] text-slate-300">
+            Semprot kabut halus ke bawah daun, tangkai bunga & buah (tambahkan perekat saat musim hujan).
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0A1D42]">
+            <Icon name="lucide:sprout" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+          <span class="mt-2 w-px flex-1 bg-white/15" aria-hidden="true"></span>
+        </div>
+        <div class="flex-1 pb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 02</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Kocor Pangkal Akar (Lahan Becek)</h3>
+          <div class="mt-2.5 bg-[#1E3A8A]/70 px-3 py-2">
+            <span class="text-[15px] font-extrabold text-white">5 ml / 1 L air</span>
+            <span class="ml-1.5 text-[12px] text-[#DBEAFE]">(100 ml / 20 L air)</span>
+          </div>
+          <p class="mt-2 text-[12.5px] text-slate-300">
+            Kocor <strong class="text-white">100–150 ml per lubang tanam</strong> saat hujan reda agar akar tetap aktif
+            menyerap kalsium & nutrisi dasar.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0A1D42]">
+            <Icon name="lucide:calendar-sync" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+        </div>
+        <div class="flex-1">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 03</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Waktu & Jadwal Musim Hujan</h3>
+          <div class="mt-2.5 bg-white/10 px-3 py-2 text-[12.5px] text-slate-100">
+            <strong class="text-[#FACC15]">Pagi 06.30–09.00 WIB</strong> saat hujan reda & daun mulai kering
+            <span class="block text-[11px] text-slate-300">Tetap dampingi fungisida & kalsium kebun di jadwal terpisah</span>
+          </div>
+          <div class="mt-2 grid grid-cols-2 gap-2">
+            <div class="bg-[#1E3A8A]/65 px-3 py-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wide text-[#FACC15]">Darurat Patek / Rontok</p>
+              <p class="mt-0.5 text-[15px] font-extrabold text-white">Tiap 4–5 hari</p>
+              <p class="mt-0.5 text-[11px] text-slate-200">3–4 putaran sampai stabil</p>
+            </div>
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wide text-slate-300">Proteksi Rendeng</p>
+              <p class="mt-0.5 text-[15px] font-extrabold text-white">Tiap 7–10 hari</p>
+              <p class="mt-0.5 text-[11px] text-slate-300">Rutin sepanjang musim hujan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white px-5 py-10">
+    <h2 class={sectionTitle}>
+      Dipakai petani cabai saat musim hujan mulai <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
+        >memicu patek, rontok & layu</span
+      >
+    </h2>
+    <p class={`${body} mt-2.5 mb-8`}>
+      Di musim rendeng, yang paling mahal bukan harga obatnya — tapi panen yang hilang saat harga cabai sedang tinggi.
+    </p>
+
+    <div class="space-y-9">
+      <article>
+        <img
+          src="/images/landing/bensu-cabai-hujan/testi-petani-1.webp"
+          width="840"
+          height="560"
+          alt="Petani cabai memegang keranjang penuh panen cabai merah mulus tanpa patek"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Pak Slamet
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Magelang, Jawa Tengah · Cabai Besar Patek</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Hujan tiap sore bikin <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >buah cabai mulai kena bercak patek dan bunga banyak gugur</strong
+          >. Setelah rutin saya dampingi BENSU tiap 5 hari, <strong class="text-[#0F2A5F]"
+            >buah baru kulitnya lebih tebal, mulus mengilap, dan petikan tetap ramai</strong
+          > pas harga lagi bagus.”
+        </p>
+      </article>
+
+      <article>
+        <img
+          src="/images/landing/bensu-cabai-hujan/testi-petani-2.webp"
+          width="840"
+          height="560"
+          alt="Ranting cabai rawit dan besar berbuah lebat mengilap tanpa bercak busuk"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Kang Asep
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Garut, Jawa Barat · Rawit Rontok Hujan</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Rawit saya tadinya <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >pentilnya rontok terus setiap habis hujan angin</strong
+          >. Begitu semprot + kocor BENSU pagi hari, <strong class="text-[#0F2A5F]"
+            >tangkai bunga jauh lebih kuat, buah jadi lebat, dan tunas baru terus keluar</strong
+          >.”
+        </p>
+      </article>
+
+      <article>
+        <img
+          src="/images/landing/bensu-cabai-hujan/testi-petani-3.webp"
+          width="840"
+          height="560"
+          alt="Petani berdiri di samping bedengan cabai tinggi hijau subur berbuah lebat"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Pak Ridwan
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Blitar, Jawa Timur · Layu & Lahan Becek</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Bedengan bawah sempat becek sampai <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >daun menguning dan beberapa pohon mulai layu</strong
+          >. Dikocor BENSU rutin seminggu sekali, <strong class="text-[#0F2A5F]"
+            >akar pulih lagi, tanaman balik tegak, dan selamat sampai panen puncak Desember</strong
+          >.”
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 px-5 py-9">
+    <h2 class={sectionTitle}>
+      Bukti Chat Petani yang <span class="text-[#B91C1C]">Sudah Pakai BENSU</span>
+    </h2>
+    <p class={`${body} mt-2.5 mb-5`}>
+      Kirim kondisi kebun cabai Anda, pilih paket, lalu admin bantu proses pesanan dan arahan takaran musim hujan.
+    </p>
+    <div class="grid grid-cols-2 gap-2.5">
+      {
+        [1, 2, 3, 4].map((n) => (
+          <img
+            src={`/images/landing/bensu-jagung/testimoni-${n}.webp`}
+            width="520"
+            height="680"
+            alt={`Screenshot WhatsApp testimoni petani pengguna BENSU ${n}`}
+            loading="lazy"
+            decoding="async"
+            class="aspect-[9/16] w-full rounded border border-slate-200 object-cover"
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-[#0F2A5F]/10 bg-[#EFF6FF]/60 px-5 py-9">
+    <div class="mb-4 flex items-center gap-2">
+      <span class="flex h-5 w-5 items-center justify-center rounded-sm bg-[#0F2A5F] text-white"
+        ><Icon name="lucide:zap" class="h-3.5 w-3.5" aria-hidden="true" /></span
+      >
+      <p class="text-[11px] font-semibold uppercase tracking-widest text-[#0F2A5F]">Product Knowledge</p>
+    </div>
+    <h2 class="text-[26px] font-bold leading-[1.14] tracking-tight text-slate-950">
+      BENSU Hortikultura: <span class="inline-block rounded-sm bg-[#DBEAFE] px-2 py-0.5 leading-none text-[#0F2A5F]"
+        >Perisai Cabai Rendeng</span
+      >
+    </h2>
+    <p class="mt-3 text-[15px] leading-relaxed text-slate-700">
+      <strong class="text-slate-950">Stimulator recovery & penguat jaringan khusus hortikultura:</strong> mendampingi
+      program kalsium dan fungisida kebun agar cabai besar maupun rawit lebih kuat menghadapi hujan ekstrem, patek, dan
+      rontok bunga.
+    </p>
+    <div class="mt-6">
+      <figure>
+        <img
+          src="/images/landing/bensu-jagung/demo-produk.webp"
+          width="840"
+          height="560"
+          alt="Botol BENSU stimulator recovery dan penguat cabai musim hujan"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full rounded border border-slate-200 object-cover"
+        />
+        <figcaption class="mt-3 border-l-4 border-[#0F2A5F] pl-3">
+          <h3 class="text-[16px] font-bold text-slate-950">Cepat Serap & Aman untuk Bunga Cabai</h3>
+          <p class="mt-1 text-[14px] leading-relaxed text-slate-600">
+            Takaran irit 3–5 ml/liter air — bantu menjaga kesehatan daun, tangkai bunga, kulit buah, dan akar di tanah
+            lembap.
+          </p>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="mt-7 grid gap-4 border-t border-[#0F2A5F]/15 pt-6">
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Pertebal Dinding Sel Buah & Daun.</strong> Bantu tekan risiko
+          patek dan busuk ujung buah saat kelembapan tinggi.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:flower-2" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Tahan Rontok Bunga & Pentil.</strong> Menopang tangkai bunga agar
+          tetap jadi buah lebat meski diguyur hujan deras.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Pulihkan Akar di Bedengan Basah.</strong> Membantu akar tetap
+          aktif menyedot kalsium dan pupuk dasar saat pH tanah turun.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:calendar-sync" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Cocok Dampingi SOP Fungisida & Kalsium.</strong> Melengkapi
+          perawatan cabai besar & rawit sepanjang musim hujan Desember.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-white">
+    <div class="flex items-center justify-between bg-slate-950 px-5 py-2.5 text-white">
+      <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest">
+        <Icon name="lucide:shield-check" class="h-3.5 w-3.5 text-[#FACC15]" aria-hidden="true" />
+        Jaminan Belanja Aman
+      </span>
+      <span class="text-[10px] font-medium uppercase tracking-wider text-slate-400">Resmi</span>
+    </div>
+
+    <div class="grid grid-cols-3 divide-x divide-slate-200 text-center">
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#EFF6FF] text-[#0F2A5F]">
+          <Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">100% Original</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Tersegel resmi, bukan oplosan</p>
+      </div>
+
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#EFF6FF] text-[#0F2A5F]">
+          <Icon name="lucide:hand-coins" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">Bisa COD</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Bayar di rumah saat sampai</p>
+      </div>
+
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#EFF6FF] text-[#0F2A5F]">
+          <Icon name="lucide:wallet-cards" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">Retur via CS</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Foto paket & no. pesanan</p>
+      </div>
+    </div>
+
+    <p class="border-t border-slate-200 bg-slate-50 px-5 py-2.5 text-center text-[11px] text-slate-600">
+      Order resmi Petani Sejahtera — dikonfirmasi admin sebelum paket dikirim.
+    </p>
+  </section>
+
+  <section id="checkout" class="bg-white py-7">
+    <div class="px-5 pb-5 text-center">
+      <div class="mx-auto mb-2.5 flex justify-center text-[#0F2A5F]">
+        <Icon name="lucide:arrow-down" class="h-7 w-7 animate-bounce motion-reduce:animate-none" aria-hidden="true" />
+      </div>
+      <h2 class="text-[22px] font-extrabold leading-tight tracking-tight text-slate-950">Lengkapi Pemesanan</h2>
+      <p class="mx-auto mt-1.5 max-w-[330px] text-[13.5px] leading-snug text-slate-600">
+        Pilih ukuran botol & isi alamat lengkap — panduan takaran cabai musim hujan ikut dikirim bareng paket.
+      </p>
+    </div>
+    <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+  </section>
+</PetaniSejahteraLandingShell>

@@ -9,505 +9,597 @@ export const prerender = false;
 const product = await getStorefrontProduct(Astro.locals, 'bensu');
 if (!product) return Astro.rewrite('/404');
 
-const sectionTitle = 'text-[26px] font-bold leading-[1.16] tracking-tight text-slate-950';
-const listIcon = 'mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center text-[#0F2A5F]';
-const dangerIcon = 'mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center text-red-600';
+const sectionTitle = 'text-[23px] font-bold leading-[1.18] tracking-tight text-[#0F2A5F]';
+const body = 'text-[15px] leading-relaxed text-slate-600';
+const listIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#0F2A5F]';
+const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#B91C1C]';
 ---
 
 <PetaniSejahteraLandingShell
   slug="bensu-jagung"
   product={product}
-  title="Bensu Jagung - Bantu Jagung Kuning dan Pertumbuhan Mandek"
-  description="Landing page Bensu Jagung untuk membantu petani memahami opsi perawatan saat jagung tampak kuning, kurang segar, dan pertumbuhannya tidak rata."
-  image="/images/landing/bensu-jagung/hero-utama.webp"
+  title="BENSU Jagung - Pemulihan Jagung Kuning, Kerdil & Tongkol Besar"
+  description="Atasi jagung kuning, kerdil, daun menggulung, dan pertumbuhan macet meski sudah dipupuk dengan BENSU. Lengkap takaran & jadwal pakai, bisa COD."
+  image="/images/landing/bensu-jagung/hero-petani.webp"
 >
-    <section class="pb-8 text-center">
-      <div class="px-5 pt-8">
-        <h1 class="mx-auto max-w-[420px] text-[38px] font-bold leading-[1.1] tracking-tight text-slate-950">
-          Jagung Masih <span class="inline-block -rotate-2 rounded bg-[#FACC15] px-3 py-1 text-slate-900 shadow-sm"
-            >Kuning & Kerdil</span
-          > Meski Sudah Dipupuk?
-        </h1>
-        <p class="mx-auto mt-5 max-w-[380px] text-[16px] font-bold leading-relaxed text-slate-700">
-          Jangan biarkan <span class="text-[#0F2A5F] underline decoration-[#FACC15] decoration-2 underline-offset-4"
-            >gagal panen</span
-          > karena telat penanganan.<br />
-          <span class="text-[#0F2A5F]">Bantu pemulihan tanaman sekarang!</span>
+  <section class="flex flex-col gap-4 bg-white pb-6 pt-[max(1.5rem,env(safe-area-inset-top))] text-left text-slate-950">
+    <div class="px-5">
+      <h1 class="text-[clamp(22px,6vw,26px)] font-extrabold leading-[1.18] tracking-tight text-slate-950">
+        Jagung Kuning, Kerdil & Mogok Tumbuh?{' '}
+        <span
+          class="box-decoration-clone px-0.5 text-[#0F2A5F]"
+          style="background-image: linear-gradient(to top, #FFD84D 0.24em, rgba(255,216,77,0) 0.24em); background-repeat: no-repeat; background-position: 0 94%; background-size: 100% 100%;"
+        >
+          Selamatkan Lahan Sebelum Gagal Panen Membakar Modal Anda!
+        </span>
+      </h1>
+      <p class="mt-3 text-[clamp(14px,3.6vw,15px)] font-medium leading-relaxed text-slate-700">
+        Sudah dihajar urea & NPK tapi tetap pucat? Telat tangani fase kritis,{' '}
+        <span class="box-decoration-clone bg-[#FFD84D]/45 px-1 font-bold text-slate-950">
+          batang kurus, tongkol jadi kecil kopong, dan tonase panen anjlok habis!
+        </span>
+      </p>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="relative overflow-hidden border-y border-slate-200 bg-slate-100">
+        <img
+          src="/images/landing/bensu-jagung/hero-petani.webp"
+          width="800"
+          height="800"
+          alt="Petani jagung memeriksa tanaman jagung kuning, kerdil, dan daun menggulung di lahan"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          class="aspect-square w-full object-cover"
+        />
+      </div>
+
+      <div class="grid grid-cols-3 divide-x divide-slate-200 border-b border-slate-200 bg-slate-50 text-center">
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Daun Kuning</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Pucat & menggulung</p>
+        </div>
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Batang Kerdil</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Tinggi tidak rata</p>
+        </div>
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Tongkol Kopong</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Biji jarang & ringan</p>
+        </div>
+      </div>
+
+      <div class="px-4 pt-4">
+        <div class="border border-slate-200 border-l-[3px] border-l-[#0F2A5F] bg-white px-4 py-3">
+          <h2 class="text-[14px] font-bold leading-snug text-slate-950">
+            Jagung stres tidak akan pulih sendiri meski pupuk dasar ditambah terus.
+          </h2>
+          <p class="mt-1 text-[13px] leading-snug text-slate-600">
+            Begitu akar lumpuh dan daun berhenti tumbuh, wajib{' '}
+            <strong class="font-semibold text-[#0F2A5F]">bangunkan paksa lewat serap kilat daun + bongkar akar yang macet</strong>{' '}
+            sekarang juga!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-slate-100 px-5 py-9">
+    <h2 class={sectionTitle}>
+      BENSU bukan pupuk jagung biasa. Ini <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
+        >booster brutal pendobrak jagung kerdil</span
+      > yang bikin batang kokoh dan tongkol meledak berisi!
+    </h2>
+    <p class={`${body} mt-3`}>
+      Kerjanya langsung tembus pori daun dan membangunkan akar yang mogok — memaksa jagung kuning kembali rakus
+      menyerap pupuk dasar sampai tinggi seragam dan siap panen berat.
+    </p>
+    <div class="mt-6 grid gap-2.5">
+      <div class="rounded-md border border-[#0F2A5F]/15 bg-[#EFF6FF]/60 p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:zap" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Sapu bersih daun kuning & pucat</strong> dengan nutrisi cepat serap yang
+            langsung memulihkan hijau daun dan memutus tanaman kerdil.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-md border border-slate-200 bg-white p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Bongkar akar yang lumpuh</strong> akibat tanah asam atau cuaca
+            ekstrem supaya akar kembali ganas menyedot urea & NPK di tanah.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-md border border-[#0F2A5F]/15 bg-[#EFF6FF]/60 p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Pacu batang gemuk & tongkol penuh sampai ujung</strong> — daun lebih tebal
+            dan tegak sehingga jagung tahan panas, hujan deras, dan tidak gampang rebah.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-red-100 bg-[#FEF2F2]/60 px-5 py-9">
+    <h2 class="text-[23px] font-bold leading-[1.18] tracking-tight text-[#991B1B]">
+      Kalau 4 tanda ini muncul di lahan, jagung Anda sudah <span
+        class="underline decoration-red-200 decoration-4 underline-offset-4">mode darurat gagal panen</span
+      >
+    </h2>
+    <div class="mt-6 grid gap-4">
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Daun menguning pucat, bergaris, atau menggulung</strong> di umur 2–5 minggu
+          padahal pupuk kimia sudah masuk penuh.
         </p>
       </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Pertumbuhan belang dan kerdil</strong> — sebagian tinggi, sebagian macet pendek
+          dengan batang kurus mudah rebah.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Stres berat habis hujan deras atau kemarau panas</strong> — ujung daun gosong
+          kering dan tunas baru berhenti keluar.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Bunga keluar terlambat & tongkol kecil kopong</strong> — ujung tongkol banyak
+          biji ompong yang langsung menghancurkan bobot panen.
+        </p>
+      </div>
+    </div>
+    <p class="mt-5 border-l-[3px] border-[#991B1B] bg-white px-3.5 py-2.5 text-[13.5px] font-medium leading-snug text-slate-800">
+      <strong class="text-[#991B1B]">Lewat umur 45 hari sudah terlambat:</strong> sekali jagung telanjur keluar bunga
+      dalam kondisi kerdil, tongkol tidak bisa lagi dibesarkan.
+    </p>
+  </section>
 
-      <div class="relative mt-8">
-        <!-- Stop Scrolling Badge Top -->
-        <div class="absolute left-0 right-0 top-3 z-10 flex justify-center">
-          <div
-            class="relative flex items-center justify-center overflow-hidden rounded-md border border-red-500 bg-red-600 px-4 py-1.5 shadow-[0_4px_12px_rgba(220,38,38,0.5)]"
-          >
-            <span
-              class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"
-            ></span>
-            <span class="mr-2 flex h-4 w-4 items-center justify-center rounded-full bg-white text-red-600"
-              ><Icon name="lucide:triangle-alert" class="h-2.5 w-2.5" aria-hidden="true" /></span
-            >
-            <span class="text-[11px] font-medium uppercase tracking-widest text-white">Peringatan Fase Kritis</span>
-          </div>
-        </div>
-
+  <section class="border-t border-slate-100 px-5 py-9">
+    <h2 class={sectionTitle}>
+      Kenapa jagung tetap kuning <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
+        >meski sudah diguyur urea & NPK mahal?</span
+      >
+    </h2>
+    <p class={`${body} mt-3 mb-5`}>
+      Saat tanah asam, lembap berlebih, atau tanaman syok cuaca, <strong class="text-slate-950"
+        >akar jagung terkunci tidak mampu menyedot pupuk dasar</strong
+      >. Tambah pupuk kimia terus-terusan cuma bikin biaya membengkak. Yang dibutuhkan itu <strong
+        class="text-slate-950">stimulator cepat serap lewat daun + pemulih akar aktif</strong
+      >.
+    </p>
+    <div class="grid gap-3.5">
+      <figure class="relative overflow-hidden border border-slate-200 bg-white">
         <img
-          src="/images/landing/bensu-jagung/hero-utama.webp"
-          width="480"
-          height="320"
-          alt="Tanaman jagung sehat dan subur, terpulihkan dari stres kerdil dan kuning berkat Bensu"
-          loading="eager"
-          fetchpriority="high"
-          class="aspect-[3/2] w-full rounded-lg object-cover"
+          src="/images/landing/bensu-jagung/kondisi-awal.webp"
+          width="840"
+          height="560"
+          alt="Tanaman jagung kuning, kerdil, dan batang kurus sebelum diberi BENSU"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
         />
+        <figcaption
+          class="absolute left-3 top-3 rounded-sm bg-[#991B1B] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-sm"
+        >
+          Akar Terkunci & Kerdil
+        </figcaption>
+      </figure>
+      <figure class="relative overflow-hidden border border-slate-200 bg-white">
+        <img
+          src="/images/landing/bensu-jagung/akar-nutrisi.webp"
+          width="840"
+          height="560"
+          alt="Pangkal batang jagung kokoh dengan akar kuat dan daun hijau pekat"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="absolute left-3 top-3 rounded-sm bg-[#15803D] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-sm"
+        >
+          Akar Aktif & Batang Kokoh
+        </figcaption>
+      </figure>
+    </div>
+  </section>
 
-        <!-- Floating Stop Scrolling Copy -->
+  <section class="border-t border-[#0F2A5F]/20 bg-[#0A1D42] px-5 py-9 text-white">
+    <p class="mb-2 text-[11px] font-semibold uppercase tracking-widest text-[#FACC15]">
+      Panduan Wajib Lahan Jagung
+    </p>
+    <h2 class="text-[24px] font-bold leading-[1.16] tracking-tight text-white">
+      Cara Pakai Khusus Jagung: <span class="text-[#DBEAFE]">Takaran & Waktu Pemakaian</span>
+    </h2>
+    <p class="mt-2.5 mb-5 text-[14px] leading-relaxed text-slate-300">
+      Ikuti 3 langkah presisi di bawah ini supaya jagung kuning cepat pulih hijau pekat dan batang langsung melesat
+      seragam!
+    </p>
+
+    <div class="-mx-5 grid gap-3">
+      <div class="relative overflow-hidden bg-slate-900">
+        <img
+          src="/images/landing/bensu-jagung/sebelum-perawatan.webp"
+          width="840"
+          height="560"
+          alt="Hamparan lahan jagung kuning, belang, dan kerdil sebelum perawatan BENSU"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
         <div
-          class="relative z-20 mx-auto -mt-6 w-[90%] overflow-hidden rounded-lg border border-slate-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)]"
+          class="absolute left-3.5 top-3.5 rounded-sm bg-[#991B1B] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow"
         >
-          <div class="bg-red-50 p-4 text-center">
-            <h2 class="mb-1 text-[16px] font-bold text-slate-950">Awas Gagal Panen!</h2>
-            <p class="text-[14px] leading-relaxed text-slate-700">
-              Jagung kerdil <strong class="text-red-600">tidak akan pulih sendiri</strong>. Tunda penanganan = risiko
-              rugi makin besar.
+          Sebelum
+        </div>
+      </div>
+      <div class="relative overflow-hidden bg-slate-900">
+        <img
+          src="/images/landing/bensu-jagung/setelah-perawatan.webp"
+          width="840"
+          height="560"
+          alt="Lahan jagung hijau pekat, batang kokoh seragam, dan tongkol besar setelah BENSU"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div
+          class="absolute left-3.5 top-3.5 rounded-sm bg-[#15803D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow"
+        >
+          Setelah Perawatan
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-7 space-y-5">
+      <!-- Step 1 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0A1D42]">
+            <Icon name="lucide:droplets" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+          <span class="mt-2 w-px flex-1 bg-white/15" aria-hidden="true"></span>
+        </div>
+        <div class="flex-1 pb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 01</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Semprot Daun & Batang</h3>
+          <div class="mt-2.5 grid grid-cols-2 gap-2">
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">Fase Awal (14–28 HST)</p>
+              <p class="mt-1 text-[17px] font-extrabold leading-none text-[#DBEAFE]">3–4 ml / L</p>
+              <p class="mt-1 text-[11px] text-slate-400">45–60 ml / tangki 15L</p>
+            </div>
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">Fase Tumbuh (30–50 HST)</p>
+              <p class="mt-1 text-[17px] font-extrabold leading-none text-[#DBEAFE]">5 ml / L</p>
+              <p class="mt-1 text-[11px] text-slate-400">75 ml / tangki 15L</p>
+            </div>
+          </div>
+          <p class="mt-2 text-[12.5px] text-slate-300">Semprot kabut halus merata ke seluruh daun & batang jagung.</p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0A1D42]">
+            <Icon name="lucide:sprout" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+          <span class="mt-2 w-px flex-1 bg-white/15" aria-hidden="true"></span>
+        </div>
+        <div class="flex-1 pb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 02</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Kocor Pangkal Akar (Blok Kerdil)</h3>
+          <div class="mt-2.5 bg-[#1E3A8A]/70 px-3 py-2">
+            <span class="text-[15px] font-extrabold text-white">5 ml / 1 L air</span>
+            <span class="ml-1.5 text-[12px] text-[#DBEAFE]">(100 ml / 20 L air)</span>
+          </div>
+          <p class="mt-2 text-[12.5px] text-slate-300">
+            Kocor <strong class="text-white">150–200 ml per lubang tanam</strong> khusus area jagung yang kuning parah
+            atau macet tumbuh.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0A1D42]">
+            <Icon name="lucide:calendar-sync" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+        </div>
+        <div class="flex-1">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 03</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Waktu & Jadwal Pakai</h3>
+          <div class="mt-2.5 bg-white/10 px-3 py-2 text-[12.5px] text-slate-100">
+            <strong class="text-[#FACC15]">Pagi 06.30–09.00</strong> atau <strong class="text-[#FACC15]">Sore 15.30–17.30 WIB</strong>
+            <span class="block text-[11px] text-slate-300">Saat pori daun terbuka; hindari terik siang & hujan deras</span>
+          </div>
+          <div class="mt-2 grid grid-cols-2 gap-2">
+            <div class="bg-[#1E3A8A]/65 px-3 py-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wide text-[#FACC15]">Pemulihan Cepat (Kuning)</p>
+              <p class="mt-0.5 text-[15px] font-extrabold text-white">Tiap 5–7 hari</p>
+              <p class="mt-0.5 text-[11px] text-slate-200">2–3 putaran sampai hijau</p>
+            </div>
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wide text-slate-300">Perawatan Rutin</p>
+              <p class="mt-0.5 text-[15px] font-extrabold text-white">Tiap 10–14 hari</p>
+              <p class="mt-0.5 text-[11px] text-slate-300">Umur 14, 28 & 42 HST</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white px-5 py-10">
+    <h2 class={sectionTitle}>
+      Dipakai saat lahan jagung mulai <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
+        >kuning, belang & terancam gagal panen</span
+      >
+    </h2>
+    <p class={`${body} mt-2.5 mb-8`}>
+      Saat jagung kerdil di fase kritis, petani butuh bukti nyata di lapangan — bukan cuma tambah pupuk mahal lalu
+      berharap pulih sendiri.
+    </p>
+
+    <div class="space-y-9">
+      <article>
+        <img
+          src="/images/landing/bensu-jagung/testi-petani-1.webp"
+          width="840"
+          height="560"
+          alt="Petani jagung memegang dua tongkol jagung besar padat biji sampai ujung"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Pak Suparman
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
             </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Sragen, Jawa Tengah · Jagung Kuning & Kerdil</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
           </div>
         </div>
-      </div>
-    </section>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Sempat pasrah lihat jagung umur 3 minggu <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >kuning pucat dan kerdil</strong
+          > padahal pupuk dasar sudah masuk. Habis semprot BENSU 2 kali, <strong class="text-[#0F2A5F]"
+            >daun balik hijau gelap, batang kokoh, dan tongkolnya berisi penuh sampai ujung</strong
+          >.”
+        </p>
+      </article>
 
-    <section class="border-t border-slate-100 px-5 py-10">
-      <h2 class={`${sectionTitle} mt-2`}>
-        Berikan <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]">stimulasi pemulihan</span> agar
-        jagung kembali aktif
-      </h2>
-      <p class="text-[15px] leading-relaxed text-slate-600 mt-3 mb-6">Fase kritis tanaman butuh tindakan segera.</p>
-      <div class="mt-6 grid gap-4">
-        <div class="flex gap-3">
-          <span class={listIcon}><Icon name="lucide:leaf" class="h-4 w-4" aria-hidden="true" /></span><p
-            class="text-[15px] leading-relaxed text-slate-600"
-          >
-            Bantu tanaman yang <strong class="text-slate-950">tampak lemah</strong> agar kembali segar dan siap menyerap pupuk
-            dasar.
-          </p>
+      <article>
+        <img
+          src="/images/landing/bensu-jagung/testi-petani-2.webp"
+          width="840"
+          height="560"
+          alt="Batang jagung kokoh bertongkol besar dan panjang di kebun petani"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Wahyu M
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Kediri, Jawa Timur · Daun Menggulung & Belang</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
         </div>
-        <div class="flex gap-3">
-          <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span><p
-            class="text-[15px] leading-relaxed text-slate-600"
-          >
-            Dukung <strong class="text-slate-950">pertumbuhan tunas & daun</strong> secara bertahap tanpa membuat tanaman
-            makin stres.
-          </p>
-        </div>
-        <div class="flex gap-3">
-          <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span><p
-            class="text-[15px] leading-relaxed text-slate-600"
-          >
-            Formulasi khusus pendamping yang <strong class="text-slate-950">cocok untuk masa pemulihan</strong> kondisi lahan
-            yang tidak stabil.
-          </p>
-        </div>
-      </div>
-    </section>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Blok pinggir yang tadinya <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >daunnya menggulung dan tinggi tidak rata</strong
+          > langsung mengejar setelah dikocor BENSU. <strong class="text-[#0F2A5F]"
+            >Batang jadi besar dan banyak yang keluar tongkol dua berisi</strong
+          > — pengiriman COD juga cepat.”
+        </p>
+      </article>
 
-    <section class="border-t border-slate-100 px-5 py-10 bg-red-50/30">
-      <h2 class={`${sectionTitle} mt-2`}>
-        Tanda tanaman sedang <span class="text-red-600 underline decoration-red-200 decoration-4 underline-offset-4"
-          >stres berat</span
-        > dan butuh bantuan:
-      </h2>
-      <div class="mt-6 grid gap-4">
-        <div class="flex gap-3">
-          <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span><p
-            class="text-[15px] leading-relaxed text-slate-600"
-          >
-            Daun mulai <strong class="font-bold text-red-600">pucat, kuning, atau menggulung</strong> karena kekurangan nutrisi
-            aktif.
-          </p>
+      <article>
+        <img
+          src="/images/landing/bensu-jagung/testi-petani-3.webp"
+          width="840"
+          height="560"
+          alt="Petani berdiri di tengah kebun jagung tinggi hijau subur setelah BENSU"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              H. Anwar
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Lampung Tengah · Stres Cuaca & Akar Mogok</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
         </div>
-        <div class="flex gap-3">
-          <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span><p
-            class="text-[15px] leading-relaxed text-slate-600"
-          >
-            Pertumbuhan terlihat <strong class="font-bold text-red-600">kerdil / tidak rata</strong> dibanding titik lahan
-            lain.
-          </p>
-        </div>
-        <div class="flex gap-3">
-          <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span><p
-            class="text-[15px] leading-relaxed text-slate-600"
-          >
-            Respons perawatan <strong class="font-bold text-red-600">sangat lambat</strong> padahal pupuk dasar sudah ditebar
-            penuh.
-          </p>
-        </div>
-      </div>
-    </section>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Kena panas kering kemarin jagung sempat <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >stres berat dan pertumbuhan berhenti</strong
+          >. Setelah rutin BENSU pagi hari, <strong class="text-[#0F2A5F]"
+            >tunas jalan kencang lagi, daun lebar hijau mengilap, dan panen jauh lebih berat</strong
+          > dari musim lalu.”
+        </p>
+      </article>
+    </div>
+  </section>
 
-    <section class="border-t border-slate-100 px-5 py-10">
-      <h2 class={`${sectionTitle} mt-2`}>
-        Perbandingan visual <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
-          >masa pemulihan</span
-        >
-      </h2>
-      <p class="text-[15px] leading-relaxed text-slate-600 mt-3 mb-6">
-        Lihat perbedaan arah pertumbuhan setelah nutrisi terserap maksimal.
-      </p>
-
-      <div class="grid gap-4">
-        <div class="relative">
+  <section class="bg-slate-50 px-5 py-9">
+    <h2 class={sectionTitle}>
+      Bukti Chat Petani Jagung yang <span class="text-[#B91C1C]">Sudah Pakai BENSU</span>
+    </h2>
+    <p class={`${body} mt-2.5 mb-5`}>
+      Kirim kondisi lahan jagung Anda, pilih paket, lalu admin bantu proses pesanan dan arahan takaran pertama.
+    </p>
+    <div class="grid grid-cols-2 gap-2.5">
+      {
+        [1, 2, 3, 4].map((n) => (
           <img
-            src="/images/landing/bensu-jagung/kondisi-awal.webp"
-            width="480"
-            height="320"
-            alt="Tanaman jagung kuning, kerdil, dan lambat tumbuh akibat kekurangan nutrisi dan cekaman lingkungan"
+            src={`/images/landing/bensu-jagung/testimoni-${n}.webp`}
+            width="520"
+            height="680"
+            alt={`Screenshot WhatsApp testimoni petani jagung pengguna BENSU ${n}`}
             loading="lazy"
             decoding="async"
-            class="aspect-[3/2] w-full rounded-lg object-cover border border-slate-100 shadow-sm"
+            class="aspect-[9/16] w-full rounded border border-slate-200 object-cover"
           />
-          <div
-            class="absolute top-2 left-2 rounded-md bg-red-600 px-2 py-1 text-[12px] font-bold uppercase text-white shadow-sm"
-          >
-            Kritis
-          </div>
-        </div>
-        <div class="relative">
-          <img
-            src="/images/landing/bensu-jagung/pemulihan-realistis.webp"
-            width="480"
-            height="320"
-            alt="Daun jagung kembali hijau pekat dan subur setelah masa pemulihan dengan Bensu"
-            loading="lazy"
-            decoding="async"
-            class="aspect-[3/2] w-full rounded-lg object-cover border border-slate-100 shadow-sm"
-          />
-          <div
-            class="absolute top-2 left-2 rounded-md bg-[#0F2A5F] px-2 py-1 text-[12px] font-bold uppercase text-white shadow-sm"
-          >
-            Pemulihan
-          </div>
-        </div>
-      </div>
-    </section>
+        ))
+      }
+    </div>
+  </section>
 
-    <section class="border-t border-slate-100 px-5 py-10 bg-slate-950 text-white">
-      <h2 class="text-2xl font-bold tracking-tight text-white mt-2">
-        Cara Pakai <span class="text-[#DBEAFE]">Sangat Praktis</span>
-      </h2>
-      <p class="text-[15px] leading-relaxed text-slate-400 mt-3 mb-6">
-        Tidak perlu alat khusus, cukup campurkan dengan air dan semprotkan.
-      </p>
-
-      <div class="grid gap-4">
+  <section class="border-t border-[#0F2A5F]/10 bg-[#EFF6FF]/60 px-5 py-9">
+    <div class="mb-4 flex items-center gap-2">
+      <span class="flex h-5 w-5 items-center justify-center rounded-sm bg-[#0F2A5F] text-white"
+        ><Icon name="lucide:zap" class="h-3.5 w-3.5" aria-hidden="true" /></span
+      >
+      <p class="text-[11px] font-semibold uppercase tracking-widest text-[#0F2A5F]">Product Knowledge</p>
+    </div>
+    <h2 class="text-[26px] font-bold leading-[1.14] tracking-tight text-slate-950">
+      BENSU Jagung: <span class="inline-block rounded-sm bg-[#DBEAFE] px-2 py-0.5 leading-none text-[#0F2A5F]"
+        >Daya Dobrak Pemulihan</span
+      >
+    </h2>
+    <p class="mt-3 text-[15px] leading-relaxed text-slate-700">
+      <strong class="text-slate-950">Stimulator pemulihan khusus tanaman pangan & hortikultura:</strong> menembus pori
+      daun seketika, membongkar blokade akar, dan memaksa jagung kuning kembali aktif menyerap nutrisi hingga panen
+      maksimal.
+    </p>
+    <div class="mt-6">
+      <figure>
         <img
           src="/images/landing/bensu-jagung/demo-produk.webp"
-          width="480"
-          height="320"
-          alt="Botol Bensu kemasan asli untuk memulihkan tanaman kerdil, kuning, dan stres"
+          width="840"
+          height="560"
+          alt="Botol BENSU stimulator pemulihan jagung kuning dan kerdil"
           loading="lazy"
           decoding="async"
-          class="aspect-[3/2] w-full rounded-lg object-cover border border-slate-800"
+          class="aspect-[3/2] w-full rounded border border-slate-200 object-cover"
         />
-        <img
-          src="/images/landing/bensu-jagung/demo-penggunaan.webp"
-          width="480"
-          height="320"
-          alt="Bensu diaplikasikan sebagai semprotan foliar untuk mengaktifkan kembali akar dan daun jagung"
-          loading="lazy"
-          decoding="async"
-          class="aspect-[3/2] w-full rounded-lg object-cover border border-slate-800"
-        />
-      </div>
-      <div class="mt-6 grid gap-4">
-        <div class="flex gap-3">
-          <span
-            class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#DBEAFE] text-[14px] font-medium text-slate-950"
-            >1</span
-          ><p class="text-[15px] leading-relaxed text-slate-300">
-            Cek <strong class="text-white">kondisi daun dan tanah</strong> sebelum penyemprotan. Pastikan dilakukan di pagi
-            atau sore hari.
+        <figcaption class="mt-3 border-l-4 border-[#0F2A5F] pl-3">
+          <h3 class="text-[16px] font-bold text-slate-950">Serap Kilat Lewat Daun & Super Irit</h3>
+          <p class="mt-1 text-[14px] leading-relaxed text-slate-600">
+            Takaran hanya 3–5 ml/liter air — langsung diserap daun dan akar tanpa bikin tanaman tambah stres.
           </p>
-        </div>
-        <div class="flex gap-3">
-          <span
-            class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#DBEAFE] text-[14px] font-medium text-slate-950"
-            >2</span
-          ><p class="text-[15px] leading-relaxed text-slate-300">
-            Campurkan <strong class="text-white bg-slate-800 px-1">2-3 tutup botol Bensu per tangki 16L</strong>. Jangan
-            berlebihan.
-          </p>
-        </div>
-        <div class="flex gap-3">
-          <span
-            class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#DBEAFE] text-[14px] font-medium text-slate-950"
-            >3</span
-          ><p class="text-[15px] leading-relaxed text-slate-300">
-            Semprotkan merata ke <strong class="text-white">seluruh bagian daun dan batang</strong>. Pantau
-            perkembangannya dalam 3-7 hari.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="border-t border-slate-100 px-5 py-10">
-      <h2 class={`${sectionTitle} mt-2`}>
-        Apa kata petani yang sudah <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
-          >terbantu?</span
-        >
-      </h2>
-      <p class="text-[15px] leading-relaxed text-slate-600 mt-2 mb-6">
-        Bensu Jagung bantu petani pulihkan tanaman kuning dan kerdil agar kembali aktif pertumbuhannya.
-      </p>
-
-      <div class="grid divide-y divide-[#0F2A5F]/10 border-y border-[#0F2A5F]/10 py-2">
-        <div class="py-5 first:pt-0">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <p class="flex items-center gap-1 text-[16px] font-bold text-slate-950">
-                Pak Suparman <span class="flex h-4 w-4 items-center justify-center text-blue-600"
-                  ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
-                >
-              </p>
-              <p class="mt-0.5 text-[13px] font-medium text-slate-500">Sragen, Jawa Tengah • Lahan Kerdil</p>
-            </div>
-            <div class="shrink-0 text-[14px] text-[#FACC15]" role="img" aria-label="5 dari 5 bintang">★★★★★</div>
-          </div>
-          <p class="mt-3 border-l-2 border-[#0F2A5F]/25 pl-3 text-[15px] leading-relaxed text-slate-700">
-            "Sempat pasrah lihat jagung <strong class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950"
-              >kerdil dan kuning padahal pupuk dasar sudah masuk</strong
-            >. Setelah disemprot Bensu, <strong class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
-              >daun kembali hijau segar dan batangnya mulai kokoh</strong
-            > naik lagi. Sangat membantu di fase kritis!"
-          </p>
-        </div>
-
-        <div class="py-5">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <p class="flex items-center gap-1 text-[16px] font-bold text-slate-950">
-                Wahyu M <span class="flex h-4 w-4 items-center justify-center text-blue-600"
-                  ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
-                >
-              </p>
-              <p class="mt-0.5 text-[13px] font-medium text-slate-500">Kediri, Jawa Timur • Daun Menggulung</p>
-            </div>
-            <div class="shrink-0 text-[14px] text-[#FACC15]" role="img" aria-label="5 dari 5 bintang">★★★★★</div>
-          </div>
-          <p class="mt-3 border-l-2 border-[#0F2A5F]/25 pl-3 text-[15px] leading-relaxed text-slate-700">
-            "Awalnya ragu, tapi saya coba ikuti arahan admin. Area yang kuning <strong class="text-slate-950"
-              >pelan-pelan pulih dan warna daunnya rata lagi</strong
-            >. Pengirimannya juga cepat dan <strong class="text-[#0F2A5F]">bisa COD jadi tenang</strong> belanja di sini."
-          </p>
-        </div>
-
-        <div class="py-5 last:pb-0">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <p class="flex items-center gap-1 text-[16px] font-bold text-slate-950">
-                H. Anwar <span class="flex h-4 w-4 items-center justify-center text-blue-600"
-                  ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
-                >
-              </p>
-              <p class="mt-0.5 text-[13px] font-medium text-slate-500">Lampung Tengah • Stres Cuaca Panas</p>
-            </div>
-            <div class="shrink-0 text-[14px] text-[#FACC15]" role="img" aria-label="5 dari 5 bintang">★★★★★</div>
-          </div>
-          <p class="mt-3 border-l-2 border-[#0F2A5F]/25 pl-3 text-[15px] leading-relaxed text-slate-700">
-            "Cocok banget untuk dampingi pupuk. <strong
-              class="box-decoration-clone bg-red-100 px-1.5 pb-0.5 text-slate-950"
-              >Tanaman yang tadinya stres kena panas</strong
-            > sekarang <strong class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
-              >tunasnya jalan lagi</strong
-            >. Respons adminnya ramah, dijelasin detail cara pakainya."
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="border-t border-slate-100 px-5 py-10 bg-slate-50">
-      <h2 class={`${sectionTitle} mt-2`}>Ribuan paket <span class="text-[#0F2A5F]">telah dikirim</span></h2>
-      <p class="text-[15px] leading-relaxed text-slate-600 mt-2 mb-6">
-        Bukti nyata alur pemesanan jelas dan admin siap membantu.
-      </p>
-      <div class="grid grid-cols-2 gap-3">
-        {
-          [1, 2, 3, 4].map((n) => (
-            <img
-              src={`/images/landing/bensu-jagung/testimoni-${n}.webp`}
-              width="480"
-              height="853"
-              alt={`Bukti testimoni Bensu ${n}`}
-              loading="lazy"
-              decoding="async"
-              class="aspect-[9/16] w-full rounded-lg object-cover border border-slate-200 shadow-sm"
-            />
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="border-t border-slate-100 px-5 py-10 bg-[#EEF4FF]">
-      <div class="mb-5 flex items-center gap-2">
-        <span class="flex h-6 w-6 animate-pulse items-center justify-center text-red-600"
-          ><Icon name="lucide:badge-alert" class="h-4 w-4" aria-hidden="true" /></span
-        >
-        <h2 class="text-[11px] font-medium uppercase tracking-widest text-[#0F2A5F]">Product Knowledge</h2>
-      </div>
-
-      <h3 class="text-[32px] font-bold leading-[1.1] tracking-tight text-slate-950">
-        Apa itu <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]">Bensu Jagung?</span>
-      </h3>
-      <p class="mt-4 text-[15px] leading-relaxed text-slate-700">
-        <strong class="text-slate-950">Bensu bukan sekadar pupuk biasa.</strong> Ini adalah <strong class="text-red-600"
-          >stimulator pemulih darurat</strong
-        > yang diformulasikan khusus untuk memaksa jagung kerdil dan kuning keluar dari fase kritis stres berat!
-      </p>
-
-      <div class="mt-8 grid gap-6">
-        <figure>
-          <div class="-mx-5">
-            <img
-              src="/images/landing/bensu-jagung/infografis.webp"
-              width="480"
-              height="320"
-              alt="Infografis keunggulan Bensu: mempercepat pemulihan stres, menghijaukan daun, dan memacu pertumbuhan akar"
-              loading="lazy"
-              decoding="async"
-              class="aspect-[3/2] w-full object-cover"
-            />
-          </div>
-          <figcaption class="mt-3 border-l-4 border-[#0F2A5F] pl-3">
-            <h3 class="text-[16px] font-bold text-slate-950">Nutrisi Cair Pekat</h3>
-            <p class="mt-1 text-[15px] leading-relaxed text-slate-600">
-              Formula cair yang siap diserap langsung oleh jaringan tanpa harus melalui proses panjang di tanah.
-            </p>
-          </figcaption>
-        </figure>
-
-        <figure>
-          <div class="-mx-5">
-            <img
-              src="/images/landing/bensu-jagung/cara-kerja.webp"
-              width="480"
-              height="320"
-              alt="Diagram cara kerja Bensu memperbaiki metabolisme tanaman dari dalam agar kembali normal"
-              loading="lazy"
-              decoding="async"
-              class="aspect-[3/2] w-full object-cover"
-            />
-          </div>
-          <figcaption class="mt-3 border-l-4 border-red-500 pl-3">
-            <h3 class="text-[16px] font-bold text-slate-950">Target Pemulihan Instan</h3>
-            <p class="mt-1 text-[15px] leading-relaxed text-slate-600">
-              Langsung menyerang pusat masalah, membangunkan sel-sel yang rusak dan merangsang tunas baru untuk bangkit.
-            </p>
-          </figcaption>
-        </figure>
-      </div>
-
-      <div class="mt-10 border-t border-slate-200/60 pt-8">
-        <h3 class="mb-6 flex items-center gap-2 text-[20px] font-bold text-slate-950">
-          <span class="flex h-6 w-6 items-center justify-center text-[#0F2A5F]"
-            ><Icon name="lucide:zap" class="h-5 w-5" aria-hidden="true" /></span
-          >
-          Daya Dobrak Maksimal:
-        </h3>
-        <div class="grid gap-5">
-          <div class="flex items-start gap-4">
-            <span class={listIcon}><Icon name="lucide:scan-line" class="h-4 w-4" aria-hidden="true" /></span>
-            <p class="text-[15px] leading-relaxed text-slate-700">
-              <strong class="text-slate-950 block mb-1">Penetrasi Jaringan Kilat.</strong> Menyuntikkan nutrisi mikro yang
-              langsung dihisap oleh pori-pori daun. Membangunkan sel tanaman yang mati suri secara paksa.
-            </p>
-          </div>
-          <div class="flex items-start gap-4">
-            <span class={listIcon}><Icon name="lucide:circle-dashed" class="h-4 w-4" aria-hidden="true" /></span>
-            <p class="text-[15px] leading-relaxed text-slate-700">
-              <strong class="text-slate-950 block mb-1">Sapu Bersih Kuning & Kerdil.</strong> Diciptakan dengan satu tujuan
-              tajam: melibas habis masalah daun pucat, memulihkan klorofil, dan memutus rantai kerdil seketika.
-            </p>
-          </div>
-          <div class="flex items-start gap-4">
-            <span class={listIcon}><Icon name="lucide:trees" class="h-4 w-4" aria-hidden="true" /></span>
-            <p class="text-[15px] leading-relaxed text-slate-700">
-              <strong class="text-slate-950 block mb-1">Bongkar Blokade Akar.</strong> Memperbaiki sistem perakaran yang lumpuh,
-              memaksa akar kembali rakus dan beringas merampas pupuk dasar di tanah.
-            </p>
-          </div>
-          <div class="flex items-start gap-4">
-            <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
-            <p class="text-[15px] leading-relaxed text-slate-700">
-              <strong class="text-slate-950 block mb-1">Ledakan Pertumbuhan Tunas.</strong> Merangsang titik tumbuh baru agar
-              batang segera membesar, kokoh, dan siap memproduksi tongkol berbobot maksimal.
-            </p>
-          </div>
-          <div class="flex items-start gap-4">
-            <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
-            <p class="text-[15px] leading-relaxed text-slate-700">
-              <strong class="text-slate-950 block mb-1">Benteng Ketahanan Ekstra.</strong> Menebalkan dinding sel daun dan
-              batang secara radikal, membuatnya kebal terhadap cuaca ekstrem dan tahan serangan susulan.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="border-t border-slate-100 px-5 py-10 bg-[#F8FAFC] text-center">
-      <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center text-[#FACC15]">
-        <Icon name="lucide:shield-check" class="h-14 w-14" aria-hidden="true" />
-      </div>
-      <p class="mb-2 text-[11px] font-medium uppercase tracking-widest text-[#0F2A5F]">Belanja Aman</p>
-      <h2 class="text-[36px] font-bold leading-[1.1] tracking-tight text-slate-950">BELANJA AMAN</h2>
-      <p class="mt-4 text-[15px] leading-relaxed text-slate-700 mx-auto max-w-[320px]">
-        Order diproses lewat form resmi Petani Sejahtera dan dikonfirmasi admin sebelum dikirim.
-      </p>
-
-      <div class="mt-8 grid gap-5 text-left">
-        <div class="flex items-start gap-4 rounded-2xl border border-[#FACC15]/30 bg-white p-4">
-          <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center text-[#0F2A5F]"
-            ><Icon name="lucide:badge-check" class="h-5 w-5" aria-hidden="true" /></span
-          >
-          <p class="text-[15px] leading-relaxed text-slate-700">
-            <strong class="text-slate-950 block mb-1">100% Original.</strong> Jaminan produk asli tersegel dari distributor
-            resmi.
-          </p>
-        </div>
-        <div class="flex items-start gap-4 rounded-2xl border border-[#FACC15]/30 bg-white p-4">
-          <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center text-[#0F2A5F]"
-            ><Icon name="lucide:hand-coins" class="h-5 w-5" aria-hidden="true" /></span
-          >
-          <p class="text-[15px] leading-relaxed text-slate-700">
-            <strong class="text-slate-950 block mb-1">Bisa Bayar di Tempat (COD).</strong> Pesan sekarang, bayar langsung
-            ke kurir saat barang sampai di rumah.
-          </p>
-        </div>
-        <div class="flex items-start gap-4 rounded-2xl border border-[#FACC15]/30 bg-white p-4">
-          <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center text-[#0F2A5F]"
-            ><Icon name="lucide:wallet-cards" class="h-5 w-5" aria-hidden="true" /></span
-          >
-          <p class="text-[15px] leading-relaxed text-slate-700">
-            <strong class="text-slate-950 block mb-1">Retur Lewat CS.</strong> Barang salah atau rusak? Hubungi CS dengan nomor pesanan dan foto kondisi barang untuk pengajuan retur.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="checkout" class="border-t-8 border-slate-100 py-12 bg-white">
-      <div class="px-5 pb-8 text-center">
-        <div class="mx-auto mb-5 inline-flex items-center justify-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#0F2A5F] ring-1 ring-blue-100/50">
-          <Icon name="lucide:arrow-down" class="h-3.5 w-3.5" aria-hidden="true" />
-          Langkah Terakhir
-        </div>
-        <h2 class="mx-auto max-w-[320px] text-[32px] font-bold leading-[1.1] tracking-tight text-slate-950">
-          Lengkapi Data <span class="inline-block rounded-md bg-[#DBEAFE] px-2 py-1 text-[#0F2A5F] leading-none"
-            >Pengiriman</span
-          >
-        </h2>
-        <p class="mx-auto mt-4 max-w-[320px] text-[15px] font-medium leading-relaxed text-slate-600">
-          Isi data di bawah ini dengan benar. <span class="text-slate-900 font-bold border-b-2 border-blue-200">Form akan menyesuaikan wilayah Anda</span>, lalu tim kami memproses pesanan dan panduan penggunaan.
+        </figcaption>
+      </figure>
+    </div>
+    <div class="mt-7 grid gap-4 border-t border-[#0F2A5F]/15 pt-6">
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:scan-line" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Tembus Pori Daun Seketika.</strong> Mengirim nutrisi langsung
+          lewat daun untuk membangunkan jagung kuning yang mogok tumbuh.
         </p>
       </div>
-      <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
-    </section>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:trees" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Bongkar Blokade Akar.</strong> Memulihkan perakaran yang lumpuh
+          agar kembali ganas menyerap pupuk dasar di tanah.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Ledakan Pertumbuhan Batang & Tongkol.</strong> Merangsang titik
+          tumbuh agar batang kokoh dan tongkol berbobot penuh.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Benteng Ketahanan Cuaca.</strong> Menebalkan dinding sel daun agar
+          lebih tangguh menghadapi panas ekstrem maupun hujan deras.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-white">
+    <div class="flex items-center justify-between bg-slate-950 px-5 py-2.5 text-white">
+      <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest">
+        <Icon name="lucide:shield-check" class="h-3.5 w-3.5 text-[#FACC15]" aria-hidden="true" />
+        Jaminan Belanja Aman
+      </span>
+      <span class="text-[10px] font-medium uppercase tracking-wider text-slate-400">Resmi</span>
+    </div>
+
+    <div class="grid grid-cols-3 divide-x divide-slate-200 text-center">
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#EFF6FF] text-[#0F2A5F]">
+          <Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">100% Original</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Tersegel resmi, bukan oplosan</p>
+      </div>
+
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#EFF6FF] text-[#0F2A5F]">
+          <Icon name="lucide:hand-coins" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">Bisa COD</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Bayar di rumah saat sampai</p>
+      </div>
+
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#EFF6FF] text-[#0F2A5F]">
+          <Icon name="lucide:wallet-cards" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">Retur via CS</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Foto paket & no. pesanan</p>
+      </div>
+    </div>
+
+    <p class="border-t border-slate-200 bg-slate-50 px-5 py-2.5 text-center text-[11px] text-slate-600">
+      Order resmi Petani Sejahtera — dikonfirmasi admin sebelum paket dikirim.
+    </p>
+  </section>
+
+  <section id="checkout" class="bg-white py-7">
+    <div class="px-5 pb-5 text-center">
+      <div class="mx-auto mb-2.5 flex justify-center text-[#0F2A5F]">
+        <Icon name="lucide:arrow-down" class="h-7 w-7 animate-bounce motion-reduce:animate-none" aria-hidden="true" />
+      </div>
+      <h2 class="text-[22px] font-extrabold leading-tight tracking-tight text-slate-950">Lengkapi Pemesanan</h2>
+      <p class="mx-auto mt-1.5 max-w-[330px] text-[13.5px] leading-snug text-slate-600">
+        Pilih ukuran botol & isi alamat lengkap — panduan takaran jagung ikut dikirim bareng paket.
+      </p>
+    </div>
+    <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+  </section>
 </PetaniSejahteraLandingShell>

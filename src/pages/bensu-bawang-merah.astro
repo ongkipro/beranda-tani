@@ -1,0 +1,610 @@
+---
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import PetaniSejahteraLandingShell from '../components/storefront/landing-pages/PetaniSejahteraLandingShell.astro';
+import Icon from '../components/storefront/shared/Icon.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+
+export const prerender = false;
+
+const product = await getStorefrontProduct(Astro.locals, 'bensu');
+if (!product) return Astro.rewrite('/404');
+
+const sectionTitle = 'text-[23px] font-bold leading-[1.18] tracking-tight text-[#0F2A5F]';
+const body = 'text-[15px] leading-relaxed text-slate-600';
+const listIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#0F2A5F]';
+const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#B91C1C]';
+---
+
+<PetaniSejahteraLandingShell
+  slug="bensu-bawang-merah"
+  product={product}
+  title="BENSU Bawang Merah - Booster Olah Lahan & Tanam Dasar MT 1"
+  description="Siapkan olah lahan dan tanam MT 1 bawang merah agar bebas moler, cepat berakar gondrong, dan serempak tumbuh bersama NPK, SP-36, dan Dolomit."
+  image="/images/landing/bensu-bawang-merah/hero-petani.webp"
+>
+  <section class="flex flex-col gap-4 bg-white pb-6 pt-[max(1.5rem,env(safe-area-inset-top))] text-left text-slate-950">
+    <div class="px-5">
+      <h1 class="text-[clamp(22px,6vw,26px)] font-extrabold leading-[1.18] tracking-tight text-slate-950">
+        Bawang Merah Baru Tanam MT 1 Sudah Moler, Kuning & Tumbuh Belang?{' '}
+        <span
+          class="box-decoration-clone px-0.5 text-[#0F2A5F]"
+          style="background-image: linear-gradient(to top, #FFD84D 0.24em, rgba(255,216,77,0) 0.24em); background-repeat: no-repeat; background-position: 0 94%; background-size: 100% 100%;"
+        >
+          Kunci Akar Gondrong & Anakan Rame Sejak Olah Lahan Januari–Februari!
+        </span>
+      </h1>
+      <p class="mt-3 text-[clamp(14px,3.6vw,15px)] font-medium leading-relaxed text-slate-700">
+        Sudah tabur NPK 16-16-16, SP-36 & Dolomit tapi bibit tetap stres, lambat tumbuh, dan banyak yang mati sulam?
+        Salah start di fase dasar,{' '}
+        <span class="box-decoration-clone bg-[#FFD84D]/45 px-1 font-bold text-slate-950">
+          modal bibit puluhan juta per hektare bisa amblas sebelum umur 25 hari!
+        </span>
+      </p>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="relative overflow-hidden border-y border-slate-200 bg-slate-100">
+        <img
+          src="/images/landing/bensu-bawang-merah/hero-petani.webp"
+          width="800"
+          height="800"
+          alt="Petani bawang merah memeriksa rumpun bibit MT 1 yang kuning melintir moler di bedengan basah"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          class="aspect-square w-full object-cover"
+        />
+      </div>
+
+      <div class="grid grid-cols-3 divide-x divide-slate-200 border-b border-slate-200 bg-slate-50 text-center">
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Moler / Layu</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Daun melintir kuning</p>
+        </div>
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Tumbuh Belang</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Banyak bibit mati sulam</p>
+        </div>
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Akar Mandek</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Pupuk dasar tak terserap</p>
+        </div>
+      </div>
+
+      <div class="px-4 pt-4">
+        <div class="border border-slate-200 border-l-[3px] border-l-[#0F2A5F] bg-white px-4 py-3">
+          <h2 class="text-[14px] font-bold leading-snug text-slate-950">
+            Penentu panen bawang merah MT 1 bukan di akhir — tapi 15 hari pertama sejak olah lahan!
+          </h2>
+          <p class="mt-1 text-[13px] leading-snug text-slate-600">
+            Jangan biarkan pupuk dasar NPK 16-16-16, SP-36 & Dolomit mengendap sia-sia — wajib{' '}
+            <strong class="font-semibold text-[#0F2A5F]">aktifkan perakaran + bangunkan daya serap bedengan</strong>{' '}
+            pakai BENSU pendamping olah lahan & tanam dasar sekarang!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-slate-100 px-5 py-9">
+    <h2 class={sectionTitle}>
+      BENSU bukan pupuk daun biasa. Ini <span class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
+        >booster pembuka lahan & pengaktif akar bawang merah MT 1</span
+      > biar bibit serempak meledak hijau, bebas moler, dan anakan umbi penuh!
+    </h2>
+    <p class={`${body} mt-3`}>
+      Dirancang untuk mendampingi pupuk dasar kebun (NPK 16-16-16, SP-36, Dolomit) di awal musim tanam Januari–Februari:
+      bantu netralkan stres lahan basah/asam, pacu akar putih gondrong lebih cepat, dan dorong pertumbuhan seragam dari
+      ujung ke ujung bedengan.
+    </p>
+    <div class="mt-6 grid gap-2.5">
+      <div class="rounded-md border border-[#0F2A5F]/15 bg-[#EFF6FF]/60 p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Ledakkan akar putih gondrong sejak 7 HST</strong> — akar cepat mencengkeram
+            bedengan sehingga serapan NPK 16-16-16, SP-36, dan Dolomit langsung masuk ke umbi bibit.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-md border border-slate-200 bg-white p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Bentengi bibit muda dari moler & busuk pangkal</strong> — daun tumbuh tegak
+            kaku hijau tua, tidak gampang melintir, pucat, atau ambruk saat hujan awal tahun.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-md border border-[#0F2A5F]/15 bg-[#EFF6FF]/60 p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:zap" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Pecah anakan umbi serempak sejak fase dasar</strong> — mengurangi risiko
+            rumpun kerdil beranakan 2–3 siung dan menekan biaya sulam bibit yang mahal.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-red-100 bg-[#FEF2F2]/60 px-5 py-9">
+    <h2 class="text-[23px] font-bold leading-[1.18] tracking-tight text-[#991B1B]">
+      Kalau 4 tanda ini muncul di bedengan bawang merah MT 1, lahan Anda sudah <span
+        class="underline decoration-red-200 decoration-4 underline-offset-4">sinyal bahaya gagal start</span
+      >
+    </h2>
+    <div class="mt-6 grid gap-4">
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Ujung daun menguning, memanjang pucat, lalu melintir (moler)</strong> — tanda
+          akar stres di tanah asam/lembap dan jamur pangkal mulai menyerang.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Tumbuh belang tidak serempak di umur 10–15 HST</strong> — separuh bedengan naik,
+          separuhnya masih kerdil atau busuk umbi sehingga wajib sulam ulang.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Pupuk dasar sudah banyak tapi tanaman tetap kurus</strong> — tanah bantat
+          sisa hujan membuat akar pasif dan gagal menyedot NPK & SP-36.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Anakan cuma sedikit & pangkal batang lembek</strong> — kalau awal pertumbuhan
+          sudah lemah, umbi nanti ikut kecil dan bobot panen anjlok.
+        </p>
+      </div>
+    </div>
+    <p class="mt-5 border-l-[3px] border-[#991B1B] bg-white px-3.5 py-2.5 text-[13.5px] font-medium leading-snug text-slate-800">
+      <strong class="text-[#991B1B]">Modal bibit bawang merah itu paling mahal:</strong> salah start di 15 hari pertama
+      MT 1 bikin biaya sulam jebol dan panen amblas sebelum sempat masuk fase umbi.
+    </p>
+  </section>
+
+  <section class="border-t border-slate-100 px-5 py-9">
+    <h2 class={sectionTitle}>
+      Kenapa bawang merah tetap moler & kerdil <span
+        class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]"
+        >padahal sudah pakai NPK 16-16-16, SP-36 & Dolomit?</span
+      >
+    </h2>
+    <p class={`${body} mt-3 mb-5`}>
+      Pupuk dasar adalah “makanan” di tanah — tapi di awal MT 1 yang lembap, <strong class="text-slate-950"
+        >bibit umbi baru tanam sering syok sehingga akarnya tidak sanggup makan</strong
+      >. Tanpa <strong class="text-slate-950">stimulator pengaktif akar & pemulih stres bedengan</strong> seperti
+      BENSU, pupuk mahal cuma tercuci air hujan sementara bibit keburu kena moler.
+    </p>
+    <div class="grid gap-3.5">
+      <figure class="relative overflow-hidden border border-slate-200 bg-white">
+        <img
+          src="/images/landing/bensu-bawang-merah/moler-belang.webp"
+          width="840"
+          height="560"
+          alt="Bedengan bawang merah muda usia 12 HST yang tumbuh belang, kuning pucat, dan melintir moler"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="absolute left-3 top-3 rounded-sm bg-[#991B1B] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-sm"
+        >
+          Moler & Tumbuh Belang MT 1
+        </figcaption>
+      </figure>
+      <figure class="relative overflow-hidden border border-slate-200 bg-white">
+        <img
+          src="/images/landing/bensu-bawang-merah/akar-anakan.webp"
+          width="840"
+          height="560"
+          alt="Rumpun bawang merah muda sehat berakar putih gondrong dengan banyak tunas anakan hijau tegak"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="absolute left-3 top-3 rounded-sm bg-[#15803D] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-sm"
+        >
+          Akar Putih Gondrong & Anakan Rame
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="border-t border-[#0F2A5F]/20 bg-[#0A1D42] px-5 py-9 text-white">
+    <p class="mb-2 text-[11px] font-semibold uppercase tracking-widest text-[#FACC15]">
+      Panduan Wajib Olah Lahan & Tanam MT 1
+    </p>
+    <h2 class="text-[24px] font-bold leading-[1.16] tracking-tight text-white">
+      Cara Pakai Khusus Bawang Merah Dasar: <span class="text-[#DBEAFE]">Takaran & Jadwal</span>
+    </h2>
+    <p class="mt-2.5 mb-5 text-[14px] leading-relaxed text-slate-300">
+      Ikuti 3 langkah presisi ini berdampingan dengan program NPK 16-16-16, SP-36 & Dolomit sejak olah lahan!
+    </p>
+
+    <div class="-mx-5 grid gap-3">
+      <div class="relative overflow-hidden bg-slate-900">
+        <img
+          src="/images/landing/bensu-bawang-merah/sebelum-perawatan.webp"
+          width="840"
+          height="560"
+          alt="Bedengan bawang merah awal tanam yang kerdil, kuning, dan banyak ruang kosong sebelum BENSU"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div
+          class="absolute left-3.5 top-3.5 rounded-sm bg-[#991B1B] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow"
+        >
+          Sebelum
+        </div>
+      </div>
+      <div class="relative overflow-hidden bg-slate-900">
+        <img
+          src="/images/landing/bensu-bawang-merah/setelah-perawatan.webp"
+          width="840"
+          height="560"
+          alt="Hamparan bedengan bawang merah serempak hijau tua tegak kekar dan rapat setelah perawatan BENSU"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div
+          class="absolute left-3.5 top-3.5 rounded-sm bg-[#15803D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow"
+        >
+          Setelah Perawatan
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-7 space-y-5">
+      <!-- Step 1 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0A1D42]">
+            <Icon name="lucide:sprout" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+          <span class="mt-2 w-px flex-1 bg-white/15" aria-hidden="true"></span>
+        </div>
+        <div class="flex-1 pb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 01 · Olah Lahan (H-3 s/d H-1)</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Siram / Kocor Bedengan Sebelum Tanam</h3>
+          <div class="mt-2.5 bg-[#1E3A8A]/70 px-3 py-2">
+            <span class="text-[15px] font-extrabold text-white">5 ml / 1 L air</span>
+            <span class="ml-1.5 text-[12px] text-[#DBEAFE]">(100 ml / gembor atau tangki 20 L)</span>
+          </div>
+          <p class="mt-2 text-[12.5px] text-slate-300">
+            Siram merata ke permukaan bedengan <strong class="text-white">setelah tabur Dolomit, SP-36 & NPK 16-16-16</strong>{' '}
+            agar media tanam siap menyambut akar bibit umbi.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0A1D42]">
+            <Icon name="lucide:droplets" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+          <span class="mt-2 w-px flex-1 bg-white/15" aria-hidden="true"></span>
+        </div>
+        <div class="flex-1 pb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 02 · Kawal Awal Tanam</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Semprot Daun & Kocor Rumpun Muda</h3>
+          <div class="mt-2.5 grid grid-cols-2 gap-2">
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">7–20 HST (Tunas)</p>
+              <p class="mt-1 text-[17px] font-extrabold leading-none text-[#DBEAFE]">3 ml / L</p>
+              <p class="mt-1 text-[11px] text-slate-400">45 ml / tangki 15L</p>
+            </div>
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">21–35 HST (Anakan)</p>
+              <p class="mt-1 text-[17px] font-extrabold leading-none text-[#DBEAFE]">4 ml / L</p>
+              <p class="mt-1 text-[11px] text-slate-400">60 ml / tangki 15L</p>
+            </div>
+          </div>
+          <p class="mt-2 text-[12.5px] text-slate-300">
+            Semprot kabut merata ke daun & pangkal batang; untuk petak yang mulai kuning/moler, kocor ulang 5 ml/L.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0A1D42]">
+            <Icon name="lucide:calendar-sync" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+        </div>
+        <div class="flex-1">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 03 · Jadwal Presisi</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Waktu & Interval Kawal MT 1</h3>
+          <div class="mt-2.5 bg-white/10 px-3 py-2 text-[12.5px] text-slate-100">
+            <strong class="text-[#FACC15]">Pagi 06.30–09.00 WIB</strong> saat embun turun & cuaca cerah
+            <span class="block text-[11px] text-slate-300">Siapkan stok H-15 sebelum tanam agar jadwal MT 1 tidak putus</span>
+          </div>
+          <div class="mt-2 grid grid-cols-2 gap-2">
+            <div class="bg-[#1E3A8A]/65 px-3 py-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wide text-[#FACC15]">Darurat Moler / Belang</p>
+              <p class="mt-0.5 text-[15px] font-extrabold text-white">Tiap 4–5 hari</p>
+              <p class="mt-0.5 text-[11px] text-slate-200">2–3 putaran sampai pulih</p>
+            </div>
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wide text-slate-300">Kawal Rutin MT 1</p>
+              <p class="mt-0.5 text-[15px] font-extrabold text-white">Tiap 7–10 hari</p>
+              <p class="mt-0.5 text-[11px] text-slate-300">Sejak olah lahan hingga 40 HST</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white px-5 py-10">
+    <h2 class={sectionTitle}>
+      Dipakai petani bawang merah sejak olah lahan agar <span
+        class="box-decoration-clone bg-[#DBEAFE] px-1.5 pb-0.5 text-[#0F2A5F]">bebas moler & serempak tumbuh</span
+      >
+    </h2>
+    <p class={`${body} mt-2.5 mb-8`}>
+      Di tanam MT 1, biaya terbesar ada di bibit dan pupuk dasar — jangan sampai rugi gara-gara akar gagal start.
+    </p>
+
+    <div class="space-y-9">
+      <article>
+        <img
+          src="/images/landing/bensu-bawang-merah/testi-petani-1.webp"
+          width="840"
+          height="560"
+          alt="Petani bawang merah tersenyum di bedengan hijau serempak sambil menunjukkan rumpun berakar putih lebat"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Pak Tarkim
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Brebes, Jawa Tengah · Olah Lahan MT 1</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Biasanya tanam Januari <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >umur 12 hari sudah banyak yang kuning melintir dan belang</strong
+          >. Kemarin dari olah lahan bareng SP-36 & Dolomit langsung saya siram BENSU, <strong class="text-[#0F2A5F]"
+            >tumbuhnya rata serempak, akar putih gondrong, dan nyaris tidak perlu sulam</strong
+          >.”
+        </p>
+      </article>
+
+      <article>
+        <img
+          src="/images/landing/bensu-bawang-merah/testi-petani-2.webp"
+          width="840"
+          height="560"
+          alt="Ibu petani bawang merah tersenyum di samping bedengan bawang merah hijau rapat memegang rumpun sehat"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Bu Sriwahyuni
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Nganjuk, Jawa Timur · Cegah Moler Dini</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Lahan bawah sempat kena hujan deras pas umur 10 hari sampai <strong
+            class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950">ujung daun mulai pucat dan agak layu</strong
+          >. Begitu dikocor & semprot BENSU dua kali, <strong class="text-[#0F2A5F]"
+            >daun balik hijau tua kaku berdiri tegak dan anakan langsung pecah banyak</strong
+          >.”
+        </p>
+      </article>
+
+      <article>
+        <img
+          src="/images/landing/bensu-bawang-merah/testi-petani-3.webp"
+          width="840"
+          height="560"
+          alt="Panen rumpun bawang merah besar merah mengilap berkelompok padat di atas keranjang panen"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Pak Haryono
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Demak, Jawa Tengah · Anakan & Bobot Panen</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Karena start dasarnya kuat dan pupuk NPK 16-16-16 terserap penuh, <strong
+            class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >rata-rata satu rumpun jadi 7 sampai 9 umbi besar padat</strong
+          >. Pas cabut panen, <strong class="text-[#0F2A5F]"
+            >warnanya merah menyala, kulit kencang, dan tonase naik jauh dari musim lalu</strong
+          >.”
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 px-5 py-9">
+    <h2 class={sectionTitle}>
+      Bukti Chat Petani yang <span class="text-[#B91C1C]">Sudah Pakai BENSU</span>
+    </h2>
+    <p class={`${body} mt-2.5 mb-5`}>
+      Kirim luas lahan & jadwal tanam MT 1 Anda, pilih paket, lalu admin bantu proses pesanan dan arahan takaran olah
+      lahan.
+    </p>
+    <div class="grid grid-cols-2 gap-2.5">
+      {
+        [1, 2, 3, 4].map((n) => (
+          <img
+            src={`/images/landing/bensu-jagung/testimoni-${n}.webp`}
+            width="520"
+            height="680"
+            alt={`Screenshot WhatsApp testimoni petani pengguna BENSU ${n}`}
+            loading="lazy"
+            decoding="async"
+            class="aspect-[9/16] w-full rounded border border-slate-200 object-cover"
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-[#0F2A5F]/10 bg-[#EFF6FF]/60 px-5 py-9">
+    <div class="mb-4 flex items-center gap-2">
+      <span class="flex h-5 w-5 items-center justify-center rounded-sm bg-[#0F2A5F] text-white"
+        ><Icon name="lucide:zap" class="h-3.5 w-3.5" aria-hidden="true" /></span
+      >
+      <p class="text-[11px] font-semibold uppercase tracking-widest text-[#0F2A5F]">Product Knowledge</p>
+    </div>
+    <h2 class="text-[26px] font-bold leading-[1.14] tracking-tight text-slate-950">
+      BENSU Hortikultura: <span class="inline-block rounded-sm bg-[#DBEAFE] px-2 py-0.5 leading-none text-[#0F2A5F]"
+        >Booster Dasar MT 1</span
+      >
+    </h2>
+    <p class="mt-3 text-[15px] leading-relaxed text-slate-700">
+      <strong class="text-slate-950">Stimulator recovery & pengaktif akar khusus hortikultura:</strong> mendampingi
+      program pupuk dasar NPK 16-16-16, SP-36, dan Dolomit agar bibit bawang merah cepat berakar, serempak tumbuh, dan
+      tahan stres hujan awal tahun.
+    </p>
+    <div class="mt-6">
+      <figure>
+        <img
+          src="/images/landing/bensu-jagung/demo-produk.webp"
+          width="840"
+          height="560"
+          alt="Botol BENSU stimulator pengaktif akar dan pendamping olah lahan bawang merah"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full rounded border border-slate-200 object-cover"
+        />
+        <figcaption class="mt-3 border-l-4 border-[#0F2A5F] pl-3">
+          <h3 class="text-[16px] font-bold text-slate-950">Irit, Cepat Serap & Cocok untuk Semua Varietas</h3>
+          <p class="mt-1 text-[14px] leading-relaxed text-slate-600">
+            Takaran 3–5 ml/liter air untuk olah lahan, semprot, maupun kocor — cocok untuk Bima Brebes, Tajuk, Bauji,
+            hingga varietas lokal lainnya.
+          </p>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="mt-7 grid gap-4 border-t border-[#0F2A5F]/15 pt-6">
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Maksimalkan Serapan NPK, SP-36 & Dolomit.</strong> Membantu akar
+          muda aktif menyerap pupuk dasar tanpa terbuang percuma.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Tekan Risiko Moler & Layu Awal Tanam.</strong> Memperkuat
+          pangkal batang dan daun muda di bedengan basah Januari–Februari.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:zap" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Pertumbuhan Serempak & Anakan Rame.</strong> Mengurangi sulam
+          bibit dan membentuk fondasi umbi besar merata.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:calendar-sync" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Siap Kawal Mulai H-15 Sebelum Tanam.</strong> Booking stok lebih
+          awal agar jadwal olah lahan dan MT 1 tidak telat.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-white">
+    <div class="flex items-center justify-between bg-slate-950 px-5 py-2.5 text-white">
+      <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest">
+        <Icon name="lucide:shield-check" class="h-3.5 w-3.5 text-[#FACC15]" aria-hidden="true" />
+        Jaminan Belanja Aman
+      </span>
+      <span class="text-[10px] font-medium uppercase tracking-wider text-slate-400">Resmi</span>
+    </div>
+
+    <div class="grid grid-cols-3 divide-x divide-slate-200 text-center">
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#EFF6FF] text-[#0F2A5F]">
+          <Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">100% Original</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Tersegel resmi, bukan oplosan</p>
+      </div>
+
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#EFF6FF] text-[#0F2A5F]">
+          <Icon name="lucide:hand-coins" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">Bisa COD</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Bayar di rumah saat sampai</p>
+      </div>
+
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-[#EFF6FF] text-[#0F2A5F]">
+          <Icon name="lucide:wallet-cards" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">Retur via CS</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Foto paket & no. pesanan</p>
+      </div>
+    </div>
+
+    <p class="border-t border-slate-200 bg-slate-50 px-5 py-2.5 text-center text-[11px] text-slate-600">
+      Order resmi Petani Sejahtera — dikonfirmasi admin sebelum paket dikirim.
+    </p>
+  </section>
+
+  <section id="checkout" class="bg-white py-7">
+    <div class="px-5 pb-5 text-center">
+      <div class="mx-auto mb-2.5 flex justify-center text-[#0F2A5F]">
+        <Icon name="lucide:arrow-down" class="h-7 w-7 animate-bounce motion-reduce:animate-none" aria-hidden="true" />
+      </div>
+      <h2 class="text-[22px] font-extrabold leading-tight tracking-tight text-slate-950">Lengkapi Pemesanan</h2>
+      <p class="mx-auto mt-1.5 max-w-[330px] text-[13.5px] leading-snug text-slate-600">
+        Pilih ukuran botol & isi alamat lengkap — panduan takaran olah lahan bawang merah MT 1 ikut dikirim bareng paket.
+      </p>
+    </div>
+    <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+  </section>
+</PetaniSejahteraLandingShell>

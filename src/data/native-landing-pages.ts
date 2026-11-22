@@ -50,7 +50,21 @@ export const nativeLandingPages: NativeLandingPage[] = [
     title: 'Bensu Jagung',
     productSlug: 'bensu',
     description: 'Jagung kuning, kerdil, dan pertumbuhan mandek.',
-    image: '/images/landing/bensu-jagung/hero-utama.webp',
+    image: '/images/landing/bensu-jagung/hero-petani.webp',
+  },
+  {
+    slug: 'bensu-cabai-hujan',
+    title: 'Bensu Cabai Musim Hujan',
+    productSlug: 'bensu',
+    description: 'Cabai besar & rawit musim hujan ekstrem: patek, rontok bunga, dan layu.',
+    image: '/images/landing/bensu-cabai-hujan/hero-petani.webp',
+  },
+  {
+    slug: 'bensu-bawang-merah',
+    title: 'Bensu Bawang Merah MT 1',
+    productSlug: 'bensu',
+    description: 'Olah lahan & tanam dasar MT 1 bawang merah: bebas moler, akar gondrong, dan serempak tumbuh.',
+    image: '/images/landing/bensu-bawang-merah/hero-petani.webp',
   },
   {
     slug: 'aussie-sawit-ganoderma',
@@ -65,6 +79,13 @@ export const nativeLandingPages: NativeLandingPage[] = [
     productSlug: 'aussie',
     description: 'Tandan sawit landak, buah jarang, dan biji kosong.',
     image: '/images/landing/aussie/aussie-buah-landak-hero.webp',
+  },
+  {
+    slug: 'aussie-bibit-sawit',
+    title: 'Aussie Bibit Sawit',
+    productSlug: 'aussie',
+    description: 'Perawatan & pengobatan bibit sawit kuning, kerdil, busuk pucuk, dan bercak daun.',
+    image: '/images/landing/aussie-bibit-sawit/hero-petani.webp',
   },
   {
     slug: 'saratoga-padi',
@@ -86,6 +107,13 @@ export const nativeLandingPages: NativeLandingPage[] = [
     productSlug: 'saratoga',
     description: 'Anthurium hanya berdaun dan bunga kusam.',
     image: '/images/landing/saratoga-anthurium/hero-anthurium.webp',
+  },
+  {
+    slug: 'saratoga-kubis',
+    title: 'Saratoga Kubis',
+    productSlug: 'saratoga',
+    description: 'Booster pembentukan & pemadatan krop kubis anti-kopong, anti-retak, dan anti-busuk hitam.',
+    image: '/images/landing/saratoga-kubis/hero-petani.webp',
   },
   // Ported from petanisawit.com with their slugs unchanged, for the ads that
   // already point at them.

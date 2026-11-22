@@ -1,0 +1,607 @@
+---
+import GeoIpResolvedForm from '../components/storefront/forms/GeoIpResolvedForm.astro';
+import PetaniSejahteraLandingShell from '../components/storefront/landing-pages/PetaniSejahteraLandingShell.astro';
+import Icon from '../components/storefront/shared/Icon.astro';
+import { getStorefrontProduct } from '../lib/catalog';
+
+export const prerender = false;
+
+const product = await getStorefrontProduct(Astro.locals, 'saratoga');
+if (!product) return Astro.rewrite('/404');
+
+const sectionTitle = 'text-[23px] font-bold leading-[1.18] tracking-tight text-[#14532D]';
+const body = 'text-[15px] leading-relaxed text-slate-600';
+const listIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#14532D]';
+const dangerIcon = 'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center text-[#B91C1C]';
+---
+
+<PetaniSejahteraLandingShell
+  slug="saratoga-kubis"
+  product={product}
+  title="SARATOGA Kubis - Booster Pembentukan & Pemadatan Krop Padat"
+  description="Atasi krop kubis kopong, lembek, retak pecah, dan busuk hitam saat fase pembentukan krop dengan SARATOGA. Lengkap takaran & jadwal, bisa COD."
+  image="/images/landing/saratoga-kubis/hero-petani.webp"
+>
+  <section class="flex flex-col gap-4 bg-white pb-6 pt-[max(1.5rem,env(safe-area-inset-top))] text-left text-slate-950">
+    <div class="px-5">
+      <h1 class="text-[clamp(22px,6vw,26px)] font-extrabold leading-[1.18] tracking-tight text-slate-950">
+        Krop Kubis Kopong, Lembek & Retak Pecah?{' '}
+        <span
+          class="box-decoration-clone px-0.5 text-[#14532D]"
+          style="background-image: linear-gradient(to top, #FFD84D 0.24em, rgba(255,216,77,0) 0.24em); background-repeat: no-repeat; background-position: 0 94%; background-size: 100% 100%;"
+        >
+          Kejar Bobot Padat Super Berat Sebelum Masa Emas Panen Lewat!
+        </span>
+      </h1>
+      <p class="mt-3 text-[clamp(14px,3.6vw,15px)] font-medium leading-relaxed text-slate-700">
+        Kubis terlihat rimbun tapi pas dipencet kosong & gampang pecah? Telat isi di fase krop,{' '}
+        <span class="box-decoration-clone bg-[#FFD84D]/45 px-1 font-bold text-slate-950">
+          timbangan anjlok setengahnya, banyak disortir pengepul, dan untung panen langsung hangus!
+        </span>
+      </p>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="relative overflow-hidden border-y border-slate-200 bg-slate-100">
+        <img
+          src="/images/landing/saratoga-kubis/hero-petani.webp"
+          width="800"
+          height="800"
+          alt="Petani kubis pegunungan memegang krop kubis yang retak pecah dan lembek kopong"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          class="aspect-square w-full object-cover"
+        />
+      </div>
+
+      <div class="grid grid-cols-3 divide-x divide-slate-200 border-b border-slate-200 bg-slate-50 text-center">
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Krop Kopong</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Lembek & ringan</p>
+        </div>
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Krop Retak</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Pecah sebelum panen</p>
+        </div>
+        <div class="px-2 py-3">
+          <p class="text-[11px] font-bold leading-tight text-slate-950">Busuk Hitam</p>
+          <p class="mt-0.5 text-[10px] leading-tight text-slate-500">Tepi daun gosong</p>
+        </div>
+      </div>
+
+      <div class="px-4 pt-4">
+        <div class="border border-slate-200 border-l-[3px] border-l-[#14532D] bg-white px-4 py-3">
+          <h2 class="text-[14px] font-bold leading-snug text-slate-950">
+            Fase pembentukan krop (30–55 HST) adalah penentu bobot — tidak bisa diulang!
+          </h2>
+          <p class="mt-1 text-[13px] leading-snug text-slate-600">
+            Begitu serapan nutrisi seret di fase pengisian, wajib{' '}
+            <strong class="font-semibold text-[#14532D]">banjiri asam amino siap serap + bantu serapan kalsium & boron</strong>{' '}
+            pakai SARATOGA agar krop menutup rapat, padat keras, dan super berat!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-slate-100 px-5 py-9">
+    <h2 class={sectionTitle}>
+      SARATOGA bukan pupuk daun biasa. Ini <span class="box-decoration-clone bg-emerald-100 px-1.5 pb-0.5 text-[#14532D]"
+        >serum booster pemadat krop kubis</span
+      > yang memaksa daun menggulung rapat, keras, dan bobot timbangan melesat!
+    </h2>
+    <p class={`${body} mt-3`}>
+      Dirancang khusus untuk fase pengisian & pemadatan hasil: asam amino esensial siap serap membantu memaksimalkan
+      serapan Kalsium-Boron dan Kalium di kebun agar krop kubis penuh sampai inti, mulus, dan tahan simpan.
+    </p>
+    <div class="mt-6 grid gap-2.5">
+      <div class="rounded-md border border-[#14532D]/15 bg-emerald-50/70 p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:zap" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Padatkan krop sampai ke inti</strong> — mendorong penggulungan daun bagian
+            dalam lebih rapat supaya kubis tidak kopong atau lembek saat ditekan.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-md border border-slate-200 bg-white p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Cegah krop retak & tepi daun gosong busuk</strong> dengan memperlancar
+            aliran kalsium & boron masuk sampai ke lapisan daun dalam yang sedang membesar.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-md border border-[#14532D]/15 bg-emerald-50/70 p-3.5">
+        <div class="flex gap-3">
+          <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
+          <p class={body}>
+            <strong class="text-slate-950">Dongkrak bobot panen & ukuran seragam</strong> — bikin satu petak padat
+            merata untuk mengejar masa panen harga tinggi Januari, Juni, dan November.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-red-100 bg-[#FEF2F2]/60 px-5 py-9">
+    <h2 class="text-[23px] font-bold leading-[1.18] tracking-tight text-[#991B1B]">
+      Kalau 4 tanda ini muncul di bedengan kubis, bobot panen Anda sudah <span
+        class="underline decoration-red-200 decoration-4 underline-offset-4">terancam anjlok berat</span
+      >
+    </h2>
+    <div class="mt-6 grid gap-4">
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Daun luar lebar tapi krop tidak mau menutup rapat</strong> — saat ditekan
+          terasa empuk/kopong dan bobot jauh di bawah target per bonggol.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Krop pecah/retak menjelang panen</strong> akibat hujan-panas gantian dan
+          kalsium-boron tidak cukup masuk sampai ke dalam krop.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Tepi daun dalam gosong atau muncul busuk hitam</strong> yang bikin kubis
+          langsung disortir/dibuang saat masuk keranjang pengepul.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <span class={dangerIcon}><Icon name="lucide:triangle-alert" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class={body}>
+          <strong class="text-slate-950">Ukuran krop belang tidak seragam</strong> — sebagian besar, sebagian kerdil
+          sehingga panen tercecer dan biaya tenaga membengkak.
+        </p>
+      </div>
+    </div>
+    <p class="mt-5 border-l-[3px] border-[#991B1B] bg-white px-3.5 py-2.5 text-[13.5px] font-medium leading-snug text-slate-800">
+      <strong class="text-[#991B1B]">Krop cuma dibentuk sekali:</strong> begitu lewat umur 55 hari dalam kondisi kopong
+      atau retak, tidak ada pupuk yang bisa memadatkannya lagi.
+    </p>
+  </section>
+
+  <section class="border-t border-slate-100 px-5 py-9">
+    <h2 class={sectionTitle}>
+      Kenapa krop tetap kopong & mudah retak <span class="box-decoration-clone bg-emerald-100 px-1.5 pb-0.5 text-[#14532D]"
+        >padahal pupuk dasar & KNO3 sudah masuk?</span
+      >
+    </h2>
+    <p class={`${body} mt-3 mb-5`}>
+      Kalsium dan Boron itu sifatnya <strong class="text-slate-950">lambat bergerak di dalam tanaman</strong>. Saat
+      cuaca dingin pegunungan atau hujan tinggi, aliran nutrisi macet sehingga krop tidak padat dan gampang pecah.{' '}
+      <strong class="text-slate-950">Asam amino siap serap SARATOGA</strong> mendorong nutrisi masuk cepat sampai ke
+      inti pembentukan krop!
+    </p>
+    <div class="grid gap-3.5">
+      <figure class="relative overflow-hidden border border-slate-200 bg-white">
+        <img
+          src="/images/landing/saratoga-kubis/krop-retak.webp"
+          width="840"
+          height="560"
+          alt="Krop kubis retak pecah, longgar kopong, dan tepi daun mulai busuk hitam"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="absolute left-3 top-3 rounded-sm bg-[#991B1B] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-sm"
+        >
+          Krop Retak & Kopong
+        </figcaption>
+      </figure>
+      <figure class="relative overflow-hidden border border-slate-200 bg-white">
+        <img
+          src="/images/landing/saratoga-kubis/krop-padat.webp"
+          width="840"
+          height="560"
+          alt="Krop kubis bulat besar super padat, daun rapat mengilap tanpa retak"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="absolute left-3 top-3 rounded-sm bg-[#15803D] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-sm"
+        >
+          Krop Padat Keras & Berat
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="border-t border-[#14532D]/20 bg-[#0B2E1A] px-5 py-9 text-white">
+    <p class="mb-2 text-[11px] font-semibold uppercase tracking-widest text-[#FACC15]">
+      Panduan Wajib Masa Emas Kubis
+    </p>
+    <h2 class="text-[24px] font-bold leading-[1.16] tracking-tight text-white">
+      Cara Pakai Khusus Pemadatan Krop: <span class="text-emerald-200">Takaran & Jadwal</span>
+    </h2>
+    <p class="mt-2.5 mb-5 text-[14px] leading-relaxed text-slate-300">
+      Fokus masuk di fase mulai bentuk & padatkan krop (25–55 HST) mendampingi Kalsium-Boron, Kalium KNO3, dan kendali
+      ulat daun kebun Anda!
+    </p>
+
+    <div class="-mx-5 grid gap-3">
+      <div class="relative overflow-hidden bg-slate-900">
+        <img
+          src="/images/landing/saratoga-kubis/sebelum-perawatan.webp"
+          width="840"
+          height="560"
+          alt="Bedengan kubis pegunungan dengan krop longgar tidak seragam sebelum SARATOGA"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div
+          class="absolute left-3.5 top-3.5 rounded-sm bg-[#991B1B] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow"
+        >
+          Sebelum
+        </div>
+      </div>
+      <div class="relative overflow-hidden bg-slate-900">
+        <img
+          src="/images/landing/saratoga-kubis/setelah-perawatan.webp"
+          width="840"
+          height="560"
+          alt="Barisan kubis pegunungan seragam dengan krop besar padat siap panen setelah SARATOGA"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div
+          class="absolute left-3.5 top-3.5 rounded-sm bg-[#15803D] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow"
+        >
+          Setelah Perawatan
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-7 space-y-5">
+      <!-- Step 1 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0B2E1A]">
+            <Icon name="lucide:droplets" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+          <span class="mt-2 w-px flex-1 bg-white/15" aria-hidden="true"></span>
+        </div>
+        <div class="flex-1 pb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 01</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Semprot Daun & Titik Krop</h3>
+          <div class="mt-2.5 grid grid-cols-2 gap-2">
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">Awal Krop (25–35 HST)</p>
+              <p class="mt-1 text-[17px] font-extrabold leading-none text-emerald-200">3 ml / L</p>
+              <p class="mt-1 text-[11px] text-slate-400">45 ml / tangki 15L</p>
+            </div>
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-300">Pemadatan (38–55 HST)</p>
+              <p class="mt-1 text-[17px] font-extrabold leading-none text-emerald-200">4–5 ml / L</p>
+              <p class="mt-1 text-[11px] text-slate-400">60–75 ml / tangki 15L</p>
+            </div>
+          </div>
+          <p class="mt-2 text-[12.5px] text-slate-300">
+            Semprot kabut halus merata ke daun pembungkus & inti krop (gunakan perekat karena daun kubis berlilin).
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0B2E1A]">
+            <Icon name="lucide:sprout" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+          <span class="mt-2 w-px flex-1 bg-white/15" aria-hidden="true"></span>
+        </div>
+        <div class="flex-1 pb-2">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 02</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Kocor Pangkal (Pendamping Kalsium & KNO3)</h3>
+          <div class="mt-2.5 bg-emerald-800/70 px-3 py-2">
+            <span class="text-[15px] font-extrabold text-white">5 ml / 1 L air</span>
+            <span class="ml-1.5 text-[12px] text-emerald-200">(100 ml / 20 L air)</span>
+          </div>
+          <p class="mt-2 text-[12.5px] text-slate-300">
+            Siram <strong class="text-white">100–150 ml per batang</strong> pada umur 30 & 45 HST untuk mempercepat
+            serapan Kalsium-Boron dan Kalium pemadat krop.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="relative flex gap-3.5">
+        <div class="flex flex-col items-center">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-[#FACC15] text-[#0B2E1A]">
+            <Icon name="lucide:calendar-sync" class="h-4.5 w-4.5" aria-hidden="true" />
+          </span>
+        </div>
+        <div class="flex-1">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-[#FACC15]">Langkah 03</p>
+          <h3 class="mt-0.5 text-[16px] font-bold text-white">Waktu & Jadwal Masa Emas</h3>
+          <div class="mt-2.5 bg-white/10 px-3 py-2 text-[12.5px] text-slate-100">
+            <strong class="text-[#FACC15]">Pagi 06.30–09.00</strong> atau <strong class="text-[#FACC15]">Sore 15.30–17.30 WIB</strong>
+            <span class="block text-[11px] text-slate-300">Tetap jalankan insektisida ulat daun & Kalsium-Boron kebun</span>
+          </div>
+          <div class="mt-2 grid grid-cols-2 gap-2">
+            <div class="bg-emerald-800/65 px-3 py-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wide text-[#FACC15]">Fase Pengisian Krop</p>
+              <p class="mt-0.5 text-[15px] font-extrabold text-white">Tiap 7 hari</p>
+              <p class="mt-0.5 text-[11px] text-slate-200">Umur 25–55 HST</p>
+            </div>
+            <div class="bg-white/8 px-3 py-2.5">
+              <p class="text-[10px] font-bold uppercase tracking-wide text-slate-300">Menjelang Panen</p>
+              <p class="mt-0.5 text-[15px] font-extrabold text-white">Stop H-7 panen</p>
+              <p class="mt-0.5 text-[11px] text-slate-300">Krop kering, keras & awet</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white px-5 py-10">
+    <h2 class={sectionTitle}>
+      Dipakai petani kubis pegunungan saat kejar <span class="box-decoration-clone bg-emerald-100 px-1.5 pb-0.5 text-[#14532D]"
+        >krop padat, berat & bebas retak</span
+      >
+    </h2>
+    <p class={`${body} mt-2.5 mb-8`}>
+      Di sentra kubis, selisih 300–500 gram per krop langsung menentukan apakah satu lahan balik modal besar atau cuma
+      lewat.
+    </p>
+
+    <div class="space-y-9">
+      <article>
+        <img
+          src="/images/landing/saratoga-kubis/testi-petani-1.webp"
+          width="840"
+          height="560"
+          alt="Petani kubis memegang dua krop kubis besar super padat tanpa retak"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Pak Wahyudi
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Wonosobo, Jawa Tengah · Krop Kopong</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Musim sebelumnya banyak kubis saya <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >kropnya lembek dan terasa kosong pas dipencet</strong
+          >. Begitu saya semprot rutin SARATOGA mulai 30 HST bareng kalsium, <strong class="text-[#14532D]"
+            >kropnya keras padat banget sampai inti dan timbangan naik jauh</strong
+          >.”
+        </p>
+      </article>
+
+      <article>
+        <img
+          src="/images/landing/saratoga-kubis/testi-petani-2.webp"
+          width="840"
+          height="560"
+          alt="Tumpukan panen kubis besar padat dan mulus di keranjang tepi kebun"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Bang Tarigan
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Karo, Sumatera Utara · Krop Retak & Sortiran</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Dulu kalau hujan panas gantian <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >banyak krop pecah dan tepi daun menghitam</strong
+          >. Setelah rutin pakai SARATOGA tiap minggu di fase krop, <strong class="text-[#14532D]"
+            >panen jauh lebih mulus, hampir tidak ada sortiran retak</strong
+          >, pengepul langsung ambil semua.”
+        </p>
+      </article>
+
+      <article>
+        <img
+          src="/images/landing/saratoga-kubis/testi-petani-3-ibu.webp"
+          width="840"
+          height="560"
+          alt="Ibu petani jongkok di tengah bedengan kubis seragam dan padat siap panen"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <div class="mt-3.5 flex items-start justify-between gap-3">
+          <div>
+            <p class="flex items-center gap-1.5 text-[15px] font-bold text-slate-950">
+              Bu Ratna
+              <span class="flex h-4 w-4 items-center justify-center text-blue-600"
+                ><Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" /></span
+              >
+            </p>
+            <p class="mt-0.5 text-[12px] font-medium text-slate-500">Batu, Jawa Timur · Krop Tidak Seragam</p>
+          </div>
+          <div class="shrink-0 text-[13px] tracking-tight text-[#F59E0B]" role="img" aria-label="5 dari 5 bintang">
+            ★★★★★
+          </div>
+        </div>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed text-slate-700">
+          “Satu petak tadinya <strong class="box-decoration-clone bg-[#FFD84D]/45 px-1 text-slate-950"
+            >ukuran kropnya belang besar kecil</strong
+          >. Dikocor + semprot SARATOGA rutin, <strong class="text-[#14532D]"
+            >pembentukan krop jadi rata serempak, bobotnya padat banget</strong
+          > dan panen bisa sekaligus.”
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 px-5 py-9">
+    <h2 class={sectionTitle}>
+      Bukti Chat Petani yang <span class="text-[#B91C1C]">Sudah Pakai SARATOGA</span>
+    </h2>
+    <p class={`${body} mt-2.5 mb-5`}>
+      Kirim umur & kondisi kubis Anda, pilih paket, lalu admin bantu proses pesanan dan arahan takaran fase krop.
+    </p>
+    <div class="grid grid-cols-2 gap-2.5">
+      {
+        [1, 2, 3, 4].map((n) => (
+          <img
+            src={`/images/landing/saratoga/wa${n}.webp`}
+            width="520"
+            height="680"
+            alt={`Screenshot WhatsApp testimoni petani pengguna SARATOGA ${n}`}
+            loading="lazy"
+            decoding="async"
+            class="aspect-[9/16] w-full rounded border border-slate-200 object-cover"
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-[#14532D]/10 bg-emerald-50/50 px-5 py-9">
+    <div class="mb-4 flex items-center gap-2">
+      <span class="flex h-5 w-5 items-center justify-center rounded-sm bg-[#14532D] text-white"
+        ><Icon name="lucide:zap" class="h-3.5 w-3.5" aria-hidden="true" /></span
+      >
+      <p class="text-[11px] font-semibold uppercase tracking-widest text-[#14532D]">Product Knowledge</p>
+    </div>
+    <h2 class="text-[26px] font-bold leading-[1.14] tracking-tight text-slate-950">
+      SARATOGA: <span class="inline-block rounded-sm bg-emerald-100 px-2 py-0.5 leading-none text-[#14532D]"
+        >Serum Pengisian & Pemadat Krop</span
+      >
+    </h2>
+    <p class="mt-3 text-[15px] leading-relaxed text-slate-700">
+      <strong class="text-slate-950">Serum asam amino esensial khusus fase pengisian hasil:</strong> memaksimalkan
+      serapan Kalsium-Boron dan Kalium KNO3 di lahan agar krop kubis tumbuh penuh, keras, seragam, dan tidak mudah
+      pecah.
+    </p>
+    <div class="mt-6">
+      <figure>
+        <img
+          src="/images/landing/saratoga-kubis/produk-petani.webp"
+          width="840"
+          height="560"
+          alt="Petani kubis memegang dan merekomendasikan botol SARATOGA di kebun kubis"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/2] w-full rounded border border-slate-200 object-cover"
+        />
+        <figcaption class="mt-3 border-l-4 border-[#14532D] pl-3">
+          <h3 class="text-[16px] font-bold text-slate-950">Asam Amino Siap Serap, Takaran Super Irit</h3>
+          <p class="mt-1 text-[14px] leading-relaxed text-slate-600">
+            Hanya 3–5 ml/liter air — cepat terserap lewat pori daun dan mendorong aliran nutrisi hingga ke inti krop
+            kubis.
+          </p>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="mt-7 grid gap-4 border-t border-[#14532D]/15 pt-6">
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:sprout" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Krop Penuh & Keras Sampai Inti.</strong> Memacu pembentukan
+          lapisan daun dalam agar kubis padat dan berat saat ditimbang.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:shield-plus" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Bantu Tekan Retak & Busuk Hitam.</strong> Memperlancar serapan
+          kalsium-boron untuk menjaga kelenturan dan kekuatan dinding sel daun.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:zap" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Serempak Siap Panen.</strong> Membantu mengejar keseragaman ukuran
+          krop dalam satu petak agar panen lebih efisien.
+        </p>
+      </div>
+      <div class="flex gap-3.5">
+        <span class={listIcon}><Icon name="lucide:calendar-sync" class="h-4 w-4" aria-hidden="true" /></span>
+        <p class="text-[14px] leading-relaxed text-slate-700">
+          <strong class="mb-0.5 block text-slate-950">Sinergi dengan SOP Kebun.</strong> Cocok mendampingi program
+          Kalsium-Boron, Kalium KNO3, dan pengendalian ulat daun.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-white">
+    <div class="flex items-center justify-between bg-slate-950 px-5 py-2.5 text-white">
+      <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest">
+        <Icon name="lucide:shield-check" class="h-3.5 w-3.5 text-[#FACC15]" aria-hidden="true" />
+        Jaminan Belanja Aman
+      </span>
+      <span class="text-[10px] font-medium uppercase tracking-wider text-slate-400">Resmi</span>
+    </div>
+
+    <div class="grid grid-cols-3 divide-x divide-slate-200 text-center">
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-emerald-50 text-[#14532D]">
+          <Icon name="lucide:badge-check" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">100% Original</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Tersegel resmi, bukan oplosan</p>
+      </div>
+
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-emerald-50 text-[#14532D]">
+          <Icon name="lucide:hand-coins" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">Bisa COD</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Bayar di rumah saat sampai</p>
+      </div>
+
+      <div class="px-3 py-4">
+        <span class="mx-auto flex h-7 w-7 items-center justify-center bg-emerald-50 text-[#14532D]">
+          <Icon name="lucide:wallet-cards" class="h-4 w-4" aria-hidden="true" />
+        </span>
+        <p class="mt-2 text-[12px] font-bold leading-tight text-slate-950">Retur via CS</p>
+        <p class="mt-1 text-[11px] leading-snug text-slate-500">Foto paket & no. pesanan</p>
+      </div>
+    </div>
+
+    <p class="border-t border-slate-200 bg-slate-50 px-5 py-2.5 text-center text-[11px] text-slate-600">
+      Order resmi Petani Sejahtera — dikonfirmasi admin sebelum paket dikirim.
+    </p>
+  </section>
+
+  <section id="checkout" class="bg-white py-7">
+    <div class="px-5 pb-5 text-center">
+      <div class="mx-auto mb-2.5 flex justify-center text-[#14532D]">
+        <Icon name="lucide:arrow-down" class="h-7 w-7 animate-bounce motion-reduce:animate-none" aria-hidden="true" />
+      </div>
+      <h2 class="text-[22px] font-extrabold leading-tight tracking-tight text-slate-950">Lengkapi Pemesanan</h2>
+      <p class="mx-auto mt-1.5 max-w-[330px] text-[13.5px] leading-snug text-slate-600">
+        Pilih ukuran botol & isi alamat lengkap — panduan takaran fase krop kubis ikut dikirim bareng paket.
+      </p>
+    </div>
+    <GeoIpResolvedForm mode="hybrid" productSlug={product.slug} embedded={true} />
+  </section>
+</PetaniSejahteraLandingShell>
